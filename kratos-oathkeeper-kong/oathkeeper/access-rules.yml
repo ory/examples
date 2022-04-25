@@ -1,0 +1,40 @@
+-
+  id: "api:hello-protected"
+  upstream:
+    preserve_host: true
+    url: "http://hello:8090"
+  match:
+    url: "http://oathkeeper:4455/hello"
+    methods:
+      - GET
+  authenticators:
+    -
+      handler: cookie_session
+  mutators:
+    - handler: noop
+  authorizer:
+    handler: allow
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/login
+-
+  id: "api:world-protected"
+  upstream:
+    preserve_host: true
+    url: "http://world:8090"
+  match:
+    url: "http://oathkeeper:4455/world"
+    methods:
+      - GET
+  authenticators:
+    -
+      handler: cookie_session
+  mutators:
+    - handler: noop
+  authorizer:
+    handler: allow
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/login
