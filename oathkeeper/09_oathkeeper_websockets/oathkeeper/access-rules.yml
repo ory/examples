@@ -1,0 +1,20 @@
+-
+  id: "ws:protected"
+  upstream:
+    preserve_host: true
+    url: "http://ws:8080"
+  match:
+    url: "http://127.0.0.1:8080/<**>"
+    methods:
+      - GET
+      - POST
+  authenticators:
+    - handler: cookie_session
+  mutators:
+    - handler: noop
+  authorizer:
+    handler: allow
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/login

@@ -1,0 +1,15 @@
+-
+  id: "api:protected"
+  match:
+    url: "http://127.0.0.1:8080/<**>"
+    methods:
+      - GET
+      - POST
+  authenticators:
+    - handler: cookie_session
+  mutators:
+    - handler: hydrator
+  authorizer:
+    handler: allow
+  errors:
+    - handler: json
