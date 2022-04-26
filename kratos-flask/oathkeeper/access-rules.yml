@@ -1,0 +1,20 @@
+-
+  id: "flask:protected"
+  upstream:
+    preserve_host: true
+    url: "http://flask:5001"
+  match:
+    url: "http://127.0.0.1:8080/oathkeeper"
+    methods:
+      - GET
+  authenticators:
+    -
+      handler: cookie_session
+  mutators:
+    - handler: noop
+  authorizer:
+    handler: allow
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/login
