@@ -37,12 +37,25 @@ A docker volume `node-modules` is created to store NPM packages and is reused ac
 Run the following commands to bootstrap your environment if you are unable to run the application using Docker
 
 ```bash
-cd kratos_app_example
+cd examples/kratos-keto-flask
 pipenv install --dev
 pipenv shell
+FLASK_APP=autoapp flask run
 ```
 
 Go to `http://localhost:8080`. You will see a pretty welcome screen.
+
+#### Running on windows
+You may have this error running this example on windows
+
+```
+pkg_resources.DistributionNotFound: The 'greenlet!=0.4.17; python_version >= "3" and (platform_machine == "aarch64" or (platform_machine == "ppc64le" or (platform_machine == "x86_64" or (platform_machine == "amd64" or (platform_machine == "AMD64" or (platform_machine == "win32" or platform_machine == "WIN32"))))))' distribution was not found and is required by SQLAlchemy
+```
+You can fix it by running
+```
+   pipenv shell
+   pip install greenlet colorama
+```
 
 #### Database Initialization (locally)
 
