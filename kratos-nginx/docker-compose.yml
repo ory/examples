@@ -1,0 +1,68 @@
+version: "3.7"
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/index.html:/app/html:ro
+    networks:
+      - intranet
+
+  postgres-kratos:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=kratos
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=kratos
+    networks:
+      - intranet
+
+  kratos-migrate:
+    image: oryd/kratos:v0.8.0-alpha.3
+    links:
+      - postgres-kratos:postgres-kratos
+    environment:
+      - DSN=postgres://kratos:secret@postgres-kratos:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+    networks:
+      - intranet
+    volumes:
+      - type: bind
+        source: ./kratos
+        target: /etc/config/kratos
+    command: -c /etc/config/kratos/kratos.yml migrate sql -e --yes
+
+  kratos:
+    image: oryd/kratos:v0.8.0-alpha.3
+    links:
+      - postgres-kratos:postgres-kratos
+    environment:
+      - DSN=postgres://kratos:secret@postgres-kratos:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+    volumes:
+      - type: bind
+        source: ./kratos
+        target: /etc/config/kratos
+    networks:
+      - intranet
+    command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
+
+  kratos-selfservice-ui-node:
+    image: oryd/kratos-selfservice-ui-node:latest
+    environment:
+      - KRATOS_PUBLIC_URL=http://host.docker.internal:8080/ # For connectivity between containers
+      - KRATOS_BROWSER_URL=http://127.0.0.1:8080/
+    networks:
+      - intranet
+    restart: on-failure
+
+
+  mailslurper:
+    image: oryd/mailslurper:latest-smtps
+    networks:
+      - intranet
+
+
+networks:
+  intranet:

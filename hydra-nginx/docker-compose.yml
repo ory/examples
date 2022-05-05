@@ -1,0 +1,66 @@
+version: "3.7"
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/index.html:/app/html:ro
+    networks:
+      - intranet
+
+  hydra:
+    image: oryd/hydra:v1.11.7
+    ports:
+      - "4444:4444" # Public port
+      - "4445:4445" # Admin port
+      - "5555:5555" # Port for hydra token user
+    command: serve -c /etc/config/hydra/hydra.yml all --dangerous-force-http
+    volumes:
+      - type: bind
+        source: ./hydra
+        target: /etc/config/hydra
+    environment:
+      - DSN=postgres://hydra:secret@postgres-hydra:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+    depends_on:
+      - hydra-migrate
+    networks:
+      - intranet
+
+  hydra-migrate:
+    image: oryd/hydra:v1.11.7
+    environment:
+      - DSN=postgres://hydra:secret@postgres-hydra:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+    command: migrate -c /etc/config/hydra/hydra.yml sql -e --yes
+    volumes:
+      - type: bind
+        source: ./hydra
+        target: /etc/config/hydra
+    restart: on-failure
+    links:
+      - postgres-hydra:postgres-hydra
+    networks:
+      - intranet
+
+  consent:
+    environment:
+      - HYDRA_ADMIN_URL=http://hydra:4445
+    image: oryd/hydra-login-consent-node:v1.11.7
+    ports:
+      - "3000:3000"
+    networks:
+      - intranet
+
+  postgres-hydra:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=hydra
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=hydra
+    networks:
+      - intranet
+
+networks:
+  intranet:
