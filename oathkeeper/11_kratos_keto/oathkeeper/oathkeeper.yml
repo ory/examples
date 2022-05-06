@@ -78,14 +78,9 @@ authorizers:
     config:
       remote: http://keto:4466/check
       payload: |
-        {
-          "subject_id": "{{ print .Subject }}",
-          "relation": "access",
-          "namespace": "services",
-          "object": "hello-world-service"
-        }
+        { }
       forward_response_headers_to_upstream:
-        - Content-type
+        - X-Foo
       retry:
         max_delay: 1s
         give_up_after: 1s
