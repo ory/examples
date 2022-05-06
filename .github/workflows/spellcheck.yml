@@ -1,0 +1,25 @@
+name: spellchecker
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  misspell:
+    name: markdown spellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code.
+        uses: actions/checkout@v1
+      - name: misspell
+        id: check_for_typos
+        uses: reviewdog/action-misspell@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: "./*"
+          locale: "US"
+          level: "warning"
+          pattern: |
+            *.md
+            *.mdx
