@@ -46,7 +46,7 @@ FLASK_APP=autoapp flask run
 Go to `http://localhost:8080`. You will see a pretty welcome screen.
 
 #### Running on windows
-You may have this error running this example on windows
+You may have this error running this example on windows because of missing installation of `greenlet` and `colorama` packages
 
 ```
 pkg_resources.DistributionNotFound: The 'greenlet!=0.4.17; python_version >= "3" and (platform_machine == "aarch64" or (platform_machine == "ppc64le" or (platform_machine == "x86_64" or (platform_machine == "amd64" or (platform_machine == "AMD64" or (platform_machine == "win32" or platform_machine == "WIN32"))))))' distribution was not found and is required by SQLAlchemy
