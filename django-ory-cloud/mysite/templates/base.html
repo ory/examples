@@ -61,13 +61,14 @@
                   {# URL provided by django-allauth/account/urls.py #}
                   <a class="nav-link" href="{{ logout_url }}">{% translate "Sign Out" %}</a>
                 </li>
-              {% endif %}
+              {% else %}
               <li class="nav-item">
                 <a id="sign-up-link" class="nav-link" href="{{ signup_url }}">{% translate "Sign Up" %}</a>
               </li>
                 <li class="nav-item">
                   <a id="log-in-link" class="nav-link" href="{{ login_url }}">{% translate "Sign In" %}</a>
                 </li>
+              {% endif %}
             </ul>
           </div>
         </div>
