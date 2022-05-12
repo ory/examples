@@ -55,6 +55,5 @@ services:
       file: ../../_common/docker-compose.yml
       service: mailslurper
 
-
 networks:
   intranet:
