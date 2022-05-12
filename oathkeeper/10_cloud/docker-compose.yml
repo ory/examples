@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  oathkeeper:
+    image: oryd/oathkeeper:v0.38
+    ports:
+      - 8080:4455
+      - 4456:4456
+    command:
+      serve proxy -c "/etc/config/oathkeeper/oathkeeper.yml"
+    environment:
+      - LOG_LEVEL=debug
+    restart: on-failure
+    networks:
+      - intranet
+    volumes:
+      - ./oathkeeper:/etc/config/oathkeeper
+
+  hello:
+    build:
+      context: "hello"
+    networks:
+      - intranet
+
+  hydrator:
+    build:
+      context: "hydrator"
+    networks:
+      - intranet
+
+networks:
+  intranet:
