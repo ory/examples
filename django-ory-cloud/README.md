@@ -8,8 +8,8 @@ Consider using [django-cookiecutter](https://github.com/cookiecutter/cookiecutte
 ## Prerequisites
 
 1. Python 3.10
-2. Poetry
-3. Docker (in case you use Ory Kratos self-hosted)
+2. [Poetry](https://python-poetry.org/) - Python dependency manager.
+3. Docker (if you want to  self-host Ory Kratos)
 
 ## Running locally
 
