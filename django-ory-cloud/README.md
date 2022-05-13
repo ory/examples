@@ -26,8 +26,8 @@ Consider using [django-cookiecutter](https://github.com/cookiecutter/cookiecutte
 ## Environment variables
 
 ```
-   ORY_SDK_URL=https://playground.projects.oryapis.com
-   ORY_UI_URL=https://playground.projects.oryapis.com/ui
+export ORY_SDK_URL=https://playground.projects.oryapis.com
+export ORY_UI_URL=https://playground.projects.oryapis.com/ui
 ```
 
 Open http://127.0.0.1:8000 for testing
