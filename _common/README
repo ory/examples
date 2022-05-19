@@ -3,16 +3,16 @@
 
 # Title 
 
-<!--Add one sentence describing the project, usecase and key services used. -->
-<!--Add a link to post on the Ory Blog as well as other platforms (dev.to, ...). -->
+<!-- Add one sentence describing the project, usecase, and key services used. -->
+<!-- Add a link to post on the Ory Blog as well as other platforms (dev.to, ...). -->
 
 ## Overview
 
-<!-- Optional: Add an diagram if using multiple services or a more detailed explanation than in description or links to other relevant resources. -->
+<!-- Optional: Add a diagram if using multiple services or a more detailed explanation than in description or links to other relevant resources. -->
 
 ### Prerequisites
 
-<!--Add a list of software needed to run the example, ideally with links to the installation page or installation (e.g. brew) commands. -->
+<!-- Add a list of software needed to run the example, ideally with links to the installation page or installation (e.g. brew) commands. -->
 
 ## Develop
 
@@ -20,7 +20,7 @@
 
 ### Environmental Variables
 
-<!-- Optional: If needed add instructions on how to use environmental variables. -->
+<!-- Describe needed environment variables + instructions on how to set them up. -->
 
 ### Run tests
 
