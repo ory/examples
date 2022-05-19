@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   oathkeeper:
@@ -8,8 +8,7 @@ services:
     ports:
       - 8080:4455
       - 4456:4456
-    command:
-      serve proxy -c "/etc/config/oathkeeper/oathkeeper.yml"
+    command: serve proxy -c "/etc/config/oathkeeper/oathkeeper.yml"
     environment:
       - LOG_LEVEL=debug
     restart: on-failure
@@ -20,7 +19,7 @@ services:
 
   hello:
     build:
-      context: "hello"
+      context: 'hello'
     networks:
       - intranet
 
@@ -72,7 +71,7 @@ services:
     networks:
       - intranet
     ports:
-      - "4455:3000"
+      - '4455:3000'
     restart: on-failure
 
   keto:
@@ -96,7 +95,6 @@ services:
       - '4437:4437'
     networks:
       - intranet
-
 
 networks:
   intranet:

@@ -59,8 +59,7 @@ selfservice:
       after:
         password:
           hooks:
-            -
-              hook: session
+            - hook: session
 
 log:
   level: debug

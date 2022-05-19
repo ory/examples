@@ -1,29 +1,28 @@
-version: "3.7"
+version: '3.7'
 
 services:
   traefik:
-    image: "traefik:v2.6"
-    container_name: "traefik"
+    image: 'traefik:v2.6'
+    container_name: 'traefik'
     networks:
       - intranet
     command:
-      - "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
+      - '--log.level=DEBUG'
+      - '--api.insecure=true'
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--entrypoints.web.address=:80'
     ports:
-      - "8080:80"
-      - "8081:8080"
+      - '8080:80'
+      - '8081:8080'
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
 
   oathkeeper:
     image: oryd/oathkeeper:v0.38
     depends_on:
       - kratos
-    command:
-      serve proxy -c "/etc/config/oathkeeper/oathkeeper.yml"
+    command: serve proxy -c "/etc/config/oathkeeper/oathkeeper.yml"
     environment:
       - LOG_LEVEL=debug
     restart: on-failure
@@ -32,28 +31,28 @@ services:
     volumes:
       - ./oathkeeper:/etc/config/oathkeeper
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.oathkeeper.rule=Host(`oathkeeper`)"
-      - "traefik.http.routers.oathkeeper.entrypoints=web"
-      - "traefik.http.routers.oathkeeper.service=oathkeeper"
-      - "traefik.http.services.oathkeeper.loadbalancer.server.port=4456"
-      - "traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions"
-      - "traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.oathkeeper.rule=Host(`oathkeeper`)'
+      - 'traefik.http.routers.oathkeeper.entrypoints=web'
+      - 'traefik.http.routers.oathkeeper.service=oathkeeper'
+      - 'traefik.http.services.oathkeeper.loadbalancer.server.port=4456'
+      - 'traefik.http.middlewares.oathkeeper.forwardauth.address=http://oathkeeper:4456/decisions'
+      - 'traefik.http.middlewares.oathkeeper.forwardauth.authResponseHeaders=X-User'
 
   hello:
     build:
-      context: "hello"
+      context: 'hello'
     networks:
       - intranet
     labels:
-      - "traefik.enable=true"
+      - 'traefik.enable=true'
       # App settings
-      - "traefik.http.routers.hello.rule=Path(`/hello`)"
-      - "traefik.http.routers.hello.entrypoints=web"
+      - 'traefik.http.routers.hello.rule=Path(`/hello`)'
+      - 'traefik.http.routers.hello.entrypoints=web'
       # Attach to the oathkeeper middleware defined in oathkeeper
-      - "traefik.http.routers.hello.service=hello"
-      - "traefik.http.services.hello.loadbalancer.server.port=8090"
-      - "traefik.http.routers.hello.middlewares=oathkeeper@docker"
+      - 'traefik.http.routers.hello.service=hello'
+      - 'traefik.http.services.hello.loadbalancer.server.port=8090'
+      - 'traefik.http.routers.hello.middlewares=oathkeeper@docker'
 
   postgres-kratos:
     extends:
@@ -79,7 +78,6 @@ services:
     extends:
       file: ../../_common/docker-compose.yml
       service: mailslurper
-
 
 networks:
   intranet:
