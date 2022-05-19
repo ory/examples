@@ -1,0 +1,22 @@
+{
+  "name": "examples",
+  "version": "0.0.1",
+  "prettier": "ory-prettier-styles",
+  "config": {
+    "prettierTarget": "**/*.{js,ts,md,mdx,yml}"
+  },
+  "scripts": {
+    "format": "prettier --write ${npm_package_config_prettierTarget}",
+    "format:check": "prettier --check ${npm_package_config_prettierTarget}",
+    "text-run": "text-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ory/examples.git"
+  },
+  "devDependencies": {
+    "ory-prettier-styles": "^1.1.1",
+    "prettier": "2.2.1",
+    "text-runner": "^5.0.0"
+  }
+}
