@@ -1,10 +1,12 @@
 # An example Flask app using Kratos and Keto to check permissions and authenticate users
 
-This repository stores example of integration [Ory Kratos](https://www.ory.sh/kratos/docs/quickstart/) and [Ory Keto](https://www.ory.sh/keto/docs/quickstart/) into the flask application
+This repository stores example of integration [Ory Kratos](https://www.ory.sh/kratos/docs/quickstart/) and
+[Ory Keto](https://www.ory.sh/keto/docs/quickstart/) into the flask application
 
 ## Quickstart
 
-This app can be run completely using `Docker` and `docker-compose`. **Using Docker is recommended, as it guarantees the application is run using compatible versions of Python and Node**.
+This app can be run completely using `Docker` and `docker-compose`. **Using Docker is recommended, as it guarantees the
+application is run using compatible versions of Python and Node**.
 
 There are three main services:
 
@@ -30,7 +32,9 @@ docker-compose run --rm manage db migrate
 docker-compose run --rm manage db upgrade
 ```
 
-A docker volume `node-modules` is created to store NPM packages and is reused across the dev and prod versions of the application. For the purposes of DB testing with `sqlite`, the file `dev.db` is mounted to all containers. This volume mount should be removed from `docker-compose.yml` if a production DB server is used.
+A docker volume `node-modules` is created to store NPM packages and is reused across the dev and prod versions of the application.
+For the purposes of DB testing with `sqlite`, the file `dev.db` is mounted to all containers. This volume mount should be removed
+from `docker-compose.yml` if a production DB server is used.
 
 ### Running locally
 
@@ -46,12 +50,15 @@ FLASK_APP=autoapp flask run
 Go to `http://localhost:8080`. You will see a pretty welcome screen.
 
 #### Running on windows
+
 You may have this error running this example on windows because of missing installation of `greenlet` and `colorama` packages
 
 ```
 pkg_resources.DistributionNotFound: The 'greenlet!=0.4.17; python_version >= "3" and (platform_machine == "aarch64" or (platform_machine == "ppc64le" or (platform_machine == "x86_64" or (platform_machine == "amd64" or (platform_machine == "AMD64" or (platform_machine == "win32" or platform_machine == "WIN32"))))))' distribution was not found and is required by SQLAlchemy
 ```
+
 You can fix it by running
+
 ```
    pipenv shell
    pip install greenlet colorama
@@ -59,8 +66,7 @@ You can fix it by running
 
 #### Database Initialization (locally)
 
-Once you have installed your DBMS, run the following to create your app's
-database tables and perform the initial migration
+Once you have installed your DBMS, run the following to create your app's database tables and perform the initial migration
 
 ```bash
 flask db init
@@ -120,7 +126,8 @@ docker-compose run --rm manage lint
 flask lint # If running locally without Docker
 ```
 
-The `lint` command will attempt to fix any linting/style errors in the code. If you only want to know if the code will pass CI and do not wish for the linter to make changes, add the `--check` argument.
+The `lint` command will attempt to fix any linting/style errors in the code. If you only want to know if the code will pass CI and
+do not wish for the linter to make changes, add the `--check` argument.
 
 ## Migrations
 
@@ -142,8 +149,8 @@ To apply the migration.
 
 For a full migration command reference, run `docker-compose run --rm manage db --help`.
 
-If you will deploy your application remotely (e.g on Heroku) you should add the `migrations` folder to version control.
-You can do this after `flask db migrate` by running the following commands
+If you will deploy your application remotely (e.g on Heroku) you should add the `migrations` folder to version control. You can do
+this after `flask db migrate` by running the following commands
 
 ```bash
 git add migrations/*
@@ -154,22 +161,17 @@ Make sure folder `migrations/versions` is not empty.
 
 ## Asset Management
 
-Files placed inside the `assets` directory and its subdirectories
-(excluding `js` and `css`) will be copied by webpack's
-`file-loader` into the `static/build` directory. In production, the plugin
-`Flask-Static-Digest` zips the webpack content and tags them with a MD5 hash.
-As a result, you must use the `static_url_for` function when including static content,
-as it resolves the correct file name, including the MD5 hash.
-For example
+Files placed inside the `assets` directory and its subdirectories (excluding `js` and `css`) will be copied by webpack's
+`file-loader` into the `static/build` directory. In production, the plugin `Flask-Static-Digest` zips the webpack content and tags
+them with a MD5 hash. As a result, you must use the `static_url_for` function when including static content, as it resolves the
+correct file name, including the MD5 hash. For example
 
 ```html
-<link rel="shortcut icon" href="{{static_url_for('static', filename='build/img/favicon.ico') }}">
+<link rel="shortcut icon" href="{{static_url_for('static', filename='build/img/favicon.ico') }}" />
 ```
 
-If all of your static files are managed this way, then their filenames will change whenever their
-contents do, and you can ask Flask to tell web browsers that they
-should cache all your assets forever by including the following line
-in ``.env``:
+If all of your static files are managed this way, then their filenames will change whenever their contents do, and you can ask
+Flask to tell web browsers that they should cache all your assets forever by including the following line in `.env`:
 
 ```text
 SEND_FILE_MAX_AGE_DEFAULT=31556926  # one year

@@ -1,15 +1,13 @@
--
-  id: "flask:protected"
+- id: 'flask:protected'
   upstream:
     preserve_host: true
-    url: "http://flask:5001"
+    url: 'http://flask:5001'
   match:
-    url: "http://127.0.0.1:8080/oathkeeper"
+    url: 'http://127.0.0.1:8080/oathkeeper'
     methods:
       - GET
   authenticators:
-    -
-      handler: cookie_session
+    - handler: cookie_session
   mutators:
     - handler: noop
   authorizer:

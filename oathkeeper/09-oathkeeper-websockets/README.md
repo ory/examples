@@ -4,9 +4,7 @@ This example shows an example of using Oathkeeper to proxy websocket traffic
 
 The full guide is coming soon
 
-
 ## Running locally
-
 
 ```
    git clone git@github.com:ory/examples
@@ -16,4 +14,5 @@ The full guide is coming soon
 
 Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`
 
-You can find read configuration of [`access-rules.yml`](./oathkeeper/access-rules.yml) and [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+You can find read configuration of [`access-rules.yml`](./oathkeeper/access-rules.yml) and
+[`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)

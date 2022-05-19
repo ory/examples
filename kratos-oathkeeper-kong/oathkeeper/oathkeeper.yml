@@ -7,7 +7,7 @@ serve:
     cors:
       enabled: true
       allowed_origins:
-        - "*"
+        - '*'
       allowed_methods:
         - POST
         - GET
@@ -32,8 +32,7 @@ errors:
       config:
         to: http://127.0.0.1:4455/login
         when:
-          -
-            error:
+          - error:
               - unauthorized
               - forbidden
             request:
@@ -61,8 +60,8 @@ authenticators:
     config:
       check_session_url: http://kratos:4433/sessions/whoami
       preserve_path: true
-      extra_from: "@this"
-      subject_from: "identity.id"
+      extra_from: '@this'
+      subject_from: 'identity.id'
       only:
         - ory_kratos_session
 

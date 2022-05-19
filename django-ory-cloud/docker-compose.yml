@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   postgres-kratos:
@@ -49,9 +49,8 @@ services:
     networks:
       - intranet
     ports:
-      - "4455:3000"
+      - '4455:3000'
     restart: on-failure
-
 
   mailslurper:
     image: oryd/mailslurper:latest-smtps
@@ -61,8 +60,5 @@ services:
     networks:
       - intranet
 
-
 networks:
   intranet:
-
-

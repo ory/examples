@@ -9,6 +9,7 @@ This is a demo app build to show a configuration using these products to build y
 3. Kong as an ingress for incoming HTTP traffic
 
 ## Configure local environment
+
 ### Prerequisites
 
 1. Go 1.1x
@@ -16,6 +17,7 @@ This is a demo app build to show a configuration using these products to build y
 3. make
 
 ### Using docker-compose
+
 ```
 docker-compose up --build
 ```
@@ -38,6 +40,7 @@ User -> Kong -> Oathkeeper -> Kratos -> Go API
 bash config.kong.sh
 
 ```
+
 That command creates an `/greet` endpoint on `secure-api` service and creates a reverse proxy for oathkeeper
 
 ## Oathkeeper
@@ -52,4 +55,5 @@ Oathkeeper checks the incoming request for presense of `ory_kratos_session` and 
 ```
 docker-compose up --build
 ```
+
 Open http://127.0.0.1:8000/hello in your browser and follow the login flow
