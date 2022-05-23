@@ -1,0 +1,30 @@
+- id: 'api:protected'
+  upstream:
+    preserve_host: true
+    url: 'http://hello:8090'
+  match:
+    url: 'http://127.0.0.1:8080/<**>'
+    methods:
+      - GET
+      - POST
+  authenticators:
+    - handler: cookie_session
+  mutators:
+    - handler: header
+  authorizer:
+    handler: remote_json
+    config:
+      remote: https://loving-turing-uo2cv9nlhi.projects.oryapis.com/relation-tuples/check
+      payload: |
+        {
+          "subject_id": "{{ print .Subject }}",
+          "relation": "access",
+          "namespace": "services",
+          "object": "hello-world-service",
+          "header": {"Authorization": ["Bearer ory_pat_JOVmnYpbta18UI3Ba9B4UJ5TN1dWlPn5"]}
+        }
+
+  errors:
+    - handler: redirect
+      config:
+        to: https://loving-turing-uo2cv9nlhi.projects.oryapis.com/ui/login

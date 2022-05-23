@@ -1,0 +1,112 @@
+log:
+  level: debug
+  format: json
+
+serve:
+  proxy:
+    cors:
+      enabled: true
+      allowed_origins:
+        - http://127.0.0.1:3001
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+      allowed_headers:
+        - Authorization
+        - Content-Type
+      exposed_headers:
+        - Content-Type
+      allow_credentials: true
+      debug: true
+
+errors:
+  fallback:
+    - json
+
+  handlers:
+    redirect:
+      enabled: true
+      config:
+        to: https://loving-turing-uo2cv9nlhi.projects.oryapis.com/ui/login
+        when:
+          - error:
+              - unauthorized
+              - forbidden
+            request:
+              header:
+                accept:
+                  - text/html
+    json:
+      enabled: true
+      config:
+        verbose: true
+
+access_rules:
+  matching_strategy: glob
+  repositories:
+    - file:///etc/config/oathkeeper/access-rules.yml
+
+authenticators:
+  anonymous:
+    enabled: true
+    config:
+      subject: guest
+
+  cookie_session:
+    enabled: true
+    config:
+      check_session_url: https://loving-turing-uo2cv9nlhi.projects.oryapis.com/sessions/whoami
+      preserve_path: true
+      extra_from: '@this'
+      subject_from: 'identity.id'
+      additional_headers:
+        Authorization: Bearer ory_pat_JOVmnYpbta18UI3Ba9B4UJ5TN1dWlPn5
+        accept-encoding: identity
+
+  noop:
+    enabled: true
+
+authorizers:
+  allow:
+    enabled: true
+
+  remote:
+    enabled: true
+    config:
+      remote: "https://loving-turing-uo2cv9nlhi.projects.oryapis.com/relation-tuples/check?namespace=services&object=hello-world-service&relation=access&subject_id={{ print .Subject }}"
+      headers:
+        Authorization: Bearer ory_pat_JOVmnYpbta18UI3Ba9B4UJ5TN1dWlPn5
+
+      forward_response_headers_to_upstream:
+        - X-Foo
+
+  remote_json:
+    enabled: true
+    config:
+      remote: https://loving-turing-uo2cv9nlhi.projects.oryapis.com
+      payload: |
+        {
+          "subject_id": "{{ print .Subject }}",
+          "relation": "access",
+          "namespace": "services",
+          "object": "hello-world-service"
+        }
+      forward_response_headers_to_upstream:
+        - X-Foo
+      retry:
+        max_delay: 1s
+        give_up_after: 1s
+
+mutators:
+  noop:
+    enabled: true
+  header:
+    # Set enabled to true if the authenticator should be enabled and false to disable the authenticator. Defaults to false.
+    enabled: true
+    config:
+      headers:
+        X-User: '{{ print .Subject }}'
+        Authorization: Bearer ory_pat_JOVmnYpbta18UI3Ba9B4UJ5TN1dWlPn5
