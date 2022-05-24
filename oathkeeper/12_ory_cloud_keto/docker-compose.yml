@@ -1,13 +1,20 @@
 version: '3.7'
 
 services:
+  nginx:
+    image: nginx
+    ports:
+      - '8080:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/index.html:/app/html:ro
+    networks:
+      - intranet
+
   oathkeeper:
     image: oryd/oathkeeper:v0.38
     depends_on:
       - kratos
-    ports:
-      - 8080:4455
-      - 4456:4456
     command: serve proxy -c "/etc/config/oathkeeper/oathkeeper.yml"
     environment:
       - LOG_LEVEL=debug
