@@ -37,9 +37,14 @@ func (k *oryCloudMiddleware) Session() gin.HandlerFunc {
 	}
 }
 func (k *oryCloudMiddleware) validateSession(r *http.Request) (*client.Session, error) {
+	// This is simplified version of passing cookies
+	//
+	// On the other hand you can use
+	// r.Cookie.Get("ory_session_projectid") and pass it
+	// to ToSession function
 	cookies := r.Header.Get("Cookie")
-	resp, _, err := k.client.V0alpha2Api.ToSession(r.Context()).
+	sess, _, err := k.client.V0alpha2Api.ToSession(r.Context()).
 		Cookie(cookies).
 		Execute()
-	return resp, err
+	return sess, err
 }
