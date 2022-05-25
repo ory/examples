@@ -25,10 +25,3 @@ services:
 
 networks:
   intranet:
-  bridged:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.0.0.0/24
-          gateway: 10.0.0.1/32
