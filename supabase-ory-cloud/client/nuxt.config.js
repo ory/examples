@@ -53,8 +53,8 @@ export default {
     credentials: true
   },
   publicRuntimeConfig: {
-    kratosUI: process.env.KRATOS_URL || 'https://playground.projects.oryapis.com/ui',
-    kratosAPIURL: process.env.KRATOS_API_URL || 'https://playground.projects.oryapis.com',
+    kratosUI: process.env.KRATOS_URL || 'http://127.0.0.1:4000/.ory/ui',
+    kratosAPIURL: process.env.KRATOS_API_URL || 'http://127.0.0.1:4000/.ory',
     apiURL: process.env.API_URL || 'http://127.0.0.1:8080',
     baseURL: process.env.BASE_URL || 'http://127.0.0.1:8080'
   },
