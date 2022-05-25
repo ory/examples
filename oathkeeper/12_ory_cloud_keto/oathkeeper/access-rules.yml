@@ -20,8 +20,7 @@
           "subject_id": "{{ print .Subject }}",
           "relation": "access",
           "namespace": "services",
-          "object": "hello-world-service",
-          "header": {"Authorization": ["Bearer ory_pat_JOVmnYpbta18UI3Ba9B4UJ5TN1dWlPn5"]}
+          "object": "hello-world-service"
         }
 
   errors:

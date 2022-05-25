@@ -63,7 +63,6 @@ authenticators:
       extra_from: '@this'
       subject_from: 'identity.id'
       additional_headers:
-        Authorization: Bearer ory_pat_JOVmnYpbta18UI3Ba9B4UJ5TN1dWlPn5
         accept-encoding: identity
 
   noop:
@@ -109,4 +108,3 @@ mutators:
     config:
       headers:
         X-User: '{{ print .Subject }}'
-        Authorization: Bearer ory_pat_JOVmnYpbta18UI3Ba9B4UJ5TN1dWlPn5
