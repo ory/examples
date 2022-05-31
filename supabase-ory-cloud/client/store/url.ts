@@ -1,13 +1,12 @@
 export const state = () => ({
-  urls: [],
+  urls: []
 })
 
 export const mutations = {
-  add (state, url) {
+  add(state, url) {
     state.urls.push(url)
   },
-  remove (state, url) {
+  remove(state, url) {
     state.urls.splice(state.urls.indexOf(url), 1)
-  },
+  }
 }
-

@@ -43,6 +43,7 @@ You can follow the official [documentation](https://www.ory.sh/docs/guides/cli/i
 ## Running the backend
 
 Running ory proxy
+
 ```
    export ORY_SDK_URL=https://projectid.projects.oryapis.com
    ory proxy http://127.0.0.1:8090
@@ -68,5 +69,3 @@ Running the backend
    export API_URL=http://127.0.0.1:4000
    npm run dev
 ```
-
-

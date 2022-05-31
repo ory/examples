@@ -5,10 +5,10 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setSession (state, session) {
+  setSession(state, session) {
     state.session = session
   },
-  setAuthenticated (state, authenticated) {
+  setAuthenticated(state, authenticated) {
     state.authenticated = authenticated
   },
   setLogoutURL(state, logoutURL) {
