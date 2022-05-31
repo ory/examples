@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gen1us2k/shorts/config"
@@ -29,23 +28,23 @@ func NewMiddleware(c *config.ShortsConfig) *oryCloudMiddleware {
 func (k *oryCloudMiddleware) Session() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session, err := k.validateSession(c.Request)
-		fmt.Println(session, err)
-		fmt.Println(session.Identity)
 		if err != nil {
-			fmt.Println(err)
 			c.Redirect(http.StatusMovedPermanently, k.conf.UIURL)
 			return
 		}
-		fmt.Println(session.Identity.Id)
-		fmt.Println(session)
 		c.Set(config.OwnerKey, session.Identity.Id)
 		c.Next()
 	}
 }
 func (k *oryCloudMiddleware) validateSession(r *http.Request) (*client.Session, error) {
+	// This is simplified version of passing cookies
+	//
+	// On the other hand you can use
+	// r.Cookie.Get("ory_session_projectid") and pass it
+	// to ToSession function
 	cookies := r.Header.Get("Cookie")
-	resp, _, err := k.client.V0alpha2Api.ToSession(r.Context()).
+	sess, _, err := k.client.V0alpha2Api.ToSession(r.Context()).
 		Cookie(cookies).
 		Execute()
-	return resp, err
+	return sess, err
 }
