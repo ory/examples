@@ -1,14 +1,6 @@
-## Example using Ory Oathkeeper with cookie session authenticator & header mutator
+# Basic example for Ory Oathkeeper
 
-This example shows basic configuration of `cookie_session` authenticator with `header` mutator for Ory Oathkeeper.
-
-## Overview
-
-This example implements the following flow:
-
-1. Validates incoming requests using `cookie_session` authenticator
-1. Modifies request and sends `X-User` with value returned on previous step
-1. Sends only authenticated request to `hello` microservice with `X-User: user_id` header
+This repo is an example of using Ory Oathkeeper as simple reverse proxy without any additional mutations or authentication/authorization checks.
 
 ## Develop
 
@@ -20,16 +12,15 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 1. [Docker](https://docs.docker.com/get-docker/)
 1. [Ory Oathkeeper](https://www.ory.sh/docs/oathkeeper/install)
 
-## Run locally
+### Run locally
 
 ```bash
 git clone git@github.com:ory/examples
-cd examples/oathkeeper/03-header-mutator
+cd examples/oathkeeper/01-basic
 docker-compose up
 ```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`
-
+Wait for a couple of seconds and open `http://127.0.0.1/hello`.
 
 ## Contribute
 

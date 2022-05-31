@@ -10,10 +10,7 @@
 
 <!-- Optional: Add a diagram if using multiple services or a more detailed explanation than in description or links to other relevant resources. -->
 
-
 ## Develop
-
-<!-- Add a numbered list of commands needed to run the example locally or with Ory Cloud playground. -->
 
 ### Prerequisites
 
@@ -22,6 +19,10 @@
 ### Environmental Variables
 
 <!-- Describe needed environment variables + instructions on how to set them up. -->
+
+### Run locally
+
+<!-- Add a list of commands needed to run the example locally or with Ory Cloud playground. -->
 
 ### Run tests
 

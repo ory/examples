@@ -1,4 +1,4 @@
-<h1 align="center"><img src="https://raw.githubusercontent.com/ory/examples/master/assets/img/banner.svg" alt="Ory Examples - curated for and by the Ory Community"></h1>
+<h1 align="center"><img src="https://raw.githubusercontent.com/ory/examples/master/_assets/img/banner.svg" alt="Ory Examples - curated for and by the Ory Community"></h1>
 
 If you have any questions or suggestions [open a discussion](https://github.com/ory/examples/discussions), or join the
 [Ory Chat](https://slack.ory.sh/)!
