@@ -1,14 +1,22 @@
-# An example of configuration for Hydra for production usage
+# Example configuration for Ory Hydra & Nginx
 
-This repo contains an example configuration for Hydra and Nginx for production-like deployment
+This repo contains an example configuration for Ory Hydra and Nginx for a production-like deployment.
 
-## Running locally
+## Develop
 
-```
+### Prerequisites
+
+1. [Ory Hydra](https://www.ory.sh/docs/hydra/install)
+1. [Nginx](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/)
+
+### Run locally
+
+```bash
    git clone git@github.com:ory/examples
    cd examples/hydra-nginx
    docker-compose up
 ```
+
 Check out [nginx config file](./nginx/nginx.conf) for the details
 
 ## Contribute
