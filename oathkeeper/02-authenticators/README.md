@@ -1,23 +1,26 @@
-## An example using Oathkeeper with cookie session authenticator
+# Example using Ory Oathkeeper with cookie session authenticator
 
-This example shows basic configuration of `cookie_session` authenticator for oathkeeper
+This example shows basic configuration of `cookie_session` authenticator for Ory Oathkeeper.
 
-## Running locally
+## Develop
 
-```
-   git clone git@github.com:ory/examples
-   cd examples/oathkeeper/02-authenticators
-   docker-compose up
-```
-
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`
+Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
+Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 
 ### Prerequisites
 
-1. Docker
+1. [Docker](https://docs.docker.com/get-docker/)
+1. [Ory Oathkeeper](https://www.ory.sh/docs/oathkeeper/install)
 
-You can find read configuration of [`access-rules.yml`](./oathkeeper/access-rules.yml) and
-[`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+### Run locally
+
+```bash
+git clone git@github.com:ory/examples
+cd examples/oathkeeper/02-authenticators
+docker-compose up
+```
+
+Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`
 
 ## Contribute
 

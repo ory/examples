@@ -1,15 +1,27 @@
-## Oathkeeper proxying websockets
+## Ory Oathkeeper proxying websockets
 
-This example shows an example of using Oathkeeper to proxy websocket traffic
+This example shows an example of using Ory Oathkeeper to proxy websocket traffic.
 
-The full guide is coming soon
+Read the tutorial:
 
-## Running locally
+- [Define WebSockets Rules](https://ory.sh/docs/oathkeeper/guides/proxy-websockets)
 
-```
-   git clone git@github.com:ory/examples
-   cd examples/oathkeeper/09-oathkeeper-websockets
-   docker-compose up
+## Develop
+
+Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
+Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+
+### Prerequisites
+
+1. [Docker](https://docs.docker.com/get-docker/)
+1. [Ory Oathkeeper](https://www.ory.sh/docs/oathkeeper/install)
+
+### Run locally
+
+```bash
+git clone git@github.com:ory/examples
+cd examples/oathkeeper/09-oathkeeper-websockets
+docker-compose up
 ```
 
 Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`

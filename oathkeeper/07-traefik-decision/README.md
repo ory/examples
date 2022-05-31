@@ -1,8 +1,10 @@
-## Traefik and Oathkeeper
+# Traefik and Ory Oathkeeper
 
-This example shows an example of using Oathkeeper with Traefik
+This example shows an example of using Ory Oathkeeper with Traefik.
 
-Request flow
+## Overview
+
+Request flow:
 
 1. Request lands on Traefik
 1. Traefik uses forwardauth to forward authentication to http://oathkeeper/decision API
@@ -10,18 +12,26 @@ Request flow
 1. Hydrator adds an additional header to the request
 1. Traefik proxies request to `hello` service
 
-## Running locally
+## Develop
 
+Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
+Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+
+### Prerequisites
+
+1. [Docker](https://docs.docker.com/get-docker/)
+1. [Traefik](https://doc.traefik.io/traefik/getting-started/install-traefik/)
+1. [Ory Oathkeeper](https://www.ory.sh/docs/oathkeeper/install)
+
+### Run locally
+
+```bash
+git clone git@github.com:ory/examples
+cd examples/oathkeeper/07-traefik-decision
+docker-compose up
 ```
-   git clone git@github.com:ory/examples
-   cd examples/oathkeeper/07-traefik-decision
-   docker-compose up
-```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`
-
-You can find read configuration of [`access-rules.yml`](./oathkeeper/access-rules.yml) and
-[`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
 
 ## Contribute
 
