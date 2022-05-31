@@ -21,7 +21,7 @@ WTForms = "==3.0.1"
 # Flask Static Digest
 Flask-Static-Digest = "==0.2.1"
 # Debug toolbar
-Flask-DebugToolbar = "==0.11.0"
+Flask-DebugToolbar = "==0.13.1"
 # Environment variable parsing
 environs = "==9.4.0"
 requests = "*"
@@ -41,3 +41,4 @@ flake8-isort = "==4.1.1"
 isort = "==5.10.1"
 pep8-naming = "==0.12.1"
 ipdb = "*"
+flask-debugtoolbar = "*"
