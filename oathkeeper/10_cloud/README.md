@@ -1,6 +1,6 @@
-## An example using Oathkeeper with cookie session authenticator using Ory Cloud
+## Example using Ory Oathkeeper with cookie session authenticator & Ory Cloud
 
-This example shows basic configuration of `cookie_session` authenticator for Oathkeeper using Ory Cloud as identity provider.
+This example shows basic configuration of `cookie_session` authenticator for Ory Oathkeeper using Ory Cloud as identity provider.
 
 ## Develop
 
