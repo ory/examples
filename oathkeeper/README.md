@@ -1,4 +1,4 @@
-# Example configuration for Ory Oathkeeper
+# Example configurations for Ory Oathkeeper
 
 - [Basic Example](https://github.com/ory/examples/tree/master/oathkeeper/01-basic)
 - [Example using Ory Oathkeeper with cookie session authenticator](https://github.com/ory/examples/tree/master/oathkeeper/02-authenticators)
