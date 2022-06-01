@@ -1,6 +1,14 @@
-# Ory cloud and Supabase Database example
+# Example using Ory Cloud and Supabase
 
-## Creating Supabase project and tables
+## Develop
+
+### Prerequisites
+
+- Free [Ory Cloud Account](https://console.ory.sh/registration)
+- Free [Supabase Account](https://app.supabase.com/)
+- [Ory CLI](https://www.ory.sh/docs/guides/cli/installation)
+
+#### Create database & tables
 
 1. From your [Supabase dashboard](https://app.supabase.io/) , click New project.
 1. Enter a Name for your Supabase project.
@@ -32,26 +40,20 @@ CREATE TABLE IF NOT EXISTS url_view (
 );
 ```
 
-## Creating Ory Cloud project
+### Run locally
 
-You can follow the official [documentation](https://www.ory.sh/docs/guides/console/create-project) to create your project
-
-## Installing Ory CLI
-
-You can follow the official [documentation](https://www.ory.sh/docs/guides/cli/installation) to install ory CLI
-
-## Running the backend
+#### Backend
 
 Running ory proxy
 
-```
+```bash
    export ORY_SDK_URL=https://projectid.projects.oryapis.com
    ory proxy http://127.0.0.1:8090
 ```
 
 Running the backend
 
-```
+```bash
    export SUPABASE_KEY=... # Please add your key
    export SUPABASE_URL=... # Please add your url
    export KRATOS_API_URL=http://127.0.0.1:4000/.ory
@@ -59,9 +61,9 @@ Running the backend
    go run cmd/shorts/main.go
 ```
 
-## Running the frontend
+#### Frontend
 
-```
+```bash
    cd client
    npm i
    export KRATOS_API_URL=http://127.0.0.1:4000/.ory
@@ -69,3 +71,10 @@ Running the backend
    export API_URL=http://127.0.0.1:4000
    npm run dev
 ```
+
+## Contribute
+
+Feel free to [open a discussion](https://github.com/ory/examples/discussions/new) to provide feedback or talk about ideas, or
+[open an issue](https://github.com/ory/examples/issues/new) if you want to add your example to the repository or encounter a bug.
+You can contribute to Ory in many ways, see the [Ory Contributing Guidelines](https://www.ory.sh/docs/ecosystem/contributing) for
+more information.

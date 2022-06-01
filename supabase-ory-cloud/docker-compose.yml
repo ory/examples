@@ -1,10 +1,10 @@
-version: "3.7"
+version: '3.7'
 
 services:
   postgres-shorts:
     image: postgres:9.6
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       - POSTGRES_USER=shorts
       - POSTGRES_PASSWORD=notsecureatall
@@ -21,7 +21,6 @@ services:
 
     networks:
       - intranet
-
 
 networks:
   intranet:
