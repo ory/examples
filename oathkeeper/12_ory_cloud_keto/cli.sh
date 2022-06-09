@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ory patch project bc962712-15fe-412a-9db7-717df2eb9331 --add '/services/permission/config/namespaces=[{"id": 0, "name": "services"}]'
+token="ory_pat_TOKEN"
 
 relationtuple='
 {
@@ -13,6 +14,6 @@ relationtuple='
 
 curl -X PUT \
      --data "$relationtuple" \
-     -H "Authorization: Bearer ory_pat_JOVmnYpbta18UI3Ba9B4UJ5TN1dWlPn5"\
+     -H "Authorization: Bearer $token"\
      -H "Content-type: application/json"\
      https://loving-turing-uo2cv9nlhi.projects.oryapis.com/admin/relation-tuples
