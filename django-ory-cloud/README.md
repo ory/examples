@@ -3,6 +3,10 @@
 This repo demonstrates how you can use Ory Cloud or Ory Kratos with Django apps. This app is not for production use and serves as
 an example of integration.
 
+Read the tutorial on the Ory blog:
+
+- [Add Authentication to your Django Application](https://www.ory.sh/secure-django-app-using-ory/)
+
 ## Overview
 
 - Generated using the default `django-admin startproject` command.

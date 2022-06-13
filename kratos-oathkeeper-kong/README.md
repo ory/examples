@@ -2,6 +2,10 @@
 
 This tutorial shows an example using Kong API gateway, Ory Kratos, and Ory Oathkeeper.
 
+Read the tutorial on the Ory blog:
+
+- [Secure microservices with Kong and Ory](https://www.ory.sh/zero-trust-api-security-ory-tutorial/)
+
 ## Overview
 
 - A simple Go HTTP API that exposes `/greet` endpoint and listens `:8090` port.
