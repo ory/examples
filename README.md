@@ -23,6 +23,15 @@ If you have any questions or suggestions [open a discussion](https://github.com/
 
 - [Ory Documentation](https://ory.sh/docs)
 
+## Contribute 
+
+### New examples
+
+1. Create a github issue proposing a new example and make sure it's different from an existing one
+1. Fork the repo and create your branch from `master`.
+1. If you've added code that should be tested, add tests to `TODO` //https://github.com/ory/examples/issues/8
+1. Create a `README.md` (Use [the README template](https://github.com/ory/examples/blob/master/_common/README))
+
 ## Please note
 
 This is a community maintained repository. Sometimes examples can have bugs or are outdated. Should you notice something not
