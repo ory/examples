@@ -23,7 +23,9 @@ If you have any questions or suggestions [open a discussion](https://github.com/
 
 - [Ory Documentation](https://ory.sh/docs)
 
-## Contribute 
+## Contribute
+
+We welcome community contributions, see (CONTRIBUTING.md)[CONTRIBUTING.md] for more details!
 
 ### New examples
 
