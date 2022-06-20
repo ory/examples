@@ -1,0 +1,30 @@
+[
+  {
+    "id": "admin-admin-ui-policy",
+    "subjects": ["admin"],
+    "resources": ["project:admin"],
+    "actions": ["access"],
+    "effect": "allow"
+  },
+  {
+    "id": "user-panel-policy",
+    "subjects": ["user"],
+    "resources": ["project:admin"],
+    "actions": ["access"],
+    "effect": "deny"
+  },
+  {
+    "id": "user-panel-policy",
+    "subjects": ["user"],
+    "resources": ["project:panel"],
+    "actions": ["access"],
+    "effect": "allow"
+  },
+  {
+    "id": "admin-panel-policy",
+    "subjects": ["admin"],
+    "resources": ["project:panel"],
+    "actions": ["access"],
+    "effect": "allow"
+  }
+]

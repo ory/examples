@@ -1,0 +1,20 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - deployment.yaml
+  - service-smtp.yaml
+  - service-ui.yaml
+  - service-admin.yaml
+  - ingress.yaml
+
+secretGenerator:
+  - name: mailslurper-cert
+    files:
+      - mailslurper-cert.pem=secrets/mailslurper-cert.pem
+      - mailslurper-key.pem=secrets/mailslurper-key.pem
+
+configMapGenerator:
+  - name: mailslurper-config
+    files:
+      - config.json=config/config.json

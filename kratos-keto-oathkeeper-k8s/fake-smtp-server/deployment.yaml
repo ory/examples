@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fake-smtp-server
+  namespace: default
+  labels:
+    app.kubernetes.io/name: fake-smtp-server
+  annotations:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fake-smtp-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fake-smtp-server
+      annotations:
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: mailslurper-config
+        - name: cert
+          secret:
+            secretName: mailslurper-cert
+      containers:
+        - name: fake-smtp-server
+          image: "pingouin/mailslurper:latest"
+          imagePullPolicy: Always
+          command: ["./mailslurper"]
+          args: [
+            "--config",
+            "/etc/config/config.json"
+          ]
+          volumeMounts:
+            - name: config
+              mountPath: /etc/config
+              readOnly: true
+            - name: cert
+              mountPath: /etc/cert
+              readOnly: true
+          ports:
+            - name: smtp
+              containerPort: 1025
+              protocol: TCP
+            - name: http-mail-ui
+              containerPort: 4436
+              protocol: TCP
+            - name: http-mail-admin
+              containerPort: 4437
+              protocol: TCP

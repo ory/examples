@@ -1,0 +1,10 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - job.yaml
+
+configMapGenerator:
+  - name: keto-access-policy
+    files:
+      - access-policy.json=config/relation-tuples/admin-access.json

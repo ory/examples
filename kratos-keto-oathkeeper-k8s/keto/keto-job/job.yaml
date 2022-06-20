@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keto-add-policies
+spec:
+  template:
+    metadata:
+      name: keto-add-policies
+    spec:
+      volumes:
+        - name: keto-access-policy-volume
+          configMap:
+            name: keto-access-policy
+      containers:
+      - name: keto-add-policies
+        image: oryd/keto:v0.8.0-alpha.2
+        args: ["relation-tuple", "create", "/policies/access-policy.json"]
+        volumeMounts:
+            - name: keto-access-policy-volume
+              mountPath: /policies/access-policy.json
+              subPath: access-policy.json
+        env:
+          - name: KETO_WRITE_REMOTE
+            value: keto-api:4457
+          - name: KETO_READ_REMOTE
+            value: keto-api:4456
+      restartPolicy: Never

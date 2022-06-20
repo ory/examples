@@ -1,0 +1,21 @@
+version: v0.8.0-alpha.2
+
+dsn: fromEnv
+
+namespaces:
+  - id: 0
+    name: access
+
+serve:
+  metrics:
+    port: 4468
+    host: 0.0.0.0
+  read:
+    port: 4456
+    host: 0.0.0.0
+  write:
+    port: 4457
+    host: 0.0.0.0
+
+log:
+  level: debug

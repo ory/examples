@@ -1,0 +1,14 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+configMapGenerator:
+  - name: admin-ui-env
+    envs:
+      - config/admin-ui.env
+  - name: admin-ui-script
+    files:
+      - 20-rename.sh=config/rename.sh

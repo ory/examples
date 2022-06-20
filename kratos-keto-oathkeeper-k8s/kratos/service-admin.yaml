@@ -1,0 +1,20 @@
+# Source: kratos/templates/service-admin.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-kratos-admin
+  namespace: default
+  labels:
+    app.kubernetes.io/name: kratos
+    app.kubernetes.io/instance: test-kratos
+    app.kubernetes.io/version: "v0.9.0-alpha.3"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4434
+      targetPort: http-admin
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: kratos
+    app.kubernetes.io/instance: test-kratos

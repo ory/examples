@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selfservice
+  namespace: default
+  labels:
+    app.kubernetes.io/name: selfservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: selfservice
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: selfservice
+    spec:
+      containers:
+        - name: selfservice-ui
+          image: "oryd/kratos-selfservice-ui-node:v0.9.0-alpha.3"
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: selfservice-ui-env
+          ports:
+            - name: selfservice
+              containerPort: 4455
+              protocol: TCP
