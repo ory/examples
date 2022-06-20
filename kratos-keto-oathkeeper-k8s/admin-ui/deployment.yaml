@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-ui
+  namespace: default
+  labels:
+    app.kubernetes.io/name: admin-ui
+  annotations:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: admin-ui
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: admin-ui
+      annotations:
+    spec:
+      volumes:
+        - name: script-volume
+          configMap:
+            name: admin-ui-script
+            defaultMode: 0777
+      containers:
+        - name: admin-ui
+          image: "pingouin/react-admin-kratos:latest"
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: admin-ui-env
+          ports:
+            - name: admin-ui
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: script-volume
+              mountPath: /docker-entrypoint.d/40-rename.sh
+              subPath: 20-rename.sh

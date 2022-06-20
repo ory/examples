@@ -1,0 +1,9 @@
+# Source: keto/templates/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-keto
+  labels:
+    app.kubernetes.io/name: keto
+    app.kubernetes.io/instance: test-keto
+    app.kubernetes.io/version: "v0.8.0"

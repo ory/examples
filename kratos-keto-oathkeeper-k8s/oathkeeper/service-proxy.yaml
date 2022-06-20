@@ -1,0 +1,19 @@
+---
+# Source: oathkeeper/templates/service-proxy.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-oathkeeper-proxy
+  namespace: default
+  labels:
+    app.kubernetes.io/name: oathkeeper
+    app.kubernetes.io/version: "v0.38.25-beta.1"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4455
+      targetPort: oath-proxy
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: oathkeeper

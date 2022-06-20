@@ -1,0 +1,21 @@
+# Source: kratos/templates/service-admin.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: keto-api
+  namespace: default
+  labels:
+    app.kubernetes.io/name: keto
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4456
+      targetPort: keto-read-api
+      protocol: TCP
+      name: http-keto-read-api
+    - port: 4457
+      targetPort: keto-write-api
+      protocol: TCP
+      name: http-keto-write-api
+  selector:
+    app.kubernetes.io/name: keto

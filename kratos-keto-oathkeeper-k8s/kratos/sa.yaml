@@ -1,0 +1,10 @@
+# Source: kratos/templates/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-kratos
+  labels:
+    app.kubernetes.io/name: kratos
+    app.kubernetes.io/instance: test-kratos
+    app.kubernetes.io/version: "v0.9.0-alpha.3"
+

@@ -1,0 +1,17 @@
+# Source: kratos/templates/service-admin.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: selfservice
+  namespace: default
+  labels:
+    app.kubernetes.io/name: selfservice
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4455
+      targetPort: selfservice
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: selfservice

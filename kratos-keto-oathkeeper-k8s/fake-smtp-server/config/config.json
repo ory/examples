@@ -1,0 +1,23 @@
+{
+  "wwwAddress": "0.0.0.0",
+  "wwwPort": 4436,
+  "serviceAddress": "0.0.0.0",
+  "servicePublicAddress": "mail.test.info/admin",
+  "servicePublicPort": 0,
+  "isServicePublicSsl": false,
+  "servicePort": 4437,
+  "smtpAddress": "0.0.0.0",
+  "smtpPort": 1025,
+  "dbEngine": "SQLite",
+  "dbHost": "",
+  "dbPort": 0,
+  "dbDatabase": "mailslurper.db",
+  "dbUserName": "",
+  "dbPassword": "",
+  "maxWorkers": 1000,
+  "autoStartBrowser": false,
+  "keyFile": "/etc/cert/mailslurper-key.pem",
+  "certFile": "/etc/cert/mailslurper-cert.pem",
+  "adminKeyFile": "",
+  "adminCertFile": ""
+}

@@ -1,0 +1,106 @@
+version: v0.9.0-alpha.3
+dsn: fromEnv
+serve:
+  public:
+    base_url: http://ory.test.info/.ory/kratos/public/
+    cors:
+      enabled: true
+  admin:
+    base_url: http://test-kratos-admin:4434/
+
+session:
+  cookie:
+    domain: ory.test.info
+  whoami:
+    required_aal: highest_available
+
+selfservice:
+  default_browser_return_url: http://ory.test.info/panel/welcome
+  allowed_return_urls:
+    - http://ory.test.info/panel/welcome
+
+  methods:
+    link:
+      enabled: true
+    password:
+      enabled: true
+    totp:
+      enabled: true
+      config:
+        issuer: ory.test.info
+    lookup_secret:
+      enabled: true
+    webauthn:
+      enabled: true
+      config:
+        rp:
+          id: test.info
+          origin: http://ory.test.info
+          display_name: ory.test.info
+
+  flows:
+    error:
+      ui_url: http://ory.test.info/panel/error
+
+    settings:
+      required_aal: highest_available
+      ui_url: http://ory.test.info/panel/settings
+      privileged_session_max_age: 15m
+
+    recovery:
+      enabled: true
+      ui_url: http://ory.test.info/panel/recovery
+
+    verification:
+      enabled: true
+      ui_url: http://ory.test.info/panel/verification
+      after:
+        default_browser_return_url: http://ory.test.info/panel/welcome
+
+    logout:
+      after:
+        default_browser_return_url: http://ory.test.info/panel/login
+
+    login:
+      ui_url: http://ory.test.info/panel/login
+      lifespan: 10m
+
+    registration:
+      lifespan: 10m
+      ui_url: http://ory.test.info/panel/registration
+      after:
+        password:
+          hooks:
+            - hook: session
+
+log:
+  level: debug
+  format: text
+  leak_sensitive_values: true
+
+secrets:
+  cookie:
+    - 4159f931cce7cc16d5c17814d76686d960d6ee40675faca165067eb1faa9bd4fa9beb9e1a2a689b2003355ae5746a283bf591f34dbc0e4d8f4a0685e754455b3
+  cipher:
+    - Vf2nS{+jwj"{U:BHLZ4V/Mz.As)]uKQ'
+
+ciphers:
+  algorithm: xchacha20-poly1305
+
+hashers:
+  argon2:
+    parallelism: 24
+    memory: 128MB
+    iterations: 5
+    salt_length: 16
+    key_length: 16
+
+identity:
+  default_schema_id: default
+  schemas:
+    - id: default
+      url: file:///etc/config/identity/identity.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://kratos:kratos@mail-smtp:1025/?skip_ssl_verify=true&legacy_ssl=true

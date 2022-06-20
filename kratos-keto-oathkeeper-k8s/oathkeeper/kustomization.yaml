@@ -1,0 +1,21 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - deployment-controller.yaml
+  - service-api.yaml
+  - service-proxy.yaml
+  - ingress.yaml
+
+secretGenerator:
+  - name: oathkeeper-jwk
+    files:
+      - mutator.id_token.jwks.json=secrets/mutator.id_token.jwks.json
+
+configMapGenerator:
+  - name: oathkeeper-rules
+    files:
+      - access-rules.yaml=config/access-rules.yaml
+  - name: oathkeeper-config
+    files:
+      - config.yaml=config/config.yaml
