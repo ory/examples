@@ -1,0 +1,38 @@
+- id: 'auth:protected'
+  upstream:
+    preserve_host: true
+    url: 'http://consent:5000'
+  match:
+    url: 'http://127.0.0.1:8080/<(app|apps|login|consent).*>'
+    methods:
+      - GET
+      - POST
+  authenticators:
+    - handler: cookie_session
+  mutators:
+    - handler: header
+  authorizer:
+    handler: allow
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/login
+- id: 'api:protected'
+  upstream:
+    preserve_host: true
+    url: 'http://api:5000'
+  match:
+    url: 'http://127.0.0.1:8080/<api|auth>/<.*>'
+    methods:
+      - GET
+      - POST
+  authenticators:
+    - handler: cookie_session
+  mutators:
+    - handler: header
+  authorizer:
+    handler: allow
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/login

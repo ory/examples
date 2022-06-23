@@ -1,0 +1,60 @@
+version: '3.7'
+
+services:
+  postgres-keto:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=keto
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=keto
+    networks:
+      - intranet
+
+  keto-migrate:
+    image: oryd/keto:v0.8.0-alpha.1
+    volumes:
+      - type: bind
+        source: ./keto
+        target: /home/ory
+    environment:
+      - LOG_LEVEL=debug
+      - DSN=postgres://keto:secret@postgres-keto:5432/keto?sslmode=disable&max_conns=20&max_idle_conns=4
+    command: ['migrate', 'up', '-y']
+    restart: on-failure
+    depends_on:
+      - postgres-kratos
+    networks:
+      - intranet
+
+  keto-perms:
+    image: oryd/keto:v0.8.0-alpha.1
+    volumes:
+      - type: bind
+        source: ./keto
+        target: /home/ory
+    environment:
+      - KETO_WRITE_REMOTE=keto:4467
+      - KETO_READ_REMOTE=keto:4466
+      - LOG_LEVEL=debug
+      - DSN=postgres://keto:secret@postgres-keto:5432/keto?sslmode=disable&max_conns=20&max_idle_conns=4
+    depends_on:
+      - postgres-kratos
+    networks:
+      - intranet
+
+  keto:
+    image: oryd/keto:v0.8.0-alpha.1
+    volumes:
+      - type: bind
+        source: ./keto
+        target: /home/ory
+    ports:
+      - '4466:4466'
+      - '4467:4467'
+    depends_on:
+      - keto-migrate
+    environment:
+      - DSN=postgres://keto:secret@postgres-keto:5432/keto?sslmode=disable&max_conns=20&max_idle_conns=4
+    networks:
+      - intranet
+    command: serve

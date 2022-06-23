@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Consent Screen{% endblock %}
+
+{% block content %}
+
+<h2> Consent </h2>
+
+<form action="/consent" method="post">
+  <p> Hello. Application {{ app.name }} wants access resources on your behalf and to:
+
+  {% for scope in scopes %}
+  <p> {{ scope }} </p>
+  {% endfor %}
+  <input type="hidden" value={{ challenge }} name="consent_challenge"/>
+
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <button type="submit" class="btn btn-outline-danger me2" name="submit" value="reject"> Reject </button>
+    <button type="submit" class="btn btn-outline-primary me2" name="submit" value="accept"> Accept </button>
+  </div>
+
+
+</form>
+{% endblock %}

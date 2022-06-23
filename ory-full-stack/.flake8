@@ -1,0 +1,9 @@
+[flake8]
+max-complexity = 15
+max-line-length = 120
+max-expression-complexity = 10
+ignore-django-orm-queries-complexity = True
+exclude = migrations
+max-parameters-amount = 7
+show-source = true
+per-file-ignores = __init__.py:F401

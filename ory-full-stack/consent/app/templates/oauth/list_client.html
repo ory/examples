@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %} List Oauth2 clients {% endblock %}
+
+{% block content %}
+<h2> Clients List</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">App Name</th>
+      <th scope="col">App Description</th>
+      <th scope="col">WebSite URL</th>
+      <th scope="col">Callback URL</th>
+      <th scope="col">Client ID</th>
+      <th scope="col">Client Secret</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for app in apps %}
+    <tr>
+      <td>{{ app.name }}</td>
+      <td>{{ app.description }}</td>
+      <td>{{ app.website_url }}</td>
+      <td>{{ app.callback_url }}</td>
+      <td>{{ app.client_id }}</td>
+      <td>{{ app.client_secret }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

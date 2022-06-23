@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} Create Oauth2 client {% endblock %}
+
+{% block content %}
+<h2> Create App </h2>
+<form action="/app/create" method="post">
+  <div class="input-group mb-3">
+    {{ form.app_name(class="form-control") }}
+  </div>
+  <div class="input-group mb-3">
+    {{ form.description(class="form-control") }}
+  </div>
+  <div class="input-group mb-3">
+    {{ form.website_url(class="form-control") }}
+  </div>
+  <div class="input-group mb-3">
+    {{ form.callback_url(class="form-control") }}
+  </div>
+  <button type="submit" class="btn btn-outline-primary me-2">Create App</button>
+
+</form>
+{% endblock %}

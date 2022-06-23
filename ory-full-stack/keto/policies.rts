@@ -1,0 +1,5 @@
+app:subreddit#edit@(groups:admin#member)
+app:subreddit#create@(groups:admin#member)
+app:subreddit#delete@(groups:admin#member)
+app:subreddit#edit@(groups:moderator#member)
+app:subreddit#create@(groups:moderator#member)

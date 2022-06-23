@@ -1,0 +1,18 @@
+[flake8]
+ignore =
+    E203 # Whitespace before ':' - see: https://black.readthedocs.io/en/stable/the_black_code_style.html#slices
+    W503 # Line break occurred before a binary operator
+    S308 # Use of mark_safe() may expose cross-site scripting vulnerabilities and should be reviewed.
+    S703 # Potential XSS on mark_safe function
+    S101 # use of assert detected (useless with pytest)
+    CFQ004 # function returns number
+
+max-complexity = 15
+max-line-length = 120
+max-expression-complexity = 10
+ignore-django-orm-queries-complexity = True
+exclude = migrations
+max-parameters-amount = 7
+show-source = true
+per-file-ignores = __init__.py:F401
+
