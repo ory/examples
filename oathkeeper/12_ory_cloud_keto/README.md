@@ -1,6 +1,6 @@
 ## An example using Ory Cloud with Ory Keto
 
-This example shows basic configuration of `cookie_session` authenticator for oathkeeper and `remote_json` for authorization
+This example shows basic configuration of Ory Keto Cloud with Oathkeeper
 
 ## Running locally
 
@@ -9,6 +9,12 @@ This example shows basic configuration of `cookie_session` authenticator for oat
    cd examples/oathkeeper/12_ory_cloud_keto
    docker-compose up
 ```
+
+### Bootstrapping Ory Keto
+
+1. Install Ory cli
+1. Edit `cli.sh` and add your values
+1. Run `bash cli.sh` to create a namespace and relation tuple in Ory Keto
 
 ## Running Ory proxy
 
