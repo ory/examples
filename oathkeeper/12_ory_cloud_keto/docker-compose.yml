@@ -13,8 +13,6 @@ services:
 
   oathkeeper:
     image: oryd/oathkeeper:v0.38
-    depends_on:
-      - kratos
     command: serve proxy -c "/etc/config/oathkeeper/oathkeeper.yml"
     environment:
       - LOG_LEVEL=debug
