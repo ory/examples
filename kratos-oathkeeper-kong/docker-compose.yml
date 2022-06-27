@@ -24,7 +24,7 @@ networks:
 
 services:
   kong-migrations:
-    image: 'kong:latest'
+    image: 'kong:2.7.2'
     command: kong migrations bootstrap
     depends_on:
       - db
@@ -35,8 +35,11 @@ services:
     restart: on-failure
 
   kong:
-    platform: linux/arm64
-    image: 'kong:latest'
+    # safe image
+    image: 'kong:2.7.2'
+    # both of the following two fail
+    # platform: linux/arm64
+    # image: 'arm64v8/kong'
     environment:
       <<: *kong-env
       KONG_ADMIN_ACCESS_LOG: /dev/stdout
