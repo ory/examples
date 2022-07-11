@@ -7,11 +7,12 @@ If you have any questions or suggestions [open a discussion](https://github.com/
 
 ### Application Examples
 
-- [Secure a Django application using Ory Cloud](https://github.com/ory/examples/tree/master/django-ory-cloud)
-- [Flask App using Ory Kratos and Ory Keto](https://github.com/ory/examples/tree/master/kratos-keto-flask)
-- [Example using Ory Kratos, Ory Oathkeeper and Supabase](https://github.com/ory/examples/tree/master/kratos-keto-oathkeeper-supabase)
-- [Example using Ory Cloud and Supabase](https://github.com/ory/examples/tree/master/supabase-ory-cloud)
-- [API Gateway using Kong, Ory Kratos & Ory Oathkeeper](https://github.com/ory/examples/tree/master/kratos-oathkeeper-kong)
+- [Example Django App using Ory Cloud](https://github.com/ory/examples/tree/master/django-ory-cloud)
+- [Example Flask App using Ory Kratos and Ory Keto](https://github.com/ory/examples/tree/master/kratos-keto-flask)
+- [Example with Kubernetes using Ory Kratos, Ory Keto and Ory Oathkeeper](https://github.com/ory/examples/tree/master/kratos-keto-oathkeeper-k8s)
+- [Example with Supabase using Ory Kratos and Ory Oathkeeper](https://github.com/ory/examples/tree/master/kratos-keto-oathkeeper-supabase)
+- [Example with Supabase using Ory Cloud](https://github.com/ory/examples/tree/master/supabase-ory-cloud)
+- [Example API Gateway with Kong using Ory Kratos & Ory Oathkeeper](https://github.com/ory/examples/tree/master/kratos-oathkeeper-kong)
 
 ### Configuration Examples
 
@@ -22,6 +23,10 @@ If you have any questions or suggestions [open a discussion](https://github.com/
 ## Read the Docs
 
 - [Ory Documentation](https://ory.sh/docs)
+
+## Contribute
+
+We love all contributions! Feel free to open a discussion or issue if you want to contribute a new example or have ideas on how to improve an existing one. Please also have a look at [CONTRIBUTING.md](https://github.com/ory/examples/blob/master/CONTRIBUTING.md) for more details on how to contribute to Ory.
 
 ## Please note
 
