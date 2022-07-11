@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DynamicInputComponent when label is provided then matches expected 1`] = `
+<div>
+  <label
+    class="sr-only"
+    data-testid="label"
+  >
+    Cool Label
+  </label>
+  <input
+    class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+    data-testid="password"
+    name="password"
+    placeholder="Cool Label"
+    required=""
+    type="password"
+    value=""
+  />
+</div>
+`;
+
+exports[`DynamicInputComponent when no label is provided then matches snapshot 1`] = `
+<div>
+  <input
+    class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+    data-testid="password"
+    name="password"
+    placeholder=""
+    required=""
+    type="password"
+    value=""
+  />
+</div>
+`;

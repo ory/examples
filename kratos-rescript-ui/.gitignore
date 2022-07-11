@@ -1,0 +1,10 @@
+.merlin
+/node_modules/
+.bsb.lock
+.DS_Store
+.parcel-cache
+.cache
+lib
+dist
+public
+.DS_Store

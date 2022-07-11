@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  frontend:
+    build: ..
+    ports:
+      - '3000:80'
+    # environment:
+    #   - KRATOS_PUBLIC_URL=http://kratos:4433/
+    #   - KRATOS_ADMIN_URL=http://kratos:4434/
+    networks:
+      - intranet
+
+networks:
+  intranet:

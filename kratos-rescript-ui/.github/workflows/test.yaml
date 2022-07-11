@@ -1,0 +1,39 @@
+name: ReScript UI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.17.0
+      - run: |
+          # Force using https instead of ssh for pulls
+          git config --global url."https://".insteadOf ssh://
+          npm ci
+      - name: Run Unit Tests
+        run: |
+          npm run ci:test
+      - uses: microsoft/playwright-github-action@v1
+      - name: Run E2E Tests
+        run: |
+          npx playwright install-deps chromium
+          NODENV=production npx -- parcel build index.html --dist-dir public
+          docker-compose -f kratos/docker-compose-backends.yaml -f kratos/docker-compose-e2e.yaml up -d --build --force-recreate
+          # Wait a bit for containers to be ready. TODO(allancalix): find a
+          # better solution for verifying readiness.
+          sleep 10
+          # Verify tcp port is accepting connections.
+          nc -z 127.0.0.1 3000
+          PW_RECORD=ENABLED npm run test:e2e
+          docker-compose -f kratos/docker-compose-backends.yaml -f kratos/docker-compose-e2e.yaml down
+      - uses: actions/upload-artifact@v2
+        if: ${{ failure() || success() }}
+        with:
+          name: Recordings
+          path: videos/
+
