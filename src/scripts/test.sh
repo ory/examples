@@ -11,7 +11,6 @@ export ORY_UI_URL=https://playground.projects.oryapis.com/ui
 #
 
 cd django-ory-cloud && \
-  poetry install && \
   cd mysite && \
   poetry run python manage.py migrate && \
 poetry run python manage.py runserver &
