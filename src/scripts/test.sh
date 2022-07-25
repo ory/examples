@@ -14,12 +14,12 @@ cd django-ory-cloud && \
   cd mysite && \
   poetry run python manage.py migrate && \
 poetry run python manage.py runserver &
-
+ory proxy --no-jwt --port 4000 http://localhost:8000/ &
 
 trap "exit" INT TERM ERR
 trap 'kill $(jobs -p)' EXIT
 
 npx wait-on -v -t 300000 \
-  tcp:localhost:8000 \
+  tcp:localhost:4000 \
 
 npm run test

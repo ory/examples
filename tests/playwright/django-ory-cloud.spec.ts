@@ -11,7 +11,7 @@ const login = async (page: Page) => {
 
 test.describe("django-ory-cloud", () => {
   for (const app of [
-    { url: "http://localhost:8000/", name: "gatsby" },
+    { url: "http://localhost:4000/", name: "gatsby" },
   ]) {
     test.describe(app.name, async () => {
       test("able to use login and sign up", async ({ page }) => {
