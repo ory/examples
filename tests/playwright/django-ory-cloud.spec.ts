@@ -11,20 +11,20 @@ const login = async (page: Page) => {
 
 test.describe("django-ory-cloud", () => {
   for (const app of [
-    { url: "http://localhost:4000/", name: "gatsby" },
+    { url: "http://localhost:4000/", name: "django" },
   ]) {
     test.describe(app.name, async () => {
       test("able to use login and sign up", async ({ page }) => {
         await page.goto(app.url, { waitUntil: "networkidle" })
 
+        await page.locator('text=Sign in').click()
         await expect(page).toHaveURL(/.*\/ui\/login.*/)
 
         await page.click('[data-testid="cta-link"]')
         await expect(page).toHaveURL(/.*\/ui\/registration.*/)
 
         const email = await login(page)
-
-          await expect(page).toHaveURL(app.url)
+          await expect(page).toHaveURL(/.*\/ui\/welcome.*/)
           await expect(page.locator("body")).toContainText(email)
       })
     })
