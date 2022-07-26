@@ -21,6 +21,8 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm install
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Run Playwright tests
