@@ -17,7 +17,7 @@ install: package-lock.json  django-ory-cloud/poetry.lock
 
 .PHONY: test
 test: install .bin/ory
-		./src/scripts/test.sh
+		cd src/scripts/ && sh test.sh
 
 .bin/ory: Makefile
 		bash <(curl https://raw.githubusercontent.com/ory/meta/master/install.sh) -d -b .bin ory v0.1.33
