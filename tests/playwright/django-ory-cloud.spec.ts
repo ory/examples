@@ -15,7 +15,7 @@ test.describe('django-ory-cloud', () => {
   {
     test.describe('django', async () => {
       test('login and sign up', async ({ page }) => {
-        await page.goto(app.url, { waitUntil: 'networkidle' })
+        await page.goto(url, { waitUntil: 'networkidle' })
 
         await page.locator('text=Sign in').click()
         await expect(page).toHaveURL(/.*\/ui\/login.*/)
