@@ -13,7 +13,7 @@ test.describe("django-ory-cloud", () => {
   for (const app of [
     { url: "http://localhost:4000/", name: "django" },
   ]) {
-    test.describe(app.name, async () => {
+    test.describe("django", async () => {
       test("able to use login and sign up", async ({ page }) => {
         await page.goto(app.url, { waitUntil: "networkidle" })
 
@@ -24,8 +24,8 @@ test.describe("django-ory-cloud", () => {
         await expect(page).toHaveURL(/.*\/ui\/registration.*/)
 
         const email = await login(page)
-          await expect(page).toHaveURL(/.*\/ui\/welcome.*/)
-          await expect(page.locator("body")).toContainText(email)
+        await expect(page).toHaveURL(/.*\/ui\/welcome.*/)
+        await expect(page.locator("body")).toContainText(email)
       })
     })
   }
