@@ -1,6 +1,5 @@
 SHELL=/bin/bash -euo pipefail
 
-export GO111MODULE        := on
 export PATH               := .bin:${PATH}
 
 .PHONY: install
