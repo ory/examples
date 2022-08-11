@@ -6,7 +6,7 @@
     "prettierTarget": "**/*.{js,ts,md,mdx,yml}"
   },
   "scripts": {
-    "test": "playwright test",
+    "test:e2e": "playwright test",
     "test:debug": "playwright test --debug",
     "test:unit": "jest tests/jest --maxConcurrency=8 --bail 1",
     "format": "prettier --write ${npm_package_config_prettierTarget}",
