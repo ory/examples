@@ -26,7 +26,9 @@ If you have any questions or suggestions [open a discussion](https://github.com/
 
 ## Contribute
 
-We love all contributions! Feel free to open a discussion or issue if you want to contribute a new example or have ideas on how to improve an existing one. Please also have a look at [CONTRIBUTING.md](https://github.com/ory/examples/blob/master/CONTRIBUTING.md) for more details on how to contribute to Ory.
+We love all contributions! Feel free to open a discussion or issue if you want to contribute a new example or have ideas on how to
+improve an existing one. Please also have a look at [CONTRIBUTING.md](https://github.com/ory/examples/blob/master/CONTRIBUTING.md)
+for more details on how to contribute to Ory.
 
 ## Please note
 
