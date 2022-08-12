@@ -1,4 +1,3 @@
-SHELL=/bin/bash -euo pipefail 
 
 install: node_modules  poetry.lock
 	poetry install
@@ -15,8 +14,7 @@ test: install .bin/ory
 	./test.sh
 
 .bin/ory: Makefile
-	bash <(curl https://raw.githubusercontent.com/ory/meta/master/install.sh) -d -b .bin ory v0.1.33
-	touch .bin/ory
+	curl https://raw.githubusercontent.com/ory/meta/master/install.sh | bash -s -- -d -b .bin ory v0.1.33
 
 node_modules: package.json package-lock.json
 	npm i
