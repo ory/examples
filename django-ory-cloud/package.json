@@ -1,26 +1,13 @@
 {
-  "name": "examples",
-  "version": "0.0.1",
-  "prettier": "ory-prettier-styles",
-  "config": {
-    "prettierTarget": "**/*.{js,ts,md,mdx,yml}"
-  },
+  "name": "django-ory-cloud-tests",
+  "version": "0.0.0",
+  "private": "true",
   "scripts": {
     "test:e2e": "playwright test",
     "test:debug": "playwright test --debug",
-    "test:unit": "jest tests/jest --maxConcurrency=8 --bail 1",
-    "format": "prettier --write ${npm_package_config_prettierTarget}",
-    "format:check": "prettier --check ${npm_package_config_prettierTarget}",
-    "text-run": "text-run"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ory/examples.git"
+    "test:unit": "jest tests/jest --maxConcurrency=8 --bail 1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.24.0",
-    "ory-prettier-styles": "^1.1.1",
-    "prettier": "2.2.1",
-    "text-runner": "^5.0.0"
+    "@playwright/test": "^1.24.0"
   }
 }
