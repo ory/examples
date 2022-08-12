@@ -1,3 +1,5 @@
+SHELL=/bin/bash -euo pipefail 
+
 install: node_modules  poetry.lock
 	poetry install
 
