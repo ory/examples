@@ -1,4 +1,4 @@
-name: E2E Tests
+name: E2E Tests for django-ory-cloud
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
         uses: snok/install-poetry@v1
       - name: Install Playwright
         run: npx playwright install --with-deps
-      - name: Run Playwright tests for django-ory-cloud
+      - name: Run Playwright tests
         run: cd django-ory-cloud && make test
       - uses: actions/upload-artifact@v2
         timeout-minutes: 15
