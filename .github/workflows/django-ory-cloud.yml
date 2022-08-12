@@ -26,11 +26,3 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: cd django-ory-cloud && make test
-      - uses: actions/upload-artifact@v2
-        timeout-minutes: 15
-        with:
-          name: playwright-report
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 30
