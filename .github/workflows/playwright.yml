@@ -24,7 +24,8 @@ jobs:
         uses: snok/install-poetry@v1
       - name: Install Playwright
         run: npx playwright install --with-deps
-      - name: Run Playwright tests
+      - name: Run Playwright tests for django-ory-cloud
+        run: cd django-ory-cloud
         run: make test
       - uses: actions/upload-artifact@v2
         timeout-minutes: 15
