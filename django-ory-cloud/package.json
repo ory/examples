@@ -1,0 +1,13 @@
+{
+  "name": "django-ory-cloud-tests",
+  "version": "0.0.0",
+  "private": "true",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:debug": "playwright test --debug",
+    "test:unit": "jest tests/jest --maxConcurrency=8 --bail 1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.24.0"
+  }
+}
