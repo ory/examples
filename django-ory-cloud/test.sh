@@ -16,5 +16,4 @@ trap "exit" INT TERM ERR
 trap 'kill $(jobs -p)' EXIT
 
 npx wait-on -v -t 300000 tcp:localhost:4000
-
 npm run test:e2e
