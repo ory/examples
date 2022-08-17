@@ -13,8 +13,7 @@ test.describe('django-ory-cloud', () => {
   const url = 'http://localhost:4000/'
   const name = 'django'
   {
-    test.describe('django', async () => {
-      test('login and sign up', async ({ page }) => {
+    test('login and sign up', async ({ page }) => {
         await page.goto(url, { waitUntil: 'networkidle' })
         await page.locator('text=Sign in').click()
         await expect(page).toHaveURL(/.*\/ui\/login.*/)
