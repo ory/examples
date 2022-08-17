@@ -1,4 +1,4 @@
-name: E2E Tests for django-ory-cloud
+name: django-ory-cloud
 
 on:
   workflow_dispatch:
