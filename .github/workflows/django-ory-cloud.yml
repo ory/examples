@@ -9,6 +9,9 @@ jobs:
   test-playwright:
     timeout-minutes: 10
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./django-ory-cloud
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -25,4 +28,4 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: cd django-ory-cloud && make test
+        run: make test

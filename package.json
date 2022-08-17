@@ -6,9 +6,6 @@
     "prettierTarget": "**/*.{js,ts,md,mdx,yml}"
   },
   "scripts": {
-    "test:e2e": "playwright test",
-    "test:debug": "playwright test --debug",
-    "test:unit": "jest tests/jest --maxConcurrency=8 --bail 1",
     "format": "prettier --write ${npm_package_config_prettierTarget}",
     "format:check": "prettier --check ${npm_package_config_prettierTarget}",
     "text-run": "text-run"
@@ -18,7 +15,6 @@
     "url": "git+https://github.com/ory/examples.git"
   },
   "devDependencies": {
-    "@playwright/test": "^1.24.0",
     "ory-prettier-styles": "^1.1.1",
     "prettier": "2.2.1",
     "text-runner": "^5.0.0"
