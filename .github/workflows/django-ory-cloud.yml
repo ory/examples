@@ -24,6 +24,7 @@ jobs:
         uses: snok/install-poetry@v1
       - name: Install Playwright
         run: npx playwright install --with-deps
+        working-directory: ./django-ory-cloud
       - name: Run Playwright tests
         working-directory: ./django-ory-cloud
         run: make test
