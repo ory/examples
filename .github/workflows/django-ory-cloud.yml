@@ -25,5 +25,5 @@ jobs:
       - name: Install Playwright
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-          working-directory: ./django-ory-cloud
+        working-directory: ./django-ory-cloud
         run: make test
