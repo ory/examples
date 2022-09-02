@@ -1,10 +1,10 @@
-version: '3.7'
+version: "3.7"
 
 services:
   nginx:
     image: nginx
     ports:
-      - '8080:80'
+      - "8080:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/index.html:/app/html:ro
@@ -26,13 +26,13 @@ services:
 
   hello:
     build:
-      context: 'hello'
+      context: "hello"
     networks:
       - intranet
 
   hydrator:
     build:
-      context: 'hydrator'
+      context: "hydrator"
     networks:
       - intranet
 

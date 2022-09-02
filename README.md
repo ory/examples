@@ -1,6 +1,7 @@
 <h1 align="center"><img src="https://raw.githubusercontent.com/ory/examples/master/_assets/img/banner.svg" alt="Ory Examples - curated for and by the Ory Community"></h1>
 
-If you have any questions or suggestions [open a discussion](https://github.com/ory/examples/discussions), or join the
+If you have any questions or suggestions
+[open a discussion](https://github.com/ory/examples/discussions), or join the
 [Ory Chat](https://slack.ory.sh/)!
 
 ## Overview
@@ -26,16 +27,19 @@ If you have any questions or suggestions [open a discussion](https://github.com/
 
 ## Contribute
 
-We love all contributions! Feel free to open a discussion or issue if you want to contribute a new example or have ideas on how to
-improve an existing one. Please also have a look at [CONTRIBUTING.md](https://github.com/ory/examples/blob/master/CONTRIBUTING.md)
+We love all contributions! Feel free to open a discussion or issue if you want
+to contribute a new example or have ideas on how to improve an existing one.
+Please also have a look at
+[CONTRIBUTING.md](https://github.com/ory/examples/blob/master/CONTRIBUTING.md)
 for more details on how to contribute to Ory.
 
 ## Please note
 
-This is a community maintained repository. Sometimes examples can have bugs or are outdated. Should you notice something not
-working as expected, broken or outdated,
-[please help out the community and open an issue](https://github.com/ory/examples/issues/new/choose) or contribute a fix if
-possible. Thanks!
+This is a community maintained repository. Sometimes examples can have bugs or
+are outdated. Should you notice something not working as expected, broken or
+outdated,
+[please help out the community and open an issue](https://github.com/ory/examples/issues/new/choose)
+or contribute a fix if possible. Thanks!
 
-- [Start a Discussion](https://github.com/ory/examples/discussions) for any questions, feedback, or ideas you want to share with
-  the Ory Community.
+- [Start a Discussion](https://github.com/ory/examples/discussions) for any
+  questions, feedback, or ideas you want to share with the Ory Community.

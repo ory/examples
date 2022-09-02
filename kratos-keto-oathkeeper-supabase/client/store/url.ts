@@ -1,5 +1,5 @@
 export const state = () => ({
-  urls: []
+  urls: [],
 })
 
 export const mutations = {
@@ -8,5 +8,5 @@ export const mutations = {
   },
   remove(state, url) {
     state.urls.splice(state.urls.indexOf(url), 1)
-  }
+  },
 }
