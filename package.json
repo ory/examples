@@ -15,7 +15,7 @@
     "url": "git+https://github.com/ory/examples.git"
   },
   "devDependencies": {
-    "ory-prettier-styles": "^1.3.0",
+    "ory-prettier-styles": "1.3.0",
     "prettier": "2.7.1",
     "text-runner": "^5.0.0"
   }
