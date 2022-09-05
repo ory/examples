@@ -29,10 +29,7 @@ spec:
           image: "pingouin/mailslurper:latest"
           imagePullPolicy: Always
           command: ["./mailslurper"]
-          args: [
-            "--config",
-            "/etc/config/config.json"
-          ]
+          args: ["--config", "/etc/config/config.json"]
           volumeMounts:
             - name: config
               mountPath: /etc/config

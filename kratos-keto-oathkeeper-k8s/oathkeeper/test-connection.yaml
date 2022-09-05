@@ -13,10 +13,10 @@ spec:
   containers:
     - name: liveness-probe
       image: busybox
-      command: ['wget']
-      args:  ['http://test-oathkeeper-api:4456/health/alive']
+      command: ["wget"]
+      args: ["http://test-oathkeeper-api:4456/health/alive"]
     - name: readiness-probe
       image: busybox
-      command: ['wget']
-      args:  ['http://test-oathkeeper-api:4456/health/ready']
+      command: ["wget"]
+      args: ["http://test-oathkeeper-api:4456/health/ready"]
   restartPolicy: Never

@@ -1,5 +1,4 @@
--
-  id: "ory:kratos:public"
+- id: "ory:kratos:public"
   upstream:
     preserve_host: true
     url: "http://test-kratos-public:4433"
@@ -19,8 +18,7 @@
   mutators:
     - handler: noop
 
--
-  id: "ory:kratos:admin"
+- id: "ory:kratos:admin"
   upstream:
     preserve_host: true
     url: "http://test-kratos-admin:4434/admin/"
@@ -49,8 +47,7 @@
   mutators:
     - handler: id_token
 
--
-  id: "ory:kratos-admin-ui-node:protected"
+- id: "ory:kratos-admin-ui-node:protected"
   upstream:
     preserve_host: true
     url: "http://admin-ui:3000"
@@ -79,8 +76,7 @@
       config:
         to: http://ory.test.info/panel/welcome
 
--
-  id: "ory:kratos-selfservice-ui-node:anonymous"
+- id: "ory:kratos-selfservice-ui-node:anonymous"
   upstream:
     preserve_host: true
     url: "http://selfservice:4455"
@@ -96,8 +92,7 @@
   mutators:
     - handler: noop
 
--
-  id: "ory:kratos-selfservice-ui-node:protected"
+- id: "ory:kratos-selfservice-ui-node:protected"
   upstream:
     preserve_host: true
     url: "http://selfservice:4455"

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": "true",
   "scripts": {
-    "test:e2e": "playwright test",
     "test:debug": "playwright test --debug",
+    "test:e2e": "playwright test",
     "test:unit": "jest tests/jest --maxConcurrency=8 --bail 1"
   },
   "devDependencies": {
