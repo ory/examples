@@ -2,12 +2,9 @@
   "name": "examples",
   "version": "0.0.1",
   "prettier": "ory-prettier-styles",
-  "config": {
-    "prettierTarget": "**/*.{js,ts,md,mdx,yml}"
-  },
   "scripts": {
-    "format": "prettier --write ${npm_package_config_prettierTarget}",
-    "format:check": "prettier --check ${npm_package_config_prettierTarget}",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "text-run": "text-run"
   },
   "repository": {
