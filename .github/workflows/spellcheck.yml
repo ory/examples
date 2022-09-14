@@ -17,9 +17,9 @@ jobs:
         uses: reviewdog/action-misspell@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          path: './*'
-          locale: 'US'
-          level: 'warning'
+          path: "./*"
+          locale: "US"
+          level: "warning"
           pattern: |
             *.md
             *.mdx
