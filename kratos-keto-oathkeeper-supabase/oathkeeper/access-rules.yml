@@ -1,9 +1,9 @@
-- id: 'api:anonymous'
+- id: "api:anonymous"
   upstream:
     preserve_host: true
-    url: 'http://shorts:8090'
+    url: "http://shorts:8090"
   match:
-    url: 'http://127.0.0.1:8080/u/<**>'
+    url: "http://127.0.0.1:8080/u/<**>"
     methods:
       - GET
       - POST
@@ -14,12 +14,12 @@
   authorizer:
     handler: allow
 
-- id: 'api:protected'
+- id: "api:protected"
   upstream:
     preserve_host: true
-    url: 'http://shorts:8090'
+    url: "http://shorts:8090"
   match:
-    url: 'http://127.0.0.1:8080/api/<**>'
+    url: "http://127.0.0.1:8080/api/<**>"
     methods:
       - GET
       - POST

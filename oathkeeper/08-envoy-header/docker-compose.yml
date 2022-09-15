@@ -1,11 +1,11 @@
-version: '3.7'
+version: "3.7"
 
 services:
   envoy:
     image: envoyproxy/envoy-dev:e07746c5100da110754bcf83940a254025e65e54
     ports:
-      - '8000:10000'
-      - '9901:9901'
+      - "8000:10000"
+      - "9901:9901"
     volumes:
       - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml
     networks:
@@ -26,7 +26,7 @@ services:
 
   hello:
     build:
-      context: 'hello'
+      context: "hello"
     networks:
       - intranet
 

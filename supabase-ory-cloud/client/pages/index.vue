@@ -17,26 +17,25 @@
 
       <URLInput />
       <URLView />
-
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Configuration, V0alpha2Api } from '@ory/kratos-client'
-import type { SelfServiceLogoutUrl } from '@ory/kratos-client'
-import type { AxiosResponse } from 'axios'
-import AppHeader from '../components/AppHeader'
+import Vue from "vue"
+import { Configuration, V0alpha2Api } from "@ory/kratos-client"
+import type { SelfServiceLogoutUrl } from "@ory/kratos-client"
+import type { AxiosResponse } from "axios"
+import AppHeader from "../components/AppHeader"
 
 const getLogoutURL = async ({ app }) => {
   const ory = new V0alpha2Api(
     new Configuration({
       basePath: app.$config.kratosAPIURL,
       baseOptions: {
-        withCredentials: true
-      }
-    })
+        withCredentials: true,
+      },
+    }),
   )
   try {
     const data = await ory.createSelfServiceLogoutFlowUrlForBrowsers()
@@ -44,8 +43,8 @@ const getLogoutURL = async ({ app }) => {
   } catch {
     return {
       data: {
-        logout_url: ''
-      }
+        logout_url: "",
+      },
     }
   }
 }
@@ -55,9 +54,9 @@ const getAuthState = async ({ app }) => {
     new Configuration({
       basePath: app.$config.kratosAPIURL,
       baseOptions: {
-        withCredentials: true
-      }
-    })
+        withCredentials: true,
+      },
+    }),
   )
 
   try {
@@ -75,13 +74,13 @@ const getAuthState = async ({ app }) => {
 }
 
 export default Vue.extend({
-  name: 'IndexPage',
-  async asyncData (context) {
+  name: "IndexPage",
+  async asyncData(context) {
     const authState = await getAuthState(context)
     const logoutData = await getLogoutURL(context)
-    context.store.commit('session/setSession', authState.session.data)
-    context.store.commit('session/setAuthenticated', authState.authenticated)
-    context.store.commit('session/setLogoutURL', logoutData.data.logout_url)
-  }
+    context.store.commit("session/setSession", authState.session.data)
+    context.store.commit("session/setAuthenticated", authState.authenticated)
+    context.store.commit("session/setLogoutURL", logoutData.data.logout_url)
+  },
 })
 </script>

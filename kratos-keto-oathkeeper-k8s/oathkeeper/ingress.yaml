@@ -6,13 +6,13 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-  - host: ory.test.info
-    http:
-      paths:
-      - path: /(.*)
-        pathType: Prefix
-        backend:
-          service:
-            name: test-oathkeeper-proxy
-            port:
-              number: 4455
+    - host: ory.test.info
+      http:
+        paths:
+          - path: /(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: test-oathkeeper-proxy
+                port:
+                  number: 4455

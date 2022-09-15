@@ -8,7 +8,7 @@ serve:
     cors:
       enabled: true
       allowed_origins:
-        - '*'
+        - "*"
       allowed_methods:
         - POST
         - GET
@@ -61,8 +61,8 @@ authenticators:
     config:
       check_session_url: http://test-kratos-public:4433/sessions/whoami
       preserve_path: true
-      extra_from: '@this'
-      subject_from: 'identity.id'
+      extra_from: "@this"
+      subject_from: "identity.id"
       only:
         - ory_kratos_session
   noop:

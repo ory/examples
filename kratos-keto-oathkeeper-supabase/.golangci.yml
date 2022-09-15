@@ -6,7 +6,7 @@ linters-settings:
       # is allowed to use only in logutils package
       - github.com/sirupsen/logrus
     packages-with-error-message:
-      - github.com/sirupsen/logrus: 'logging is allowed only by logutils.Log'
+      - github.com/sirupsen/logrus: "logging is allowed only by logutils.Log"
   dupl:
     threshold: 100
   funlen:
@@ -107,15 +107,15 @@ issues:
         - gomnd
 
     - path: pkg/golinters/errcheck.go
-      text: 'SA1019: errCfg.Exclude is deprecated: use ExcludeFunctions instead'
+      text: "SA1019: errCfg.Exclude is deprecated: use ExcludeFunctions instead"
     - path: pkg/commands/run.go
       text:
-        'SA1019: lsc.Errcheck.Exclude is deprecated: use ExcludeFunctions
-        instead'
+        "SA1019: lsc.Errcheck.Exclude is deprecated: use ExcludeFunctions
+        instead"
     - path: pkg/commands/run.go
       text:
-        'SA1019: e.cfg.Run.Deadline is deprecated: Deadline exists for
-        historical compatibility and should not be used.'
+        "SA1019: e.cfg.Run.Deadline is deprecated: Deadline exists for
+        historical compatibility and should not be used."
 
 run:
   timeout: 5m

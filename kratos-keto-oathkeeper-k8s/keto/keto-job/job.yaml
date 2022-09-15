@@ -12,16 +12,16 @@ spec:
           configMap:
             name: keto-access-policy
       containers:
-      - name: keto-add-policies
-        image: oryd/keto:v0.8.0-alpha.2
-        args: ["relation-tuple", "create", "/policies/access-policy.json"]
-        volumeMounts:
+        - name: keto-add-policies
+          image: oryd/keto:v0.8.0-alpha.2
+          args: ["relation-tuple", "create", "/policies/access-policy.json"]
+          volumeMounts:
             - name: keto-access-policy-volume
               mountPath: /policies/access-policy.json
               subPath: access-policy.json
-        env:
-          - name: KETO_WRITE_REMOTE
-            value: keto-api:4457
-          - name: KETO_READ_REMOTE
-            value: keto-api:4456
+          env:
+            - name: KETO_WRITE_REMOTE
+              value: keto-api:4457
+            - name: KETO_READ_REMOTE
+              value: keto-api:4456
       restartPolicy: Never

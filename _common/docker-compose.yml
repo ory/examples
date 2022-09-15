@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   postgres-kratos:
@@ -31,8 +31,8 @@ services:
     environment:
       - DSN=postgres://kratos:secret@postgres-kratos:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     ports:
-      - '4433:4433'
-      - '4434:4434'
+      - "4433:4433"
+      - "4434:4434"
     volumes:
       - type: bind
         source: ./kratos
@@ -49,14 +49,14 @@ services:
     networks:
       - intranet
     ports:
-      - '4455:3000'
+      - "4455:3000"
     restart: on-failure
 
   mailslurper:
     image: oryd/mailslurper:latest-smtps
     ports:
-      - '4436:4436'
-      - '4437:4437'
+      - "4436:4436"
+      - "4437:4437"
     networks:
       - intranet
 

@@ -53,15 +53,13 @@
         },
         "group": {
           "title": "Group",
-          "type":"array",
+          "type": "array",
           "items": {
             "type": "string"
           }
         }
       },
-      "required": [
-        "email"
-      ],
+      "required": ["email"],
       "additionalProperties": true
     }
   }

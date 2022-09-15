@@ -1,3 +1,2 @@
 kratos-keto-flask/Pipfile.lock
 django-ory-cloud/mysite/templates/base.html
-*.vue # TODO: get VUE formatting working and remove this line
