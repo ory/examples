@@ -21,25 +21,21 @@ spec:
       serviceAccountName: test-keto
       automountServiceAccountToken: true
       volumes:
-        -
-          name: keto-config-volume
+        - name: keto-config-volume
           configMap:
             name: keto-config
       initContainers:
-        -
-          name: keto-automigrate
+        - name: keto-automigrate
           image: "oryd/keto:v0.8.0-alpha.2"
           imagePullPolicy: IfNotPresent
           command: ["keto"]
           args: ["migrate", "up", "-y", "--config", "/etc/config/keto.yaml"]
           volumeMounts:
-            -
-              name: keto-config-volume
+            - name: keto-config-volume
               mountPath: /etc/config
               readOnly: true
           env:
-            -
-              name: DSN
+            - name: DSN
               valueFrom:
                 secretKeyRef:
                   name: keto-secret
@@ -50,7 +46,7 @@ spec:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
-              - ALL
+                - ALL
             privileged: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
@@ -58,19 +54,13 @@ spec:
           image: "oryd/keto:v0.8.0-alpha.2"
           imagePullPolicy: IfNotPresent
           command: ["keto"]
-          args: [
-            "serve",
-            "--config",
-            "/etc/config/keto.yaml"
-          ]
+          args: ["serve", "--config", "/etc/config/keto.yaml"]
           volumeMounts:
-            -
-              name: keto-config-volume
+            - name: keto-config-volume
               mountPath: /etc/config
               readOnly: true
           env:
-            -
-              name: DSN
+            - name: DSN
               valueFrom:
                 secretKeyRef:
                   name: keto-secret
@@ -99,4 +89,3 @@ spec:
             failureThreshold: 5
             initialDelaySeconds: 30
             periodSeconds: 10
-            

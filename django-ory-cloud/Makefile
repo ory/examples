@@ -1,3 +1,6 @@
+format:
+	echo "TODO: add Python formatter"
+
 install: node_modules  poetry.lock
 	poetry install
 
@@ -8,6 +11,6 @@ test: install .bin/ory
 .bin/ory: Makefile
 	curl https://raw.githubusercontent.com/ory/meta/master/install.sh | sh -s -- -d -b .bin ory v0.1.36
 
-node_modules: package.json package-lock.json
-	npm i
+node_modules: package-lock.json
+	npm ci
 	touch node_modules

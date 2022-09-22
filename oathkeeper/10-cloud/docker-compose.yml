@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   oathkeeper:
@@ -17,13 +17,13 @@ services:
 
   hello:
     build:
-      context: 'hello'
+      context: "hello"
     networks:
       - intranet
 
   hydrator:
     build:
-      context: 'hydrator'
+      context: "hydrator"
     networks:
       - intranet
 

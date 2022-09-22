@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 x-default-volumes: &default_volumes
   volumes:
@@ -26,7 +26,7 @@ services:
   flask:
     build:
       context: .
-    image: 'kratos_app_example-development'
+    image: "kratos_app_example-development"
     environment:
       - FLASK_APP=autoapp.py
       - FLASK_ENV=development
@@ -41,7 +41,7 @@ services:
   postgres-kratos:
     image: postgres:9.6
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       - POSTGRES_USER=kratos
       - POSTGRES_PASSWORD=secret
@@ -70,8 +70,8 @@ services:
     environment:
       - DSN=postgres://kratos:secret@postgres-kratos:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     ports:
-      - '4433:4433'
-      - '4434:4434'
+      - "4433:4433"
+      - "4434:4434"
     volumes:
       - type: bind
         source: ./kratos
@@ -88,21 +88,21 @@ services:
     networks:
       - intranet
     ports:
-      - '4455:3000'
+      - "4455:3000"
     restart: on-failure
 
   mailslurper:
     image: oryd/mailslurper:latest-smtps
     ports:
-      - '4436:4436'
-      - '4437:4437'
+      - "4436:4436"
+      - "4437:4437"
     networks:
       - intranet
 
   postgres-keto:
     image: postgres:9.6
     ports:
-      - '15432:5432'
+      - "15432:5432"
     environment:
       - POSTGRES_USER=keto
       - POSTGRES_PASSWORD=secret
@@ -119,7 +119,7 @@ services:
     environment:
       - LOG_LEVEL=debug
       - DSN=postgres://keto:secret@postgres-keto:5432/keto?sslmode=disable&max_conns=20&max_idle_conns=4
-    command: ['migrate', 'up', '-y']
+    command: ["migrate", "up", "-y"]
     restart: on-failure
     depends_on:
       - postgres-kratos
@@ -149,8 +149,8 @@ services:
         source: ./keto
         target: /home/ory
     ports:
-      - '4466:4466'
-      - '4467:4467'
+      - "4466:4466"
+      - "4467:4467"
     depends_on:
       - keto-migrate
     environment:

@@ -1,6 +1,6 @@
 {
-	"namespace": "app",
-	"object": "homepage",
-	"relation": "read",
-	"subject_id": "minkin.andrewgmail.com"
+  "namespace": "app",
+  "object": "homepage",
+  "relation": "read",
+  "subject_id": "minkin.andrewgmail.com"
 }

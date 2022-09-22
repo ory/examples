@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 x-kong-config: &kong-env
   KONG_DATABASE: postgres
@@ -24,7 +24,7 @@ networks:
 
 services:
   kong-migrations:
-    image: 'kong:2.7.2'
+    image: "kong:2.7.2"
     command: kong migrations bootstrap
     depends_on:
       - db
@@ -36,7 +36,7 @@ services:
 
   kong:
     # safe image
-    image: 'kong:2.7.2'
+    image: "kong:2.7.2"
     # both of the following two fail
     # platform: linux/arm64
     # image: 'arm64v8/kong'
@@ -44,23 +44,23 @@ services:
       <<: *kong-env
       KONG_ADMIN_ACCESS_LOG: /dev/stdout
       KONG_ADMIN_ERROR_LOG: /dev/stderr
-      KONG_PROXY_LISTEN: '${KONG_PROXY_LISTEN:-0.0.0.0:8000}'
-      KONG_ADMIN_LISTEN: '${KONG_ADMIN_LISTEN:-0.0.0.0:8001}'
+      KONG_PROXY_LISTEN: "${KONG_PROXY_LISTEN:-0.0.0.0:8000}"
+      KONG_ADMIN_LISTEN: "${KONG_ADMIN_LISTEN:-0.0.0.0:8001}"
       KONG_PROXY_ACCESS_LOG: /dev/stdout
       KONG_PROXY_ERROR_LOG: /dev/stderr
       KONG_PREFIX: ${KONG_PREFIX:-/var/run/kong}
-      KONG_DECLARATIVE_CONFIG: '/opt/kong/kong.yaml'
+      KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
     networks:
       - intranet
     ports:
       # The following two environment variables default to an insecure value (0.0.0.0)
       # according to the CIS Security test.
-      - '${KONG_INBOUND_PROXY_LISTEN:-0.0.0.0}:8000:8000/tcp'
-      - '${KONG_INBOUND_SSL_PROXY_LISTEN:-0.0.0.0}:8443:8443/tcp'
-      - '127.0.0.1:8001:8001/tcp'
-      - '127.0.0.1:8444:8444/tcp'
+      - "${KONG_INBOUND_PROXY_LISTEN:-0.0.0.0}:8000:8000/tcp"
+      - "${KONG_INBOUND_SSL_PROXY_LISTEN:-0.0.0.0}:8443:8443/tcp"
+      - "127.0.0.1:8001:8001/tcp"
+      - "127.0.0.1:8444:8444/tcp"
     healthcheck:
-      test: ['CMD', 'kong', 'health']
+      test: ["CMD", "kong", "health"]
       interval: 10s
       timeout: 10s
       retries: 10
@@ -80,7 +80,7 @@ services:
       POSTGRES_USER: kong
       POSTGRES_PASSWORD: kong
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'kong']
+      test: ["CMD", "pg_isready", "-U", "kong"]
       interval: 30s
       timeout: 30s
       retries: 3
@@ -118,7 +118,7 @@ services:
   postgres-kratos:
     image: postgres:9.6
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       - POSTGRES_USER=kratos
       - POSTGRES_PASSWORD=secret
@@ -147,8 +147,8 @@ services:
     environment:
       - DSN=postgres://kratos:secret@postgres-kratos:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     ports:
-      - '4433:4433'
-      - '4434:4434'
+      - "4433:4433"
+      - "4434:4434"
     volumes:
       - type: bind
         source: ./kratos
@@ -165,13 +165,13 @@ services:
     networks:
       - intranet
     ports:
-      - '4455:3000'
+      - "4455:3000"
     restart: on-failure
 
   mailslurper:
     image: oryd/mailslurper:latest-smtps
     ports:
-      - '4436:4436'
-      - '4437:4437'
+      - "4436:4436"
+      - "4437:4437"
     networks:
       - intranet

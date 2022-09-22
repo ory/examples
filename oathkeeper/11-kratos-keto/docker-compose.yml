@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 services:
   oathkeeper:
@@ -19,7 +19,7 @@ services:
 
   hello:
     build:
-      context: 'hello'
+      context: "hello"
     networks:
       - intranet
 
@@ -53,8 +53,8 @@ services:
     environment:
       - DSN=postgres://kratos:secret@postgres-kratos:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
     ports:
-      - '4433:4433'
-      - '4434:4434'
+      - "4433:4433"
+      - "4434:4434"
     volumes:
       - type: bind
         source: ./kratos
@@ -71,14 +71,14 @@ services:
     networks:
       - intranet
     ports:
-      - '4455:3000'
+      - "4455:3000"
     restart: on-failure
 
   keto:
     image: oryd/keto:v0.8.0-alpha.2
     ports:
-      - '4466:4466'
-      - '4467:4467'
+      - "4466:4466"
+      - "4467:4467"
     command: serve -c /home/ory/keto.yml
     restart: on-failure
     volumes:
@@ -91,8 +91,8 @@ services:
   mailslurper:
     image: oryd/mailslurper:latest-smtps
     ports:
-      - '4436:4436'
-      - '4437:4437'
+      - "4436:4436"
+      - "4437:4437"
     networks:
       - intranet
 
