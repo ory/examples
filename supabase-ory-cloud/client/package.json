@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
+    "dev": "nuxt",
     "generate": "nuxt generate",
-    "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
     "lint": "npm run lint:js",
+    "lint:js": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore .",
     "lintfix": "npm run lint:js -- --fix",
+    "start": "nuxt start",
     "test": "jest"
   },
   "dependencies": {
