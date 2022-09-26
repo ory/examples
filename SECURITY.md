@@ -11,9 +11,8 @@ https://github.com/ory/meta/blob/master/templates/repository/SECURITY.md
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-- [Security Policy](#security-policy)
-  - [Supported Versions](#supported-versions)
-  - [Reporting a Vulnerability](#reporting-a-vulnerability)
+- [Supported Versions](#supported-versions)
+- [Reporting a Vulnerability](#reporting-a-vulnerability)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -21,8 +20,8 @@ https://github.com/ory/meta/blob/master/templates/repository/SECURITY.md
 
 ## Supported Versions
 
-We release patches for security vulnerabilities. Which versions are eligible
-receiving such patches depend on the CVSS v3.0 Rating:
+We release patches for security vulnerabilities. Which versions are eligible for
+receiving such patches depends on the CVSS v3.0 Rating:
 
 | CVSS v3.0 | Supported Versions                        |
 | --------- | ----------------------------------------- |
