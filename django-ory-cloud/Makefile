@@ -9,7 +9,7 @@ test: install .bin/ory
 	./test.sh
 
 .bin/ory: Makefile
-	curl https://raw.githubusercontent.com/ory/meta/master/install.sh | sh -s -- -d -b .bin ory v0.1.36
+	curl https://raw.githubusercontent.com/ory/meta/master/install.sh | sh -s -- -d -b .bin ory v0.1.43
 
 node_modules: package-lock.json
 	npm ci
