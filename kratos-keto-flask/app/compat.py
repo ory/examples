@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 # -*- coding: utf-8 -*-
 """Python 2/3 compatibility module."""
 import sys

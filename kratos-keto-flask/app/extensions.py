@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 # -*- coding: utf-8 -*-
 """Extensions module. Each extension is initialized in the app factory located in app.py."""
 from flask_debugtoolbar import DebugToolbarExtension

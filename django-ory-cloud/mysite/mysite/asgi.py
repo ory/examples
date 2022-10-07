@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 """
 ASGI config for mysite project.
 

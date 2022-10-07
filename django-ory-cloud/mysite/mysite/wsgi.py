@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 """
 WSGI config for mysite project.
 

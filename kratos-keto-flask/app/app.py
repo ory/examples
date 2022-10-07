@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 # -*- coding: utf-8 -*-
 """The app module, containing the app factory function."""
 import logging

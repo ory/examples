@@ -1,3 +1,5 @@
+// Copyright © 2022 Ory Corp
+
 import { mount } from "@vue/test-utils"
 import NuxtLogo from "@/components/NuxtLogo.vue"
 

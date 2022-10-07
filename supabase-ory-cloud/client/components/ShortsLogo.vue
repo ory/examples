@@ -1,3 +1,5 @@
+<!-- Copyright © 2022 Ory Corp -->
+
 <template>
   <svg
     class="ShortsLogo"

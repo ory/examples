@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 # -*- coding: utf-8 -*-
 """Public section, including homepage and signup."""
 import requests

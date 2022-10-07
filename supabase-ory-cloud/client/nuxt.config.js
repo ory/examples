@@ -1,3 +1,5 @@
+// Copyright © 2022 Ory Corp
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: "static",

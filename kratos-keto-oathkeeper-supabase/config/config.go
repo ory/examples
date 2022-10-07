@@ -1,3 +1,5 @@
+// Copyright © 2022 Ory Corp
+
 package config
 
 import "github.com/kelseyhightower/envconfig"

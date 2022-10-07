@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 # -*- coding: utf-8 -*-
 """Defines fixtures available to all tests."""
 

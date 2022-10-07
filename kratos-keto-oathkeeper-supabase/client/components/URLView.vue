@@ -1,3 +1,5 @@
+<!-- Copyright © 2022 Ory Corp -->
+
 <template>
   <div class="py-6 w-full">
     <div

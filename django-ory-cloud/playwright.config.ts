@@ -1,3 +1,5 @@
+// Copyright © 2022 Ory Corp
+
 import type { PlaywrightTestConfig } from "@playwright/test"
 import { devices } from "@playwright/test"
 

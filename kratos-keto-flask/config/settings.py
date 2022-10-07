@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 """Application configuration.
 
 Uses .env file for local development

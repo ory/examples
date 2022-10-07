@@ -1,3 +1,5 @@
+# Copyright © 2022 Ory Corp
+
 """Configuration package.
 
 The idea of this package is to give an opportunity to configure this flask app

@@ -1,3 +1,5 @@
+<!-- Copyright © 2022 Ory Corp -->
+
 <template>
   <!-- Container -->
   <div class="w-full min-h-screen bg-gray-100">

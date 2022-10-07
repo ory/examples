@@ -1,3 +1,5 @@
+// Copyright © 2022 Ory Corp
+
 module.exports = {
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/$1",
