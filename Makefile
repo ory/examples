@@ -4,7 +4,7 @@ format: .bin/ory node_modules  # formats the source code
 	(cd django-ory-cloud && make --no-print-dir format)
 
 .bin/ory: Makefile
-	curl https://raw.githubusercontent.com/ory/meta/master/install.sh | bash -s -- -b .bin ory v0.1.43
+	curl https://raw.githubusercontent.com/ory/meta/master/install.sh | bash -s -- -b .bin ory v0.1.44
 	touch .bin/ory
 
 node_modules: package-lock.json
