@@ -1,3 +1,6 @@
+# Copyright © 2022 Ory Corp
+# SPDX-License-Identifier: Apache-2.0
+
 """mysite URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:

@@ -1,3 +1,6 @@
+<!-- Copyright © 2022 Ory Corp -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
 <template>
   <div class="w-full">
     <div class="w-full mt-6 flex rounded-md shadow-sm" v-if="authenticated">
