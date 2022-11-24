@@ -1,8 +1,24 @@
 version: "3.8"
 
+volumes:
+  pg_data: {}
+
 services:
+  postgres:
+    image: postgres:$POSTGRES_VER
+    container_name: pg
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - $PWD/db/init.sql:/docker-entrypoint-initdb.d/1-schema.sql
+    environment:
+      - POSTGRES_USER=$PG_USER
+      - POSTGRES_PASSWORD=$PG_PASS
+    networks:
+      - intranet
+
   oathkeeper:
     image: oryd/oathkeeper:$OATHKEEPER_VER
+    container_name: oathkeeper
     depends_on:
       - kratos
     ports:
@@ -17,21 +33,13 @@ services:
     volumes:
       - ./oathkeeper:/etc/config/oathkeeper
 
-  postgres-kratos:
-    image: postgres:$POSTGRES_VER
-    environment:
-      - POSTGRES_USER=kratos
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=kratos
-    networks:
-      - intranet
-
   kratos-migrate:
     image: oryd/kratos:$KRATOS_VER
+    container_name: krator-migrate
     links:
-      - postgres-kratos:postgres-kratos
+      - postgres:postgres
     environment:
-      - DSN=postgres://kratos:secret@postgres-kratos:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+      - DSN=$DSN_KRATOS
     networks:
       - intranet
     volumes:
@@ -42,10 +50,11 @@ services:
 
   kratos:
     image: oryd/kratos:$KRATOS_VER
+    container_name: kratos
     links:
-      - postgres-kratos:postgres-kratos
+      - postgres:postgres
     environment:
-      - DSN=postgres://kratos:secret@postgres-kratos:5432/kratos?sslmode=disable&max_conns=20&max_idle_conns=4
+      - DSN=$DSN_KRATOS
     ports:
       - 4433:4433
       - 4434:4434
@@ -58,7 +67,8 @@ services:
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
 
   kratos-selfservice-ui-node:
-    image: oryd/kratos-selfservice-ui-node:latest
+    image: oryd/kratos-selfservice-ui-node:$KRATOS_UI_VER
+    container_name: kratos-ui
     environment:
       - KRATOS_PUBLIC_URL=http://kratos:4433/
       - KRATOS_BROWSER_URL=http://127.0.0.1:4433/
@@ -70,39 +80,33 @@ services:
 
   mailslurper:
     image: oryd/mailslurper:latest-smtps
+    container_name: mailslurper
     ports:
       - 4436:4436
       - 4437:4437
     networks:
       - intranet
 
-  postgres-keto:
-    image: postgres:$POSTGRES_VER
-    environment:
-      - POSTGRES_USER=keto
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=keto
-    networks:
-      - intranet
-
   keto-migrate:
     image: oryd/keto:$KETO_VER
+    container_name: keto-migrate
     volumes:
       - type: bind
         source: ./keto
         target: /home/ory
     environment:
       - LOG_LEVEL=debug
-      - DSN=postgres://keto:secret@postgres-keto:5432/keto?sslmode=disable&max_conns=20&max_idle_conns=4
+      - DSN=$DSN_KETO
     command: [ migrate, up, -y ]
     restart: on-failure
     depends_on:
-      - postgres-kratos
+      - postgres
     networks:
       - intranet
 
   keto-perms:
     image: oryd/keto:$KETO_VER
+    container_name: keto-perms
     volumes:
       - type: bind
         source: ./keto
@@ -111,14 +115,15 @@ services:
       - KETO_WRITE_REMOTE=keto:4467
       - KETO_READ_REMOTE=keto:4466
       - LOG_LEVEL=debug
-      - DSN=postgres://keto:secret@postgres-keto:5432/keto?sslmode=disable&max_conns=20&max_idle_conns=4
+      - DSN=$DSN_KETO
     depends_on:
-      - postgres-kratos
+      - postgres
     networks:
       - intranet
 
   keto:
     image: oryd/keto:$KETO_VER
+    container_name: keto
     volumes:
       - type: bind
         source: ./keto
@@ -129,33 +134,19 @@ services:
     depends_on:
       - keto-migrate
     environment:
-      - DSN=postgres://keto:secret@postgres-keto:5432/keto?sslmode=disable&max_conns=20&max_idle_conns=4
+      - DSN=$DSN_KETO
     networks:
       - intranet
     command: serve
 
-  postgres-shorts:
-    image: postgres:$POSTGRES_VER
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=shorts
-      - POSTGRES_PASSWORD=notsecureatall
-      - POSTGRES_DB=shorts
-    networks:
-      - intranet
-
   shorts:
+    container_name: shorts
     build:
       context: .
     env_file: .env
 
     networks:
       - intranet
-
-volumes:
-  kratos-sqlite:
-
 
 networks:
   intranet:
