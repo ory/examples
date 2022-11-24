@@ -7,7 +7,7 @@ test:
 	go test ./...
 
 create_migration:
-	migrate create -ext sql -dir migrations -seq create_url_table
+	migrate create -ext sql -dir db/migrations -seq create_url_table
 
 lint:
 	golangci-lint run ./...
