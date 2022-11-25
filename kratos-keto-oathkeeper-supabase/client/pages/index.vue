@@ -26,8 +26,13 @@
 
 <script lang="ts">
 import Vue from "vue"
-import { Configuration, V0alpha2Api } from "@ory/kratos-client"
+import { Configuration, Session, V0alpha2Api } from "@ory/kratos-client"
 import { Context } from "@nuxt/types"
+
+type OryRespT = {
+  authenticated: boolean
+  sess?: Session
+}
 
 const getLogoutURL = async ({ app }:Context) => {
   const ory = new V0alpha2Api(
@@ -50,28 +55,28 @@ const getLogoutURL = async ({ app }:Context) => {
   }
 }
 
+
+
 const getAuthState = async ({ app }:Context) => {
   const ory = new V0alpha2Api(
     new Configuration({
       basePath: app.$config.kratosAPIURL,
       baseOptions: {
-        withCredentials: true,
-      },
-    }),
+        withCredentials: true
+      }
+    })
   )
 
-  try {
-    const session = await ory.toSession()
-    return {
-      authenticated: true,
-      session: session,
-    }
-  } catch {
-    return {
-      authenticated: false,
-      session: {},
-    }
-  }
+  const status = {} as OryRespT
+
+  ory.toSession().then((s) => {
+    status.authenticated = true
+    status.sess = s
+  }).catch((_) => {
+    status.authenticated = false
+  })
+
+  return status
 }
 
 export default Vue.extend({
@@ -79,7 +84,7 @@ export default Vue.extend({
   async asyncData(context) {
     const authState = await getAuthState(context)
     const logoutData = await getLogoutURL(context)
-    context.store.commit("session/setSession", authState.session.data)
+    context.store.commit("session/setSession", authState.sess)
     context.store.commit("session/setAuthenticated", authState.authenticated)
     context.store.commit("session/setLogoutURL", logoutData.data.logout_url)
   },
