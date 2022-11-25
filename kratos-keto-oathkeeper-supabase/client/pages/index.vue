@@ -27,11 +27,9 @@
 <script lang="ts">
 import Vue from "vue"
 import { Configuration, V0alpha2Api } from "@ory/kratos-client"
-import type { SelfServiceLogoutUrl } from "@ory/kratos-client"
-import type { AxiosResponse } from "axios"
-import AppHeader from "../components/AppHeader"
+import { Context } from "@nuxt/types"
 
-const getLogoutURL = async ({ app }) => {
+const getLogoutURL = async ({ app }:Context) => {
   const ory = new V0alpha2Api(
     new Configuration({
       basePath: app.$config.kratosAPIURL,
@@ -52,7 +50,7 @@ const getLogoutURL = async ({ app }) => {
   }
 }
 
-const getAuthState = async ({ app }) => {
+const getAuthState = async ({ app }:Context) => {
   const ory = new V0alpha2Api(
     new Configuration({
       basePath: app.$config.kratosAPIURL,
