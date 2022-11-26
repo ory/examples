@@ -4,9 +4,9 @@
 <template>
   <div class="py-6 w-full">
     <div
-      class="my-3 bg-white shadow rounded-lg"
       v-for="(shortenedUrl, index) in shortenedUrls"
       :key="index"
+      class="my-3 bg-white shadow rounded-lg"
     >
       <div class="px-4 py-5 sm:p-6">
         <div class="flex items-center">
@@ -38,7 +38,7 @@
 
         <div class="mt-3 text-sm leading-5">
           <a
-            v-bind:href="shortenedUrl.shortened"
+            :href="shortenedUrl.shortened"
             target="_blank"
             class="font-medium text-indigo-600 hover:text-indigo-500 transition ease-in-out duration-150"
           >
@@ -51,18 +51,18 @@
 </template>
 <script>
 export default {
-  name: "URLView",
-  async fetch() {
-    try {
-      this.shortenedUrls = await this.$axios.$get("/api/url")
-    } catch {
-      console.log("API is offline")
-    }
-  },
-  data() {
+  name: 'URLView',
+  data () {
     return {
-      shortenedUrls: [],
+      shortenedUrls: []
     }
   },
+  async fetch () {
+    try {
+      this.shortenedUrls = await this.$axios.$get('/api/url')
+    } catch {
+      console.log('API is offline')
+    }
+  }
 }
 </script>

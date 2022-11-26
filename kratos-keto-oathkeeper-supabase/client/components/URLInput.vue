@@ -3,19 +3,19 @@
 
 <template>
   <div class="w-full">
-    <div class="w-full mt-6 flex rounded-md shadow-sm" v-if="authenticated">
+    <div v-if="authenticated" class="w-full mt-6 flex rounded-md shadow-sm">
       <div class="relative flex-grow focus-within:z-10">
         <DownloadIcon />
         <input
           v-model="url"
           class="text-gray-700 py-3 form-input block w-full rounded-none rounded-l-md pl-10 transition ease-in-out duration-150 font-semibold sm:text-sm sm:leading-5"
           placeholder="www.example.com"
-        />
+        >
       </div>
       <button
         v-if="!loading"
-        @click="shorten"
         class="group -ml-px relative inline-flex items-center px-3 py-3 border border-indigo-300 text-sm leading-5 font-medium rounded-r-md text-white bg-indigo-700 hover:text-indigo-700 hover:bg-white focus:outline-none focus:shadow-outline-blue focus:border-indigo-300 active:bg-gray-100 active:text-indigo-700 transition ease-in-out duration-150"
+        @click="shorten"
       >
         <svg
           class="text-white h-5 w-5 group-hover:text-indigo-700"
@@ -61,56 +61,56 @@
 </template>
 <script>
 export default {
-  name: "URLInput",
-  data() {
+  name: 'URLInput',
+  data () {
     return {
       loading: false,
-      url: "",
-      errorMessage: "",
+      url: '',
+      errorMessage: ''
     }
   },
   computed: {
-    authenticated() {
+    authenticated () {
       return this.$store.state.session.authenticated
-    },
+    }
   },
   methods: {
-    async shorten(e) {
+    async shorten (e) {
       e.preventDefault()
       this.loading = true
       this.errorMessage = this.validateURL(this.url)
       try {
-        const result = await this.$axios.$post("/api/url", {
-          url: this.url,
+        const result = await this.$axios.$post('/api/url', {
+          url: this.url
         })
-        this.$store.commit("url/add", result.data)
+        this.$store.commit('url/add', result.data)
       } catch (error) {
         if (error.response) {
           this.errorMessage = error.response.message
         } else {
-          this.errorMessage = "Sorry, the API is offline. Try again later"
+          this.errorMessage = 'Sorry, the API is offline. Try again later'
         }
       }
       this.loading = false
     },
-    validateURL(str) {
+    validateURL (str) {
       if (str === null || str.match(/^ *$/) !== null) {
-        return "A URL is required"
+        return 'A URL is required'
       }
       const regex = new RegExp(
-        "^(https?:\\/\\/)?" + // protocol
-          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-          "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-          "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-          "(\\#[-a-z\\d_]*)?$",
-        "i",
+        '^(https?:\\/\\/)?' + // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+          '(\\#[-a-z\\d_]*)?$',
+        'i'
       )
       if (str.match(regex) === null) {
-        return "URL is invalid"
+        return 'URL is invalid'
       }
-      return ""
-    },
-  },
+      return ''
+    }
+  }
 }
 </script>
