@@ -141,10 +141,11 @@ services:
 
   shorts:
     container_name: shorts
+    ports:
+      - 8090:8090
     build:
       context: .
     env_file: .env
-
     networks:
       - intranet
 
