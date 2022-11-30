@@ -4,6 +4,8 @@
 package database
 
 import (
+	"math/rand"
+
 	"github.com/gen1us2k/shorts/config"
 	"github.com/gen1us2k/shorts/model"
 )
@@ -33,11 +35,30 @@ type (
 
 // CreateStorage creates a storage by given configuration
 func CreateStorage(c *config.ShortsConfig) (WriteDatabase, error) {
-	if c.DatabaseProvider == config.ProviderPostgres {
+	switch c.DatabaseProvider {
+	case config.ProviderMock:
+		db := NewMockDB(c)
+		return &db, nil
+
+	case config.ProviderPostgres:
 		return NewPostgres(c)
-	}
-	if c.DatabaseProvider == config.ProviderSupabase {
+
+	case config.ProviderSupabase:
 		return NewSupabase(c)
+
+	default:
+		db := NewMockDB(c)
+		return &db, nil
 	}
-	return NewPostgres(c)
+}
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+// RandStringBytes - generates a random byte string of a given length to simulate an URL
+func RandStringBytes(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return string(b)
 }

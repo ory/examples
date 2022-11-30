@@ -44,6 +44,9 @@ func (s *Supabase) ShortifyURL(url model.URL) (model.URL, error) {
 	url.ExpiredAt = time.Now().AddDate(0, 1, -1) // FIXME: Make this configurable
 	q := s.conn.From("url").Insert(url, false, "do-nothing", "", "")
 	_, err := q.ExecuteTo(&urls)
+	if err != nil {
+		return urls[0], err
+	}
 	return urls[0], err
 }
 

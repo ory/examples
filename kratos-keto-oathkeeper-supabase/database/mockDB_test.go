@@ -13,17 +13,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPostgres(t *testing.T) {
+const (
+	URLLEN = 32
+)
+
+func TestMock(t *testing.T) {
 	c, err := config.Parse()
 	assert.NoError(t, err)
-	p, err := database.NewPostgres(c)
-	assert.NoError(t, err)
+
+	p := database.NewMockDB(c)
 	u := model.URL{
-		URL:     "https://thelootdistrict.com/pvphub/demon-hunter/havoc/",
+		URL:     database.RandStringBytes(URLLEN),
 		OwnerID: uuid.NewString(),
 	}
+
 	url, err := p.ShortifyURL(u)
 	assert.NoError(t, err)
+	assert.NotEmpty(t, url.Hash)
 
 	assert.Equal(t, u.URL, url.URL)
 	assert.Equal(t, u.OwnerID, url.OwnerID)
@@ -42,5 +48,5 @@ func TestPostgres(t *testing.T) {
 	assert.NoError(t, err)
 
 	_, err = p.GetURLByHash(u.Hash)
-	assert.Error(t, err)
+	assert.Nil(t, err)
 }

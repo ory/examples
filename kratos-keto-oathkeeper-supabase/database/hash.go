@@ -4,6 +4,8 @@
 package database
 
 import (
+	"crypto/sha1"
+	"encoding/hex"
 	"math/rand"
 	"time"
 )
@@ -17,4 +19,10 @@ func generateHash(l int) string {
 		b[i] = alphabet[rand.Intn(len(alphabet))]
 	}
 	return string(b)
+}
+
+func generateSHA1(s string) string {
+	h := sha1.New()
+	h.Write([]byte(s))
+	return hex.EncodeToString(h.Sum(nil))
 }
