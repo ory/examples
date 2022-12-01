@@ -6,6 +6,9 @@ help:
 test:
 	go test ./...
 
+apitest:
+	@curl -s -o response.txt -w "%{http_code}" http://localhost:8090/api/url
+
 create_migration:
 	migrate create -ext sql -dir db/migrations -seq create_url_table
 
