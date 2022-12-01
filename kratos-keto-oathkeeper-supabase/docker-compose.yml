@@ -67,7 +67,7 @@ services:
     command: serve -c /etc/config/kratos/kratos.yml --dev --watch-courier
 
   kratos-selfservice-ui-node:
-    image: oryd/kratos-selfservice-ui-node:$KRATOS_VER
+    image: oryd/kratos-selfservice-ui-node:$KRATOS_UI_VER
     container_name: kratos-ui
     environment:
       - KRATOS_PUBLIC_URL=http://kratos:4433/
