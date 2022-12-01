@@ -39,19 +39,19 @@
             Home
           </li>
           <li
-            v-if="!session"
+            v-if="!session?.active"
             class="text-sm font-bold text-gray-800 hover:text-blue-400"
           >
             <a :href="signInURL"> Sign in </a>
           </li>
           <li
-            v-if="!session"
+            v-if="!session?.active"
             class="text-sm font-bold text-gray-800 hover:text-blue-400"
           >
             <a :href="signUpURL"> Sign Up </a>
           </li>
           <li
-            v-if="session"
+            v-if="session?.active"
             class="text-sm font-bold text-gray-800 hover:text-blue-400"
           >
             <a :href="logoutURL"> Logout </a>

@@ -3,7 +3,7 @@
 
 <template>
   <div class="w-full">
-    <div v-if="session" class="w-full mt-6 flex rounded-md shadow-sm">
+    <div v-if="session?.active" class="w-full mt-6 flex rounded-md shadow-sm">
       <div class="relative flex-grow focus-within:z-10">
         <DownloadIcon />
         <input

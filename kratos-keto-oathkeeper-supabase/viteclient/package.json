@@ -11,7 +11,7 @@
     "lintfix": "eslint --ext .js,.ts,.vue ./ --fix"
   },
   "dependencies": {
-    "@ory/client": "0.0.1-alpha.184",
+    "@ory/client": "^1.0.1",
     "vue": "^3.2.41"
   },
   "devDependencies": {

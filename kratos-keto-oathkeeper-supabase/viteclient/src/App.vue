@@ -39,21 +39,32 @@ export default {
 <script setup lang="ts">
 import { onMounted, Ref, ref } from 'vue';
 
-import { Configuration, Session, V0alpha2Api } from '@ory/client';
+import {
+  Configuration,
+  OAuth2Api,
+  IdentityApi,
+  FrontendApi,
+  Session,
+} from '@ory/client';
 
 import ShortsLogo from './components/ShortsLogo.vue';
 import AppHeader from './components/AppHeader.vue';
 import URLInput from './components/URLInput.vue';
 import URLView from './components/URLView.vue';
 
-const ory = new V0alpha2Api(
-  new Configuration({
-    basePath: import.meta.env.VITE_KRATOS_API_URL,
-    baseOptions: {
-      withCredentials: true,
-    },
-  })
-);
+const config = new Configuration({
+  basePath: import.meta.env.VITE_KRATOS_API_URL,
+  baseOptions: {
+    withCredentials: true,
+    timeout: 10000, // 10 sec
+  },
+});
+
+const ory = {
+  identity: new IdentityApi(config),
+  frontend: new FrontendApi(config),
+  oauth2: new OAuth2Api(config),
+};
 
 const session: Ref<Session | null> = ref(null);
 
@@ -66,20 +77,19 @@ const signInURL =
 const signUpURL =
   import.meta.env.VITE_KRATOS_UI_URL + `/registration?return_to=${APPHOME}`;
 
-onMounted(() => {
+onMounted(() =>
   // Fetch the session directly from Ory
-  ory
+  ory.frontend
     .toSession()
     .then(({ data }) => {
       session.value = data;
-
-      // If the user is logged in, we want to show a logout link!
-      ory.createSelfServiceLogoutFlowUrlForBrowsers().then(({ data }) => {
-        logoutURL.value = data.logout_url + `?return_to=${APPHOME}`;
-      });
     })
     .catch((err) => {
       console.log(err);
-    });
-});
+      // If the user is logged in, we want to show a logout link!
+      ory.frontend.createBrowserLogoutFlow().then(({ data }) => {
+        logoutURL.value = data.logout_url + `?return_to=${APPHOME}`;
+      });
+    })
+);
 </script>
