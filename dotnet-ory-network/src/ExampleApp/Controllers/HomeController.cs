@@ -11,15 +11,13 @@ namespace ExampleApp.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IFrontendApiAsync _api;
+    
+    private readonly IFrontendApiAsync _ory;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IFrontendApiAsync ory)
     {
         _logger = logger;
-        _api = new FrontendApi(new Configuration()
-        {
-            BasePath = "http://localhost:4000"
-        });
+        _ory = ory;
     }
 
     public IActionResult Index() => View();
@@ -28,13 +26,13 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Login()
     {
-        var flow = await _api.CreateBrowserLoginFlowAsync();
+        var flow = await _ory.CreateBrowserLoginFlowAsync();
         return Redirect( flow.RequestUrl );
     }
 
     public async Task<IActionResult> Logout()
     {
-        var flow = await _api.CreateBrowserLogoutFlowAsync(Request.Headers["cookie"]);
+        var flow = await _ory.CreateBrowserLogoutFlowAsync(Request.Headers["cookie"]);
         return Redirect( flow.LogoutUrl );
     }
 

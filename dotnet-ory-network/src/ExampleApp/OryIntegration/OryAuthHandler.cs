@@ -55,7 +55,7 @@ internal sealed class OryAuthHandler : AuthenticationHandler<OryAuthSchemeOption
                 ExpiresUtc = session.ExpiresAt.ToUniversalTime()
             }, Scheme.Name));
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             return AuthenticateResult.Fail(e);
         }
