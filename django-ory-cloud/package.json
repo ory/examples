@@ -8,6 +8,7 @@
     "test:unit": "jest tests/jest --maxConcurrency=8 --bail 1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.24.0"
+    "@playwright/test": "^1.24.0",
+    "wait-on": "^6.0.1"
   }
 }
