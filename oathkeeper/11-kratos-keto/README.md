@@ -8,6 +8,9 @@ Oathkeeper and `remote_json` for authorization.
 Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
 Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper)
+
 ### Prerequisites
 
 1. [Docker](https://docs.docker.com/get-docker/)

@@ -33,7 +33,9 @@ cd examples/oathkeeper/07-traefik-decision
 docker-compose up
 ```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`. If you get
+redirected to the login, get a session and open `http://127.0.0.1:8080/hello`
+again.
 
 ## Contribute
 

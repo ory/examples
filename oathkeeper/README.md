@@ -12,3 +12,6 @@
 - [10 - Example using Ory Oathkeeper with cookie session authenticator & Ory Cloud](https://github.com/ory/examples/tree/master/oathkeeper/10-cloud)
 - [11 - Example using Ory Cloud with Ory Keto self-hosted](https://github.com/ory/examples/tree/master/oathkeeper/11-kratos-keto)
 - [12 - Example using Ory Oathkeeper with cookie session authenticator & header mutator](https://github.com/ory/examples/tree/master/oathkeeper/12-multiple-authenticators)
+
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper)

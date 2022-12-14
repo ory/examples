@@ -1,12 +1,25 @@
 # Basic example for Ory Oathkeeper
 
-This repo is an example of using Ory Oathkeeper as simple reverse proxy without any additional mutations or
-authentication/authorization checks.
+This repo is an example of using Ory Oathkeeper as simple reverse proxy without
+any additional mutations or authentication/authorization checks.
+
+## Overview
+
+The following flow is implemented:
+
+1. Send incoming requests to `http://127.0.0.1:8080/hello` to the `hello`
+   microservice
+
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper).
 
 ## Develop
 
-Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml) Ory Oathkeeper Configuration:
-[`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
+Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper).
 
 ### Prerequisites
 
@@ -25,7 +38,11 @@ Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
 
 ## Contribute
 
-Feel free to [open a discussion](https://github.com/ory/examples/discussions/new) to provide feedback or talk about ideas, or
-[open an issue](https://github.com/ory/examples/issues/new) if you want to add your example to the repository or encounter a bug.
-You can contribute to Ory in many ways, see the [Ory Contributing Guidelines](https://www.ory.sh/docs/ecosystem/contributing) for
-more information.
+Feel free to
+[open a discussion](https://github.com/ory/examples/discussions/new) to provide
+feedback or talk about ideas, or
+[open an issue](https://github.com/ory/examples/issues/new) if you want to add
+your example to the repository or encounter a bug. You can contribute to Ory in
+many ways, see the
+[Ory Contributing Guidelines](https://www.ory.sh/docs/ecosystem/contributing)
+for more information.

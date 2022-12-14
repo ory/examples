@@ -12,6 +12,9 @@ This example implements the following flow:
 1. Sends only authenticated request to `hello` microservice with
    `X-User: user_id` header
 
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper)
+
 ## Develop
 
 Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)

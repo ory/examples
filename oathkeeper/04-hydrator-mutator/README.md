@@ -3,13 +3,18 @@
 This example shows basic configuration of `cookie_session` authenticator with
 `hydrator` mutator for Ory Oathkeeper.
 
-It implements the following flow:
+## Overview
+
+The following flow is implemented:
 
 1. Validates incoming requests using `cookie_session` authenticator
 1. Modifies request and sends `X-User` with value returned on previous step
 1. Makes request to `hydrator` service and adds `X-User-Name` header
 1. Sends only authenticated request to `hello` microservice with
    `X-User: user_id`, `X-User-Name: andrew` headers
+
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper).
 
 ## Develop
 

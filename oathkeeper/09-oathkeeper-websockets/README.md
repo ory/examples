@@ -3,7 +3,7 @@
 This example shows an example of using Ory Oathkeeper to proxy websocket
 traffic.
 
-Read the tutorial:
+## Overview
 
 - [Define WebSockets Rules](https://ory.sh/docs/oathkeeper/guides/proxy-websockets)
 

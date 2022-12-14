@@ -14,6 +14,9 @@ Request flow:
 1. Hydrator adds an additional header to the request
 1. Envoy proxies request to `hello` service
 
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper)
+
 ## Develop
 
 Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)

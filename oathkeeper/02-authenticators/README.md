@@ -3,6 +3,16 @@
 This example shows basic configuration of `cookie_session` authenticator for Ory
 Oathkeeper.
 
+## Overview
+
+The following flow is implemented:
+
+1. Validates incoming requests using `cookie_session` authenticator
+1. Sends only authenticated request to `hello` microservice
+
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper).
+
 ## Develop
 
 Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
@@ -21,7 +31,9 @@ cd examples/oathkeeper/02-authenticators
 docker-compose up
 ```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`
+1. Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+1. Sign up for a new account.
+1. Open `http://127.0.0.1:8080/hello` again.
 
 ## Contribute
 
