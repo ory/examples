@@ -1,10 +1,8 @@
-version: "3.7"
+version: '3.7'
 
 services:
   oathkeeper:
     image: oryd/oathkeeper:v0.38
-    depends_on:
-      - kratos
     ports:
       - 8080:4455
       - 4456:4456
@@ -19,7 +17,7 @@ services:
 
   hello:
     build:
-      context: "hello"
+      context: 'hello'
     networks:
       - intranet
 
