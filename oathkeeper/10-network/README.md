@@ -1,12 +1,15 @@
-## Example using Ory Oathkeeper with cookie session authenticator & Ory Cloud
+## Example using Ory Oathkeeper with cookie session authenticator & Ory Network
 
 This example shows basic configuration of `cookie_session` authenticator for Ory
-Oathkeeper using Ory Cloud as identity provider.
+Oathkeeper using Ory Network as identity provider.
 
 ## Develop
 
 Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
 Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper)
 
 ### Prerequisites
 
@@ -17,7 +20,7 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 
 ```bash
    git clone git@github.com:ory/examples
-   cd examples/oathkeeper/10_cloud
+   cd examples/oathkeeper/10_network
    docker-compose up
 ```
 
