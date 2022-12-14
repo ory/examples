@@ -7,11 +7,14 @@ This example shows an example of using Ory Oathkeeper with Nginx.
 Request flow:
 
 1. Request lands on Nginx
-1. Nginx uses subrequest authentication module and passes it to
-   oathkeeper/decisions API
-1. `cookie_sesion` authentication checks authentication and returns request back
-   to Nginx
-1. Nginx proxies request to `hello` service
+1. Nginx uses the subrequest authentication module and passes it to Ory
+   Oathkeepers decisions API.
+1. `cookie_session` authentication checks authentication and returns it to
+   Nginx.
+1. Nginx proxies request to `hello` microservice.
+
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper).
 
 ## Develop
 
@@ -29,10 +32,12 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 ```bash
 git clone git@github.com:ory/examples
 cd examples/oathkeeper/05-nginx-oathkeeper
-docker-compose up
+docker-compose up --build
 ```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+1. Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+1. Sign up for a new account.
+1. Open `http://127.0.0.1:8080/hello` again.
 
 ## Contribute
 

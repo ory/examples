@@ -1,7 +1,7 @@
 ## Example using Ory Cloud with Ory Keto self-hosted
 
-This example shows basic configuration of `cookie_session` authenticator for Ory
-Oathkeeper and `remote_json` for authorization.
+This example shows a basic configuration of `cookie_session` authenticator for
+Ory Oathkeeper and `remote_json` for authorization.
 
 ## Develop
 
@@ -22,7 +22,7 @@ For more information, please refer to
 ```bash
    git clone git@github.com:ory/examples
    cd examples/oathkeeper/11_kratos_keto
-   docker-compose up
+   docker-compose up --build
    bash cli.sh
 ```
 

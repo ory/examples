@@ -31,7 +31,7 @@ For more information, please refer to
 ```bash
 git clone git@github.com:ory/examples
 cd examples/oathkeeper/01-basic
-docker-compose up
+docker-compose up --build
 ```
 
 Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.

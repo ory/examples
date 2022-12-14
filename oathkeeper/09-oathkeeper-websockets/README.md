@@ -22,7 +22,7 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 ```bash
 git clone git@github.com:ory/examples
 cd examples/oathkeeper/09-oathkeeper-websockets
-docker-compose up
+docker-compose up --build
 ```
 
 Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`

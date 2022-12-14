@@ -14,6 +14,9 @@ Request flow:
 1. Hydrator adds an additional header to the request
 1. Traefik proxies request to `hello` service
 
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper).
+
 ## Develop
 
 Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
@@ -30,12 +33,12 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 ```bash
 git clone git@github.com:ory/examples
 cd examples/oathkeeper/07-traefik-decision
-docker-compose up
+docker-compose up --build
 ```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`. If you get
-redirected to the login, get a session and open `http://127.0.0.1:8080/hello`
-again.
+1. Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+1. Sign up for a new account.
+1. Open `http://127.0.0.1:8080/hello` again.
 
 ## Contribute
 

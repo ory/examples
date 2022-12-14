@@ -1,15 +1,16 @@
 ## Example using Ory Oathkeeper with cookie session authenticator & header mutator
 
-This example shows basic configuration of `cookie_session` authenticator with
-`header` mutator for Ory Oathkeeper.
+This example shows a basic configuration of `cookie_session` and `anonymous`
+authenticator with the `header` mutator for Ory Oathkeeper.
 
 ## Overview
 
 This example implements the following flow:
 
-1. Validates incoming requests using `cookie_session` authenticator
+1. Validates incoming requests at Ory Kratos using `cookie_session`
+   authenticator
 1. Modifies request and sends `X-User` with value returned on previous step
-1. Sends only authenticated request to `hello` microservice with
+1. Sends only authenticated requests to `hello` microservice with
    `X-User: user_id` header
 
 For more information, please refer to
@@ -30,7 +31,7 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 ```bash
 git clone git@github.com:ory/examples
 cd examples/oathkeeper/03-header-mutator
-docker-compose up
+docker-compose up --build
 ```
 
 Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`

@@ -9,8 +9,8 @@ Request flow:
 1. Request lands on Envoy
 1. Envoy uses ext_authz to forward authentication to http://oathkeeper/decision
    API
-1. `cookie_sesion` authentication checks authentication and returns request back
-   to Envoy
+1. `cookie_session` authentication checks authentication and returns request
+   back to Envoy
 1. Hydrator adds an additional header to the request
 1. Envoy proxies request to `hello` service
 
@@ -33,10 +33,12 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 ```bash
 git clone git@github.com:ory/examples
 cd examples/oathkeeper/08-envoy-header
-docker-compose up
+docker-compose up --build
 ```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`
+1. Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+1. Sign up for a new account.
+1. Open `http://127.0.0.1:8080/hello` again.
 
 ## Contribute
 
