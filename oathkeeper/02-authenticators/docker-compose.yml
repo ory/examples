@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   oathkeeper:
-    image: oryd/oathkeeper:v0.38
+    image: oryd/oathkeeper:v0.40
     depends_on:
       - kratos
     ports:

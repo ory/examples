@@ -12,7 +12,7 @@ services:
       - intranet
 
   oathkeeper:
-    image: oryd/oathkeeper:v0.38
+    image: oryd/oathkeeper:v0.40
     depends_on:
       - kratos
     command: serve proxy -c "/etc/config/oathkeeper/oathkeeper.yml"
