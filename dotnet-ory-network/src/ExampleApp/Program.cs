@@ -14,10 +14,12 @@ var oryBasePath = builder.Configuration.GetValue<string>("ORY_BASEPATH") ?? "htt
 
 builder.Services.AddSingleton<IFrontendApiAsync>(_ => new FrontendApi(oryBasePath));
 
-builder.Services.AddAuthentication(opt => {
-    opt.DefaultAuthenticateScheme = OryDefaults.AuthenticationScheme;
-}).AddOry(o => {
-    o.BasePath = oryBasePath;
+builder.Services.AddAuthentication(opt =>
+{
+  opt.DefaultAuthenticateScheme = OryDefaults.AuthenticationScheme;
+}).AddOry(o =>
+{
+  o.BasePath = oryBasePath;
 });
 
 // Build request pipeline

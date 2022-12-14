@@ -1,7 +1,7 @@
 IMAGE_NAME=dotnet-ory-network-example
 
 format:
-	echo "TODO: add C# formatter"
+	docker run --rm -u "$$(id -u):$$(id -g)" -v "$$(pwd):/work" --tmpfs /.dotnet --tmpfs /.nuget --tmpfs /.local mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim dotnet format /work/src/
 
 docker-build:
 	docker build src -t $(IMAGE_NAME)
@@ -18,5 +18,5 @@ test: node_modules
 
 node_modules: package-lock.json
 	npm ci
-	npx playwright install
+	npx playwright install --with-deps chromium
 	touch node_modules

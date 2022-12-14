@@ -10,8 +10,8 @@ namespace OryIntegration;
 /// </summary>
 public sealed class OryAuthSchemeOptions : AuthenticationSchemeOptions
 {
-    /// <summary>
-    /// The base path of the Ory API Endpoint.
-    /// </summary>
-    public string? BasePath { get; set; }
+  /// <summary>
+  /// The base path of the Ory API Endpoint.
+  /// </summary>
+  public string? BasePath { get; set; }
 }
