@@ -1,14 +1,14 @@
-FROM golang as builder
-
-RUN mkdir /build
-
-ADD . /build
+FROM golang:1.17-alpine
 
 WORKDIR /build
-RUN GOOS=linux GOARCH=amd64 go build -o hello main.go
 
-FROM alpine
-EXPOSE 8090
+COPY go.mod ./
+COPY go.sum ./
 
-COPY --from=builder /build/hello /hello
-ENTRYPOINT ["/hello"]
+RUN go mod download
+
+COPY *.go ./
+
+RUN GOOS=linux GOARCH=amd64 go build -o /hello main.go
+
+CMD ["/hello"]
