@@ -31,10 +31,12 @@ ory patch project <your-project-id> \
   --replace '/services/identity/config/selfservice/allowed_return_urls=["http://localhost:5286/"]'
 ```
 
+You can find your project id with the command `ory list projects`.
+
 Start an Ory Tunnel:
 
 ```bash
-ory tunnel --dev --project <your-project-slug> http://localhost:5286
+ory tunnel --dev --project <your-project-slug> http://localhost:5286 &
 ```
 
 If you want to use the
@@ -48,7 +50,7 @@ ory tunnel --dev http://localhost:5286
 Run the app:
 
 ```bash
-dotnet run ./src/ExampleApp
+dotnet run --project ./src/ExampleApp
 ```
 
 Open http://localhost:5286 for testing
