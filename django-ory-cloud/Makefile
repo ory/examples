@@ -13,4 +13,5 @@ test: install .bin/ory
 
 node_modules: package-lock.json
 	npm ci
+	npx playwright install --with-deps chromium
 	touch node_modules

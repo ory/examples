@@ -9,6 +9,7 @@ If you have any questions or suggestions
 ### Application Examples
 
 - [Example Django App using Ory Cloud](https://github.com/ory/examples/tree/master/django-ory-cloud)
+- [Example Dotnet App using Ory Network](https://github.com/ory/examples/tree/master/dotnet-ory-network)
 - [Example Flask App using Ory Kratos and Ory Keto](https://github.com/ory/examples/tree/master/kratos-keto-flask)
 - [Example with Kubernetes using Ory Kratos, Ory Keto and Ory Oathkeeper](https://github.com/ory/examples/tree/master/kratos-keto-oathkeeper-k8s)
 - [Example with Supabase using Ory Kratos and Ory Oathkeeper](https://github.com/ory/examples/tree/master/kratos-keto-oathkeeper-supabase)
