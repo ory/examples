@@ -15,6 +15,9 @@ Request flow:
 1. Nginx proxies request to `hello` service with `X-User: user_id`,
    `X-user-Name: andrew` headers
 
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper).
+
 ## Develop
 
 Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
@@ -31,10 +34,12 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 ```bash
 git clone git@github.com:ory/examples
 cd examples/oathkeeper/06-nginx-hydrator
-docker-compose up
+docker-compose up --build
 ```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+1. Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+1. Sign up for a new account.
+1. Open `http://127.0.0.1:8080/hello` again.
 
 ## Contribute
 

@@ -37,6 +37,8 @@ func mutate(w http.ResponseWriter, r *http.Request) {
 		payload.Header = make(map[string][]string)
 	}
 	payload.Header.Add("x-user-name", "Andrew")
+	payload.Header.Add("x-user-company", "Ory")
+	payload.Header.Add("x-user-role", "admin")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(payload)
 }

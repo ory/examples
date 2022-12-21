@@ -2,9 +2,7 @@ version: "3.7"
 
 services:
   oathkeeper:
-    image: oryd/oathkeeper:v0.38
-    depends_on:
-      - kratos
+    image: oryd/oathkeeper:v0.40
     ports:
       - 8080:4455
       - 4456:4456

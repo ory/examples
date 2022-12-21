@@ -13,7 +13,7 @@ import (
 
 func handle(w http.ResponseWriter, r *http.Request) {
 	spew.Dump(r.Header)
-	fmt.Fprintf(w, "hello")
+	fmt.Fprintf(w, "Hello 👋")
 }
 
 func main() {

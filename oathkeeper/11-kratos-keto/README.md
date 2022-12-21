@@ -1,12 +1,15 @@
 ## Example using Ory Cloud with Ory Keto self-hosted
 
-This example shows basic configuration of `cookie_session` authenticator for Ory
-Oathkeeper and `remote_json` for authorization.
+This example shows a basic configuration of `cookie_session` authenticator for
+Ory Oathkeeper and `remote_json` for authorization.
 
 ## Develop
 
 Ory Oathkeeper Access Rules: [`access-rules.yml`](./oathkeeper/access-rules.yml)
 Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
+
+For more information, please refer to
+[the Ory Oathkeeper documentation](https://www.ory.sh/docs/oathkeeper)
 
 ### Prerequisites
 
@@ -19,7 +22,7 @@ Ory Oathkeeper Configuration: [`oathkeeper.yml`](./oathkeeper/oathkeeper.yml)
 ```bash
    git clone git@github.com:ory/examples
    cd examples/oathkeeper/11_kratos_keto
-   docker-compose up
+   docker-compose up --build
    bash cli.sh
 ```
 
