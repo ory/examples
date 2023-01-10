@@ -23,10 +23,13 @@ For more information, please refer to
    git clone git@github.com:ory/examples
    cd examples/oathkeeper/11_kratos_keto
    docker-compose up --build
-   bash cli.sh
 ```
 
-Wait for a couple of seconds and open `http://127.0.0.1:8080/hello`.
+Wait for a couple of seconds and open
+[http://127.0.0.1:8080/hello](http://127.0.0.1:8080/hello). You will be
+redirected to the login page. After logging in, you still cannot access
+[/hello](http://127.0.0.1:8080/hello). To get the required access, visit
+[http://127.0.0.1:8080/grant-access](http://127.0.0.1:8080/grant-access).
 
 ## Contribute
 
