@@ -9,8 +9,8 @@
 - [07 - Traefik and Ory Oathkeeper](https://github.com/ory/examples/tree/master/oathkeeper/07-traefik-decision)
 - [08 - Envoy and Oathkeeper](https://github.com/ory/examples/tree/master/oathkeeper/08-envoy-header)
 - [09 - Ory Oathkeeper proxying websockets](https://github.com/ory/examples/tree/master/oathkeeper/09-oathkeeper-websockets)
-- [10 - Example using Ory Oathkeeper with cookie session authenticator & Ory Network](https://github.com/ory/examples/tree/master/oathkeeper/10-cloud)
-- [11 - Example using Ory Cloud with Ory Keto self-hosted](https://github.com/ory/examples/tree/master/oathkeeper/11-kratos-keto)
+- [10 - Example using Ory Oathkeeper with cookie session authenticator & Ory Network](https://github.com/ory/examples/tree/master/oathkeeper/10-network)
+- [11 - Example using Ory Network with Ory Keto self-hosted](https://github.com/ory/examples/tree/master/oathkeeper/11-kratos-keto)
 - [12 - Example using Ory Oathkeeper with cookie session authenticator & header mutator](https://github.com/ory/examples/tree/master/oathkeeper/12-multiple-authenticators)
 
 For more information, please refer to
