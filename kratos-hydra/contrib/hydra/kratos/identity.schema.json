@@ -4,10 +4,9 @@
   "title": "Person",
   "type": "object",
   "properties": {
-    "traits":{
+    "traits": {
       "type": "object",
       "properties": {
-
         "email": {
           "type": "string",
           "format": "email",
@@ -22,9 +21,7 @@
           }
         }
       },
-      "required": [
-        "email"
-      ]
+      "required": ["email"]
     }
   },
   "additionalProperties": false

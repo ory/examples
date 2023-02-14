@@ -1,6 +1,7 @@
 # ORY Kratos as Login Provider for ORY Hydra
 
-**Warning: ** this is a preliminary example and will properly be implemented in ORY Kratos directly.
+**Warning: ** this is a preliminary example and will properly be implemented in
+ORY Kratos directly.
 
 For now, to run this example execute:
 

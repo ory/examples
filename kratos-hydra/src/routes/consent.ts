@@ -1,5 +1,6 @@
-// Copyright © 2022 Ory Corp
+// Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
+
 import {
   AcceptOAuth2ConsentRequestSession,
   IdentityApi,
@@ -257,7 +258,7 @@ export const registerConsentRoute: RouteRegistrator = function (
   createHelpers = defaultConfig,
 ) {
   if (process.env.HYDRA_ADMIN_URL) {
-console.log('found HYDRA_ADMIN_URL')
+    console.log("found HYDRA_ADMIN_URL")
     return app.get(
       "/consent",
       csrfProtection,

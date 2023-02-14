@@ -1,7 +1,7 @@
 # This docker-compose file sets up ORY Kratos, ORY Hydra, and this app in a network and configures
 # in such a way that ORY Kratos is the Login Provider for ORY Hydra.
 
-version: '3.7'
+version: "3.7"
 
 services:
   hydra-migrate:
@@ -9,13 +9,11 @@ services:
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true&mode=rwc
     volumes:
-      -
-        type: volume
+      - type: volume
         source: hydra-sqlite
         target: /var/lib/sqlite
         read_only: false
-    command:
-      migrate sql -e --yes
+    command: migrate sql -e --yes
     restart: on-failure
     networks:
       - intranet
@@ -46,8 +44,7 @@ services:
     networks:
       - intranet
     volumes:
-      -
-        type: volume
+      - type: volume
         source: hydra-sqlite
         target: /var/lib/sqlite
         read_only: false
@@ -75,17 +72,14 @@ services:
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true&mode=rwc
     volumes:
-      -
-        type: volume
+      - type: volume
         source: kratos-sqlite
         target: /var/lib/sqlite
         read_only: false
-      -
-        type: bind
+      - type: bind
         source: ./kratos
         target: /etc/config/kratos
-    command:
-      -c /etc/config/kratos/.kratos.yml migrate sql -e --yes
+    command: -c /etc/config/kratos/.kratos.yml migrate sql -e --yes
     restart: on-failure
     networks:
       - intranet
@@ -100,16 +94,13 @@ services:
     restart: unless-stopped
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
-    command:
-      serve -c /etc/config/kratos/.kratos.yml --dev
+    command: serve -c /etc/config/kratos/.kratos.yml --dev
     volumes:
-      -
-        type: volume
+      - type: volume
         source: kratos-sqlite
         target: /var/lib/sqlite
         read_only: false
-      -
-        type: bind
+      - type: bind
         source: ./kratos
         target: /etc/config/kratos
     networks:

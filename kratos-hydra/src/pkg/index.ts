@@ -1,5 +1,6 @@
-// Copyright © 2022 Ory Corp
+// Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
+
 import { UiNode } from "@ory/client"
 import { Typography, Divider, ButtonLink, MenuLink } from "@ory/elements-markup"
 import { filterNodesByGroups, getNodeLabel } from "@ory/integrations/ui"
