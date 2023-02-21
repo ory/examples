@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "resolveJsonModule": true,
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es2019", "dom"],
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "strict": true,
+    "typeRoots": ["./types"],
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["contrib"]
+}
