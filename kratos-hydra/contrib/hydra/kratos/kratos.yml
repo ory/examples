@@ -1,7 +1,7 @@
 serve:
   public:
-    base_url: http://127.0.0.1:3000/.ory/kratos/public/
-    # base_url: http://127.0.0.1:4433/
+#    base_url: http://127.0.0.1:3000/.ory/kratos/public/
+     base_url: http://127.0.0.1:4433/
   admin:
     base_url: http://kratos:4434/
 
@@ -9,7 +9,6 @@ selfservice:
   default_browser_return_url: http://127.0.0.1:3000/
   allowed_return_urls:
     - http://127.0.0.1:3000/
-    - http://127.0.0.1:3000/auth/hydra/login
 
   methods:
     password:
@@ -29,13 +28,13 @@ selfservice:
 
     logout:
       after:
-        default_browser_return_url: http://127.0.0.1:3000/auth/login
+        default_browser_return_url: http://127.0.0.1:3000/login
 
     login:
-      ui_url: http://127.0.0.1:3000/auth/login
+      ui_url: http://127.0.0.1:3000/login
 
     registration:
-      ui_url: http://127.0.0.1:3000/auth/registration
+      ui_url: http://127.0.0.1:3000/registration
       after:
         password:
           hooks:
@@ -60,3 +59,6 @@ identity:
 courier:
   smtp:
     connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+
+oauth2_provider:
+  url: http://hydra:4445
