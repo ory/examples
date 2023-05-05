@@ -5,7 +5,7 @@ version: "3.7"
 
 services:
   hydra-migrate:
-    image: oryd/hydra:v2.0.3
+    image: oryd/hydra:v2.1.1
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true&mode=rwc
     volumes:
@@ -19,7 +19,7 @@ services:
       - intranet
 
   hydra:
-    image: oryd/hydra:v2.0.3
+    image: oryd/hydra:v2.1.1
     depends_on:
       - hydra-migrate
     ports:
@@ -34,8 +34,8 @@ services:
       - LOG_LEAK_SENSITIVE_VALUES=true
       - URLS_SELF_ISSUER=http://127.0.0.1:4444
       - URLS_SELF_PUBLIC=http://127.0.0.1:4444
-      - URLS_CONSENT=http://127.0.0.1:3000/auth/hydra/consent
-      - URLS_LOGIN=http://127.0.0.1:3000/auth/hydra/login
+      - URLS_CONSENT=http://127.0.0.1:3000/consent
+      - URLS_LOGIN=http://127.0.0.1:3000/login
       - URLS_LOGOUT=http://127.0.0.1:3000/logout
       - SECRETS_SYSTEM=youReallyNeedToChangeThis
       - OIDC_SUBJECT_IDENTIFIERS_SUPPORTED_TYPES=public,pairwise
@@ -55,11 +55,12 @@ services:
       dockerfile: Dockerfile
     environment:
       - HYDRA_ADMIN_URL=http://hydra:4445
-      - KRATOS_PUBLIC_URL=http://kratos:4433/
-      - KRATOS_ADMIN_URL=http://kratos:4434/
+      - KRATOS_PUBLIC_URL=http://kratos:4433
+      - KRATOS_ADMIN_URL=http://kratos:4434
       - SECURITY_MODE=standalone
-      - KRATOS_BROWSER_URL=http://127.0.0.1:3000/.ory/kratos/public
-      # - KRATOS_BROWSER_URL=http://127.0.0.1:4433/
+      - KRATOS_BROWSER_URL=http://127.0.0.1:4433
+      # - KRATOS_BROWSER_URL=http://127.0.0.1:3000/.ory/kratos/public
+
     ports:
       - "3000:3000"
     networks:
@@ -68,7 +69,7 @@ services:
       - /tmp/ui-node/logs:/root/.npm/_logs
 
   kratos-migrate:
-    image: oryd/kratos:v0.11.1
+    image: oryd/kratos:v0.13.0
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true&mode=rwc
     volumes:
@@ -79,7 +80,7 @@ services:
       - type: bind
         source: ./kratos
         target: /etc/config/kratos
-    command: -c /etc/config/kratos/.kratos.yml migrate sql -e --yes
+    command: -c /etc/config/kratos/kratos.yml migrate sql -e --yes
     restart: on-failure
     networks:
       - intranet
@@ -87,14 +88,14 @@ services:
   kratos:
     depends_on:
       - kratos-migrate
-    image: oryd/kratos:v0.11.1
+    image: oryd/kratos:v0.13.0
     ports:
       - "4433:4433" # public
       - "4434:4434" # admin
     restart: unless-stopped
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
-    command: serve -c /etc/config/kratos/.kratos.yml --dev
+    command: serve -c /etc/config/kratos/kratos.yml --dev
     volumes:
       - type: volume
         source: kratos-sqlite
