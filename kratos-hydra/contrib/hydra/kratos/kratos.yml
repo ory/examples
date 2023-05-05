@@ -1,7 +1,7 @@
 serve:
   public:
-#    base_url: http://127.0.0.1:3000/.ory/kratos/public/
-     base_url: http://127.0.0.1:4433/
+    #    base_url: http://127.0.0.1:3000/.ory/kratos/public/
+    base_url: http://127.0.0.1:4433/
   admin:
     base_url: http://kratos:4434/
 

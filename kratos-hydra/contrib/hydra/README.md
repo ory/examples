@@ -20,7 +20,7 @@ $ code_client=$(docker-compose exec hydra \
     --format json \
     --scope openid --scope offline \
     --redirect-uri http://127.0.0.1:5555/callback)
-    
+
 code_client_id=$(echo $code_client | jq -r '.client_id')
 code_client_secret=$(echo $code_client | jq -r '.client_secret')
 ```
