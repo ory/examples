@@ -8,7 +8,7 @@ import { Application, NextFunction, Request, Response } from "express"
 export interface RouteOptions {
   frontend: FrontendApi
   oauth2: OAuth2Api
-  permissions: PermissionApi
+  permission: PermissionApi
   identity: IdentityApi
   kratosBrowserUrl: string
   logoUrl?: string

@@ -68,7 +68,7 @@ export const createConsentRoute: RouteCreator =
   (createHelpers) => (req, res, next) => {
     res.locals.projectName = "An application requests access to your data!"
 
-    const { oauth2, identity, permissions } = createHelpers(req, res)
+    const { oauth2, identity, permission } = createHelpers(req, res)
     const { consent_challenge } = req.query
 
     // The challenge is used to fetch information about the consent request from ORY hydraAdmin.
@@ -109,7 +109,7 @@ export const createConsentRoute: RouteCreator =
             grantScope,
             body,
             identity,
-            permissions,
+            permission,
           )
 
           // Now it's time to grant the consent request. You could also deny the request if something went terribly wrong
@@ -157,7 +157,7 @@ export const createConsentPostRoute: RouteCreator =
   (createHelpers) => (req, res, next) => {
     // The challenge is a hidden input field, so we have to retrieve it from the request body
     const challenge = req.body.consent_challenge
-    const { oauth2, identity, permissions } = createHelpers(req, res)
+    const { oauth2, identity, permission } = createHelpers(req, res)
 
     // Let's see if the user decided to accept or reject the consent request..
     if (req.body.submit === "Deny access") {
@@ -201,7 +201,7 @@ export const createConsentPostRoute: RouteCreator =
           grantScope,
           body,
           identity,
-          permissions,
+          permission,
         )
         return oauth2
           .acceptOAuth2ConsentRequest({
