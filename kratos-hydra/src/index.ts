@@ -1,11 +1,5 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
-
-import cookieParser from "cookie-parser"
-import express, { Request, Response } from "express"
-import { engine } from "express-handlebars"
-import * as fs from "fs"
-import * as https from "https"
 import { handlebarsHelpers } from "./pkg"
 import { middleware as middlewareLogger } from "./pkg/logger"
 import {
@@ -24,6 +18,11 @@ import {
   registerWelcomeRoute,
 } from "./routes"
 import { registerSessionsRoute } from "./routes/sessions"
+import cookieParser from "cookie-parser"
+import express, { Request, Response } from "express"
+import { engine } from "express-handlebars"
+import * as fs from "fs"
+import * as https from "https"
 
 const app = express()
 

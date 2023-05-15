@@ -1,7 +1,5 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
-
-import { CodeBox, Typography } from "@ory/elements-markup"
 import {
   defaultConfig,
   requireAuth,
@@ -9,6 +7,7 @@ import {
   RouteRegistrator,
 } from "../pkg"
 import { navigationMenu } from "../pkg/ui"
+import { CodeBox, Typography } from "@ory/elements-markup"
 
 export const createSessionsRoute: RouteCreator =
   (createHelpers) => async (req, res) => {

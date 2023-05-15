@@ -1,7 +1,5 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
-
-import { SelfServiceFlow, UserAuthCard } from "@ory/elements-markup"
 import {
   defaultConfig,
   getUrlForFlow,
@@ -12,6 +10,7 @@ import {
   RouteCreator,
   RouteRegistrator,
 } from "../pkg"
+import { SelfServiceFlow, UserAuthCard } from "@ory/elements-markup"
 
 export const createRecoveryRoute: RouteCreator =
   (createHelpers) => (req, res, next) => {

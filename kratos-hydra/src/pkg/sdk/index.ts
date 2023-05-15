@@ -1,6 +1,12 @@
 // Copyright © 2022 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
-import { Configuration, FrontendApi, IdentityApi, OAuth2Api, PermissionApi } from '@ory/client'
+import {
+  Configuration,
+  FrontendApi,
+  IdentityApi,
+  OAuth2Api,
+  PermissionApi,
+} from "@ory/client"
 
 const baseUrlInternal =
   process.env.ORY_SDK_URL || "https://playground.projects.oryapis.com"
@@ -10,7 +16,8 @@ const apiBaseFrontendUrlInternal =
 
 const apiBaseOauth2UrlInternal = process.env.HYDRA_ADMIN_URL || baseUrlInternal
 
-const apiBaseIdentityUrlInternal = process.env.KRATOS_ADMIN_URL || baseUrlInternal
+const apiBaseIdentityUrlInternal =
+  process.env.KRATOS_ADMIN_URL || baseUrlInternal
 
 const apiBasePermissionUrlInternal =
   process.env.KETO_READ_URL || baseUrlInternal
@@ -46,8 +53,8 @@ const sdk = {
   permission: new PermissionApi(
     new Configuration({
       basePath: apiBasePermissionUrlInternal,
-    })
-  )
+    }),
+  ),
 }
 
 export default sdk

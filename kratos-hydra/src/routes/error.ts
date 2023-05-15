@@ -1,14 +1,13 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
-
-import { UserErrorCard } from "@ory/elements-markup"
-import { AxiosError } from "axios"
 import {
   defaultConfig,
   isQuerySet,
   RouteCreator,
   RouteRegistrator,
 } from "../pkg"
+import { UserErrorCard } from "@ory/elements-markup"
+import { AxiosError } from "axios"
 
 // A simple express handler that shows the error screen.
 export const createErrorRoute: RouteCreator =

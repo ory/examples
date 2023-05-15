@@ -1,13 +1,13 @@
 // Copyright © 2022 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
+import { RouteOptionsCreator } from "./route"
+import sdk, { apiBaseUrl } from "./sdk"
+import { toUiNodePartial } from "./ui"
 import { UiNode } from "@ory/client"
 import { ButtonLink, Divider, MenuLink, Typography } from "@ory/elements-markup"
 import { filterNodesByGroups, getNodeLabel } from "@ory/integrations/ui"
 import { AxiosError } from "axios"
 import { NextFunction, Response } from "express"
-import { RouteOptionsCreator } from "./route"
-import sdk, { apiBaseUrl } from "./sdk"
-import { toUiNodePartial } from "./ui"
 
 export * from "./logger"
 export * from "./middleware"
@@ -38,23 +38,23 @@ export const isQuerySet = (x: any): x is string =>
 // or 403 error code.
 export const redirectOnSoftError =
   (res: Response, next: NextFunction, redirectTo: string) =>
-    (err: AxiosError) => {
-      if (!err.response) {
-        next(err)
-        return
-      }
-
-      if (
-        err.response.status === 404 ||
-        err.response.status === 410 ||
-        err.response.status === 403
-      ) {
-        res.redirect(`${redirectTo}`)
-        return
-      }
-
+  (err: AxiosError) => {
+    if (!err.response) {
       next(err)
+      return
     }
+
+    if (
+      err.response.status === 404 ||
+      err.response.status === 410 ||
+      err.response.status === 403
+    ) {
+      res.redirect(`${redirectTo}`)
+      return
+    }
+
+    next(err)
+  }
 
 export const handlebarsHelpers = {
   jsonPretty: (context: any) => JSON.stringify(context, null, 2),

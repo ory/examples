@@ -1,7 +1,5 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
-
-import { CardGradient, Typography } from "@ory/elements-markup"
 import {
   defaultConfig,
   RouteCreator,
@@ -9,6 +7,7 @@ import {
   setSession,
 } from "../pkg"
 import { navigationMenu } from "../pkg/ui"
+import { CardGradient, Typography } from "@ory/elements-markup"
 
 export const createWelcomeRoute: RouteCreator =
   (createHelpers) => async (req, res) => {
