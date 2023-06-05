@@ -18,4 +18,5 @@ func TestParse(t *testing.T) {
 	assert.Equal(t, 8, c.URLLength)
 	assert.Equal(t, ":8090", c.BindAddr)
 	assert.Equal(t, "Hello", c.DSN)
+	assert.Equal(t, false, c.TestMode)
 }

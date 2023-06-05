@@ -11,10 +11,11 @@
           <router-link
             to="/"
             class="text-xl font-bold text-gray-800 md:text-2xl hover:text-blue-400"
-            >Shorts
+          >
+            Shorts
           </router-link>
           <!-- Mobile menu button -->
-          <div @click="showMenu = !showMenu" class="flex md:hidden">
+          <div class="flex md:hidden" @click="showMenu = !showMenu">
             <button
               type="button"
               class="text-gray-800 hover:text-gray-400 focus:outline-none focus:text-gray-400"
@@ -23,7 +24,7 @@
                 <path
                   fill-rule="evenodd"
                   d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-                ></path>
+                />
               </svg>
             </button>
           </div>
@@ -62,22 +63,22 @@
 </template>
 <script>
 export default {
-  name: "AppHeader",
-  computed: {
-    authenticated() {
-      return this.$store.state.session.authenticated
-    },
-    session() {
-      return this.$store.state.session.session
-    },
-    logoutURL() {
-      return this.$store.state.session.logoutURL
-    },
-  },
-  data() {
+  name: 'AppHeader',
+  data () {
     return {
-      showMenu: false,
+      showMenu: false
     }
   },
+  computed: {
+    authenticated () {
+      return this.$store.state.session.authenticated
+    },
+    session () {
+      return this.$store.state.session.session
+    },
+    logoutURL () {
+      return this.$store.state.session.logoutURL
+    }
+  }
 }
 </script>

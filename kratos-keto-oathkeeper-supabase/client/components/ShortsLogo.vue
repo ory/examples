@@ -3,8 +3,8 @@
 
 <template>
   <svg
-    class="ShortsLogo"
     id="a6ee8617-cc99-4eb9-a93b-e1a7e83c9724"
+    class="ShortsLogo"
     data-name="Layer 1"
     xmlns="http://www.w3.org/2000/svg"
     width="200"

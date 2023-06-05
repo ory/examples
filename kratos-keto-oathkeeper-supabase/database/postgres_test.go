@@ -1,24 +1,26 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
-package database
+package database_test
 
 import (
 	"testing"
 
 	"github.com/gen1us2k/shorts/config"
+	"github.com/gen1us2k/shorts/database"
 	"github.com/gen1us2k/shorts/model"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPostgres(t *testing.T) {
 	c, err := config.Parse()
 	assert.NoError(t, err)
-	p, err := NewPostgres(c)
+	p, err := database.NewPostgres(c)
 	assert.NoError(t, err)
 	u := model.URL{
 		URL:     "https://thelootdistrict.com/pvphub/demon-hunter/havoc/",
-		OwnerID: "0bdef0a0-0841-48ab-ad14-3b2b74b7237b",
+		OwnerID: uuid.NewString(),
 	}
 	url, err := p.ShortifyURL(u)
 	assert.NoError(t, err)

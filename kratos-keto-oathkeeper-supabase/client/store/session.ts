@@ -4,17 +4,17 @@
 export const state = () => ({
   session: {},
   authenticated: false,
-  logoutUrl: "",
+  logoutUrl: ''
 })
 
 export const mutations = {
-  setSession(state, session) {
+  setSession (state, session) {
     state.session = session
   },
-  setAuthenticated(state, authenticated) {
+  setAuthenticated (state, authenticated) {
     state.authenticated = authenticated
   },
-  setLogoutURL(state, logoutURL) {
+  setLogoutURL (state, logoutURL) {
     state.logoutURL = logoutURL
-  },
+  }
 }

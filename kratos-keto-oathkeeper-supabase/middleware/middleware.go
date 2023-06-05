@@ -22,7 +22,14 @@ func NewAuthenticationMiddleware(c *config.ShortsConfig) *AuthMiddleware {
 	}
 }
 func (a *AuthMiddleware) AuthenticationMiddleware(c *gin.Context) {
-	userID := c.Request.Header.Get("X-User")
+	var userID string
+
+	if !a.config.TestMode {
+		userID = c.Request.Header.Get("X-User")
+	} else {
+		userID = "dummyUserID"
+	}
+
 	if userID == "" {
 		c.Redirect(http.StatusMovedPermanently, a.config.UIURL)
 		return

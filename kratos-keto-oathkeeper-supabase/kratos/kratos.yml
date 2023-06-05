@@ -1,4 +1,4 @@
-version: v0.7.1-alpha.1
+version: v0.10.1
 
 dsn: memory
 
@@ -8,8 +8,8 @@ serve:
     cors:
       enabled: true
       allowed_origins:
-        - http://127.0.0.1:3001
         - http://127.0.0.1:3000
+        - http://localhost:3000
       allowed_methods:
         - GET
         - OPTIONS
@@ -21,7 +21,8 @@ serve:
 
 selfservice:
   default_browser_return_url: http://127.0.0.1:4455/
-  whitelisted_return_urls:
+  allowed_return_urls:
+    - http://127.0.0.1:3000
     - http://127.0.0.1:4455
 
   methods:
@@ -82,7 +83,10 @@ hashers:
     cost: 8
 
 identity:
-  default_schema_url: file:///etc/config/kratos/identity.schema.json
+  default_schema_id: preset://email
+  schemas:
+    - id: preset://email
+      url: file:///etc/config/kratos/identity.schema.json
 
 courier:
   smtp:
