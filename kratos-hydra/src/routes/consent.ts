@@ -1,5 +1,6 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
+
 import { defaultConfig, RouteCreator, RouteRegistrator } from "../pkg"
 import { register404Route } from "./404"
 import { oidcConformityMaybeFakeSession } from "./stub/oidc-cert"

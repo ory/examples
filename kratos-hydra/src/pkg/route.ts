@@ -1,5 +1,6 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
+
 import { FrontendApi, IdentityApi, OAuth2Api, PermissionApi } from "@ory/client"
 import { Theme } from "@ory/elements-markup"
 import { Application, NextFunction, Request, Response } from "express"
