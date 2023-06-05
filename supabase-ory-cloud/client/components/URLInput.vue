@@ -3,22 +3,22 @@
 
 <template>
   <div class="w-full">
-    <div class="w-full mt-6 flex rounded-md shadow-sm" v-if="authenticated">
+    <div class="mt-6 flex w-full rounded-md shadow-sm" v-if="authenticated">
       <div class="relative flex-grow focus-within:z-10">
         <DownloadIcon />
         <input
           v-model="url"
-          class="text-gray-700 py-3 form-input block w-full rounded-none rounded-l-md pl-10 transition ease-in-out duration-150 font-semibold sm:text-sm sm:leading-5"
+          class="form-input block w-full rounded-none rounded-l-md py-3 pl-10 font-semibold text-gray-700 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
           placeholder="www.example.com"
         />
       </div>
       <button
         v-if="!loading"
         @click="shorten"
-        class="group -ml-px relative inline-flex items-center px-3 py-3 border border-indigo-300 text-sm leading-5 font-medium rounded-r-md text-white bg-indigo-700 hover:text-indigo-700 hover:bg-white focus:outline-none focus:shadow-outline-blue focus:border-indigo-300 active:bg-gray-100 active:text-indigo-700 transition ease-in-out duration-150"
+        class="focus:shadow-outline-blue group relative -ml-px inline-flex items-center rounded-r-md border border-indigo-300 bg-indigo-700 px-3 py-3 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out hover:bg-white hover:text-indigo-700 focus:border-indigo-300 focus:outline-none active:bg-gray-100 active:text-indigo-700"
       >
         <svg
-          class="text-white h-5 w-5 group-hover:text-indigo-700"
+          class="h-5 w-5 text-white group-hover:text-indigo-700"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -35,10 +35,10 @@
       </button>
       <button
         v-else
-        class="group -ml-px relative inline-flex items-center px-3 py-3 border border-indigo-300 text-sm leading-5 font-medium rounded-r-md text-white bg-indigo-700 hover:text-indigo-700 hover:bg-white focus:outline-none focus:shadow-outline-blue focus:border-indigo-300 active:bg-gray-100 active:text-indigo-700 transition ease-in-out duration-150"
+        class="focus:shadow-outline-blue group relative -ml-px inline-flex items-center rounded-r-md border border-indigo-300 bg-indigo-700 px-3 py-3 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out hover:bg-white hover:text-indigo-700 focus:border-indigo-300 focus:outline-none active:bg-gray-100 active:text-indigo-700"
       >
         <svg
-          class="text-white h-5 w-5 group-hover:text-indigo-700 animate-spin"
+          class="h-5 w-5 animate-spin text-white group-hover:text-indigo-700"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -54,7 +54,7 @@
         <span class="ml-2 text-sm font-semibold">Shortening</span>
       </button>
     </div>
-    <p v-show="errorMessage" class="text-xs font-semibold text-red-600 italic">
+    <p v-show="errorMessage" class="text-xs font-semibold italic text-red-600">
       {{ errorMessage }}
     </p>
   </div>

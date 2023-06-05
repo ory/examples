@@ -1,5 +1,6 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
+
 import { UiNodeInputAttributes, UiNode, Session } from "@ory/client"
 import { Nav } from "@ory/elements-markup"
 import {
