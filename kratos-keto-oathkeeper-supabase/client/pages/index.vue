@@ -3,18 +3,18 @@
 
 <template>
   <!-- Container -->
-  <div class="w-full min-h-screen bg-gray-100">
+  <div class="min-h-screen w-full bg-gray-100">
     <AppHeader />
     <div
-      class="max-w-2xl mx-auto flex flex-col items-center justify-center px-4"
+      class="mx-auto flex max-w-2xl flex-col items-center justify-center px-4"
     >
       <!-- Logo Image -->
       <ShortsLogo />
       <!-- Header -->
-      <h1 class="text-gray-900 font-black text-5xl uppercase text-center">
+      <h1 class="text-center text-5xl font-black uppercase text-gray-900">
         Shorts
       </h1>
-      <h2 class="text-indigo-700 text-sm font-semibold italic">
+      <h2 class="text-sm font-semibold italic text-indigo-700">
         Make your URLs shorter!
       </h2>
 
