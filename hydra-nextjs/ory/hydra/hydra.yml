@@ -1,0 +1,30 @@
+serve:
+  public:
+    host: 0.0.0.0
+    port: 4444
+    
+  admin:
+    host: 0.0.0.0
+    port: 4445
+
+  cookies:
+    same_site_mode: Lax
+
+urls:
+  self:
+    issuer: http://localhost:4444
+  consent: http://localhost:3000/auth/consent
+  login: http://localhost:3000/auth/sign-in
+  logout: http://localhost:3000/auth/sign-out
+
+secrets:
+  system:
+    - youReallyNeedToChangeThis
+
+oidc:
+  subject_identifiers:
+    supported_types:
+      - pairwise
+      - public
+    pairwise:
+      salt: youReallyNeedToChangeThis
