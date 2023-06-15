@@ -1,7 +1,0 @@
-*.hbs
-.github/pull_request_template.md
-CONTRIBUTING.md
-contrib/sdk
-public/flexboxgrid.min.css
-
-elements/

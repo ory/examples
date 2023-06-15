@@ -50,16 +50,13 @@ services:
         read_only: false
 
   kratos-selfservice-ui-node:
-    build:
-      context: ../..
-      dockerfile: Dockerfile
+    image: oryd/kratos-selfservice-ui-node:v0.13.0-4
     environment:
       - HYDRA_ADMIN_URL=http://hydra:4445
       - KRATOS_PUBLIC_URL=http://kratos:4433
       - KRATOS_ADMIN_URL=http://kratos:4434
       - SECURITY_MODE=standalone
       - KRATOS_BROWSER_URL=http://127.0.0.1:4433
-      # - KRATOS_BROWSER_URL=http://127.0.0.1:3000/.ory/kratos/public
 
     ports:
       - "3000:3000"
@@ -69,7 +66,7 @@ services:
       - /tmp/ui-node/logs:/root/.npm/_logs
 
   kratos-migrate:
-    image: oryd/kratos:v0.13.0
+    image: oryd/kratos:v1.0.0
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true&mode=rwc
     volumes:
@@ -88,7 +85,7 @@ services:
   kratos:
     depends_on:
       - kratos-migrate
-    image: oryd/kratos:v0.13.0
+    image: oryd/kratos:v1.0.0
     ports:
       - "4433:4433" # public
       - "4434:4434" # admin
