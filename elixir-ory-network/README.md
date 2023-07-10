@@ -15,10 +15,10 @@ A simple server-side rendered web application serving Custom UI for Ory Flows.
 
 ### Configure your Ory Network/Kratos project
 Set up your Custom UI to the following values:
-|Custom UI|URL|
-|---|---|
-|Login UI|https://localhost:3000/auth/login|
-|Registration UI|https://localhost:3000/auth/rgistration|
+| Custom UI       | URL                                     |
+| --------------- | --------------------------------------- |
+| Login UI        | https://localhost:3000/auth/login       |
+| Registration UI | https://localhost:3000/auth/rgistration |
 
 > NOTE: The other UIs are currently not implemented in this example.
 
