@@ -1,17 +1,20 @@
 # ORY Hydra Next.js Reference Implementation
 
-This is a Next.js app which sets up a OAuth 2.0 and OpenID Connect Provider using [Ory Hydra](https://www.ory.sh/docs/hydra/) as a backend. It has an unstyled UI and doesn't implement user management but can be easily modified to fit into your existing system.
+This is a Next.js app which sets up a OAuth 2.0 and OpenID Connect Provider
+using [Ory Hydra](https://www.ory.sh/docs/hydra/) as a backend. It has an
+unstyled UI and doesn't implement user management but can be easily modified to
+fit into your existing system.
 
 # Features
 
-  * User login, logout, registration, consent
-  * CSRF protection with [edge-csrf](https://github.com/amorey/edge-csrf)
-  * Super-strict HTTP security headers (configurable)
-  * Client-side JavaScript disabled by default
-  * Unit tests with Jest
-  * E2E tests with Cypress
-  * Start/stop Hydra in development using docker-compose
-  * Easily customizable
+- User login, logout, registration, consent
+- CSRF protection with [edge-csrf](https://github.com/amorey/edge-csrf)
+- Super-strict HTTP security headers (configurable)
+- Client-side JavaScript disabled by default
+- Unit tests with Jest
+- E2E tests with Cypress
+- Start/stop Hydra in development using docker-compose
+- Easily customizable
 
 ## Configuration
 
@@ -36,7 +39,8 @@ To run the Next.js app server in development mode:
 yarn dev
 ```
 
-To start/stop hydra in development you can use the docker-compose file found in the `ory/` directory:
+To start/stop hydra in development you can use the docker-compose file found in
+the `ory/` directory:
 
 ```sh
 # start

@@ -2,7 +2,7 @@ serve:
   public:
     host: 0.0.0.0
     port: 4444
-    
+
   admin:
     host: 0.0.0.0
     port: 4445
