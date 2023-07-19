@@ -55,7 +55,7 @@ def vpncheck(request):
 
     # Check the response from vpnapi.io
     if "error" in vpn_result and vpn_result["error"] == "Blocked":
-        return error_response("Request blocked: Blocked by vpn api")
+        return error_response("Request blocked: Blocked by VPN API")
 
     if "security" in vpn_result:
         security_info = vpn_result["security"]
