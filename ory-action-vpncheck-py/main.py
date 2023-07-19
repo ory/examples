@@ -7,7 +7,7 @@ import requests
 import os
 
 # load google cloud logging if running on GCP
-if os.getenv('GCP_PROJECT', ''):
+if os.getenv('ENABLE_CLOUD_LOGGING', ''):
     # set up the Google Cloud Logging python client library
     import google.cloud.logging
     client = google.cloud.logging.Client()
