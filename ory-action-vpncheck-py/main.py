@@ -6,10 +6,13 @@ import requests
 
 import os
 
-# set up the Google Cloud Logging python client library
-import google.cloud.logging
-client = google.cloud.logging.Client()
-client.setup_logging()
+# load google cloud logging if running on GCP
+if os.getenv('SERVER_SOFTWARE', ''):
+    # set up the Google Cloud Logging python client library
+    import google.cloud.logging
+    client = google.cloud.logging.Client()
+    client.setup_logging()
+
 # use Python’s standard logging library to send logs to GCP
 import logging
 

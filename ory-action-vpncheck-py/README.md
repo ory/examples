@@ -30,12 +30,18 @@ For Development:
 - requests
 - google cloud logging
 
+To install dependencies, run e.g.
+
+```bash
+    pip3 install google-cloud-logging
+```
+
 ### Run locally
 
 ```bash
     export BEARER_TOKEN=SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK;
     export VPNAPIIO_API_KEY=YOUR_VPNAPI_KEY;
-    $ python3 main.py
+    python3 main.py
 ```
 
 ### Send a sample request
