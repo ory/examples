@@ -3,6 +3,20 @@
 Contribute your Ory Actions webhook examples here.  
 Add your own webhooks or ideas and contribute to the community!
 
+- Have you built a Ory Action that's currently in use? Don't keep it to
+  yourself!
+
+  -> Open a PR with the code example, the Ory Actions configuration, and a short
+  README.
+
+- Got an idea for an integration with Ory Actions? We're all ears!
+
+  -> Open an issue with what you want to integrate and how it should work.
+
+The Ory team will help you get the example merged. And here's the best part - if
+your submission gets accepted, you have the chance for get some exclusive Ory
+Swag!
+
 For more information on Ory Actions please refer to the
 [Ory Documentation](https://www.ory.sh/docs/kratos/hooks/configure-hooks).
 
