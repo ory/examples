@@ -1,7 +1,7 @@
 # Ory Action to check IP addresses against vpnapi.io
 
 This is an example Action (webhook) to check client IP addresses against
-vpnapi.com and block requests
+security services like focsec.com, vpnapi.com and ipqs.com and block requests
 
 - coming from TOR clients
 - coming from known VPNs
@@ -34,6 +34,7 @@ pip3 install google-cloud-logging
 ```bash
 export BEARER_TOKEN=SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK;
 export VPNAPIIO_API_KEY=YOUR_VPNAPI_KEY;
+export FOCSEC_API_KEY=YOUR_FOCSEC_KEY;
 python3 main.py
 ```
 
@@ -41,7 +42,7 @@ python3 main.py
 
 ```bash
 cd ory-actions/vpncheck-py
-python3 main.py
+python3 focsec.py # or vpnapi.py
 ```
 
 #### Send a sample request
@@ -69,6 +70,7 @@ After setting up your GCP project (see, for example,
 you can deploy the Action as a cloud function:
 
 ```bash
+cp focsec.py main.py # Cloud functions like a main.py
 gcloud functions deploy vpncheck --runtime python39 --trigger-http --allow-unauthenticated --set-env-vars BEARER_TOKEN=$SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK,VPNAPIIO_API_KEY=$VPNAPIIO_API_KEY,ENABLE_CLOUD_LOGGING=true --source=.
 ```
 
