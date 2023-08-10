@@ -34,7 +34,7 @@ pip3 install google-cloud-logging
 ```bash
 export BEARER_TOKEN=SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK;
 # Set the API Key for the service you use
-export VPNAPIIO_API_KEY=YOUR_VPNAPI_KEY; 
+export VPNAPIIO_API_KEY=YOUR_VPNAPI_KEY;
 export FOCSEC_API_KEY=YOUR_FOCSEC_KEY;
 export IPQS_API_KEY=YOUR_IPQS_KEY;
 ```
