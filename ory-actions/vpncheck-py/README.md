@@ -1,11 +1,11 @@
-# Ory Action to check IP addresses against vpnapi.io
+# Ory Action to check IP addresses against VPN and Fraud detection services
 
 This is an example Action (webhook) to check client IP addresses against
-vpnapi.com and block requests
+security services like focsec.com, vpnapi.com and ipqs.com and block requests
 
 - coming from TOR clients
 - coming from known VPNs
-- coming from certain geographies (in this example: RU)
+- coming from certain geographies
 
 It's intended for use as a post-login Action on Ory Network and returns a
 message that can be parsed by Ory and displayed to the user.
@@ -19,7 +19,7 @@ Cloud Functions, and can be adapted for different scenarios.
 
 - A Google Cloud project with Cloud Functions active (or an alternate way to
   deploy)
-- A vpnapi.com account
+- An account with focsec.com, ipqs.com or vpnapi.com
 - python 3.9+ with flask, requests, google cloud logging
 
 To install dependencies, run e.g.
@@ -33,15 +33,17 @@ pip3 install google-cloud-logging
 
 ```bash
 export BEARER_TOKEN=SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK;
+# Set the API Key for the service you use
 export VPNAPIIO_API_KEY=YOUR_VPNAPI_KEY;
-python3 main.py
+export FOCSEC_API_KEY=YOUR_FOCSEC_KEY;
+export IPQS_API_KEY=YOUR_IPQS_KEY;
 ```
 
 ### Run locally
 
 ```bash
 cd ory-actions/vpncheck-py
-python3 main.py
+python3 focsec.py # or vpnapi.py or ipqs.py
 ```
 
 #### Send a sample request
@@ -69,7 +71,8 @@ After setting up your GCP project (see, for example,
 you can deploy the Action as a cloud function:
 
 ```bash
-gcloud functions deploy vpncheck --runtime python39 --trigger-http --allow-unauthenticated --set-env-vars BEARER_TOKEN=$SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK,VPNAPIIO_API_KEY=$VPNAPIIO_API_KEY,ENABLE_CLOUD_LOGGING=true --source=.
+cp focsec.py main.py # Cloud functions like a main.py, so copy the implementation you're adopting there
+gcloud functions deploy vpncheck --runtime python39 --trigger-http --allow-unauthenticated --set-env-vars BEARER_TOKEN=$SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK,VPNAPIIO_API_KEY=$VPNAPIIO_API_KEY,IPQS_API_KEY=$IPQS_API_KEY,ENABLE_CLOUD_LOGGING=true --source=.
 ```
 
 Note: You may need to create a `venv` for dependencies to load correctly.
