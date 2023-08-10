@@ -29,8 +29,6 @@ You'll need the following software to run this example:
 
 The example uses the following environment variables:
 
-- DATABASE_URL: The URL of the database used by Ory Kratos
-
 - PUBLIC_PORT: The public port of the Ory Hydra server
 
 - ADMIN_PORT: The admin port of the Ory Hydra server
@@ -52,11 +50,49 @@ URLS_SELF_ISSUER=http://localhost:4445/
 To run the example locally, clone the repository and run the following commands
 in the root of the project:
 
-```
+```shell script
 docker-compose up
 ```
 
-This will start the Ory Hydra and Ory Kratos servers in Docker containers.
+This will start the Ory Hydra, Ory Kratos, Kratos SelfService UI Node servers in
+Docker containers.
+
+Next, create an OAuth2 client and store its data in variable
+
+```shell script
+code_client=$(docker-compose exec hydra \
+    hydra create client \
+    --endpoint http://127.0.0.1:4445 \
+    --grant-type authorization_code,refresh_token \
+    --response-type code,id_token \
+    --format json \
+    --scope openid --scope offline \
+    --redirect-uri http://127.0.0.1:5555/callback)
+```
+
+Store OAuth2 client identifier and secret in variables
+
+```shell script
+code_client_id=$(echo $code_client | jq -r '.client_id')
+```
+
+```shell script
+code_client_secret=$(echo $code_client | jq -r '.client_secret')
+```
+
+And perform an OAuth2 Authorize Code Flow
+
+```shell script
+docker-compose exec hydra \
+    hydra perform authorization-code \
+    --client-id $code_client_id \
+    --client-secret $code_client_secret \
+    --endpoint http://127.0.0.1:4444/ \
+    --port 5555 \
+    --scope openid --scope offline
+```
+
+And navigate to http://127.0.0.1:5555 in your browser
 
 ### Run tests
 

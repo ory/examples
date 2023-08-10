@@ -1,7 +1,0 @@
-npmName: "@ory/client"
-npmVersion: v0.0.1
-supportsES6: true
-ensureUniqueParams: true
-modelPropertyNaming: original
-disallowAdditionalPropertiesIfNotPresent: false
-withInterfaces: true
