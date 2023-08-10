@@ -19,7 +19,7 @@ Cloud Functions, and can be adapted for different scenarios.
 
 - A Google Cloud project with Cloud Functions active (or an alternate way to
   deploy)
-- A vpnapi.com account
+- An account with focsec.com, ipqs.com or vpnapi.com
 - python 3.9+ with flask, requests, google cloud logging
 
 To install dependencies, run e.g.
