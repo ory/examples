@@ -1,11 +1,11 @@
-# Ory Action to check IP addresses against vpnapi.io
+# Ory Action to check IP addresses against VPN and Fraud detection services
 
 This is an example Action (webhook) to check client IP addresses against
 security services like focsec.com, vpnapi.com and ipqs.com and block requests
 
 - coming from TOR clients
 - coming from known VPNs
-- coming from certain geographies (in this example: RU)
+- coming from certain geographies
 
 It's intended for use as a post-login Action on Ory Network and returns a
 message that can be parsed by Ory and displayed to the user.
