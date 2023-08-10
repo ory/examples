@@ -33,16 +33,17 @@ pip3 install google-cloud-logging
 
 ```bash
 export BEARER_TOKEN=SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK;
-export VPNAPIIO_API_KEY=YOUR_VPNAPI_KEY;
+# Set the API Key for the service you use
+export VPNAPIIO_API_KEY=YOUR_VPNAPI_KEY; 
 export FOCSEC_API_KEY=YOUR_FOCSEC_KEY;
-python3 main.py
+export IPQS_API_KEY=YOUR_IPQS_KEY;
 ```
 
 ### Run locally
 
 ```bash
 cd ory-actions/vpncheck-py
-python3 focsec.py # or vpnapi.py
+python3 focsec.py # or vpnapi.py or ipqs.py
 ```
 
 #### Send a sample request
@@ -70,8 +71,8 @@ After setting up your GCP project (see, for example,
 you can deploy the Action as a cloud function:
 
 ```bash
-cp focsec.py main.py # Cloud functions like a main.py
-gcloud functions deploy vpncheck --runtime python39 --trigger-http --allow-unauthenticated --set-env-vars BEARER_TOKEN=$SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK,VPNAPIIO_API_KEY=$VPNAPIIO_API_KEY,ENABLE_CLOUD_LOGGING=true --source=.
+cp focsec.py main.py # Cloud functions like a main.py, so copy the implementation you're adopting there
+gcloud functions deploy vpncheck --runtime python39 --trigger-http --allow-unauthenticated --set-env-vars BEARER_TOKEN=$SOME_SECRET_API_KEY_FOR_YOUR_WEBHOOK,VPNAPIIO_API_KEY=$VPNAPIIO_API_KEY,IPQS_API_KEY=$IPQS_API_KEY,ENABLE_CLOUD_LOGGING=true --source=.
 ```
 
 Note: You may need to create a `venv` for dependencies to load correctly.
