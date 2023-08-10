@@ -79,7 +79,6 @@ def vpncheck(request):
     # Return the result as success or error details
     return jsonify(vpn_result), 200
 
-
 def error_response(msg):
     return jsonify({"messages": [{ "messages": [{ "text": msg }] }]}), 400
 
