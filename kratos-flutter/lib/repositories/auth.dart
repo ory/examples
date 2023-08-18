@@ -13,4 +13,9 @@ class AuthRepository {
     final session = await service.getCurrentSessionInformation();
     return session;
   }
+
+  Future<String> createLoginFlow() async {
+    final flowId = await service.createLoginFlow();
+    return flowId;
+  }
 }
