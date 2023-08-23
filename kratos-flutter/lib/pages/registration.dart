@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/auth/auth_bloc.dart';
-import '../blocs/login/login_bloc.dart';
+import '../blocs/registration/registration_bloc.dart';
 import '../repositories/auth.dart';
-import 'registration.dart';
+import 'login.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class RegistrationPage extends StatelessWidget {
+  const RegistrationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-          create: (context) => LoginBloc(
+          create: (context) => RegistrationBloc(
               authBloc: context.read<AuthBloc>(),
               repository: RepositoryProvider.of<AuthRepository>(context))
-            ..add(CreateLoginFlow()),
+            ..add(CreateRegistrationFlow()),
           child: const LoginForm()),
     );
   }
@@ -27,20 +27,21 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loginBloc = BlocProvider.of<LoginBloc>(context);
-    return BlocBuilder<LoginBloc, LoginState>(
-        bloc: loginBloc,
+    final registrationBloc = BlocProvider.of<RegistrationBloc>(context);
+    return BlocBuilder<RegistrationBloc, RegistrationState>(
+        bloc: registrationBloc,
         builder: (context, state) {
-          // creating login flow is in process, show loading indicator
+          // creating registration flow is in process, show loading indicator
           if (state.flowId != null) {
-            return _buildLoginForm(context, state);
+            return _buildRegistrationForm(context, state);
           } else {
-            return _buildLoginFlowNotCreated(context, state);
+            return _buildRegistrationFlowNotCreated(context, state);
           }
         });
   }
 
-  _buildLoginFlowNotCreated(BuildContext context, LoginState state) {
+  _buildRegistrationFlowNotCreated(
+      BuildContext context, RegistrationState state) {
     if (state.errorMessage != null) {
       return Center(
           child: Text(
@@ -52,7 +53,7 @@ class LoginForm extends StatelessWidget {
     }
   }
 
-  _buildLoginForm(BuildContext context, LoginState state) {
+  _buildRegistrationForm(BuildContext context, RegistrationState state) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Center(
@@ -64,7 +65,7 @@ class LoginForm extends StatelessWidget {
             enabled: !state.isLoading,
             initialValue: state.email.value,
             onChanged: (String value) =>
-                context.read<LoginBloc>().add(ChangeEmail(value: value)),
+                context.read<RegistrationBloc>().add(ChangeEmail(value: value)),
             decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 label: const Text('Email'),
@@ -78,8 +79,9 @@ class LoginForm extends StatelessWidget {
           TextFormField(
             enabled: !state.isLoading,
             initialValue: state.email.value,
-            onChanged: (String value) =>
-                context.read<LoginBloc>().add(ChangePassword(value: value)),
+            onChanged: (String value) => context
+                .read<RegistrationBloc>()
+                .add(ChangePassword(value: value)),
             decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 label: const Text('Password'),
@@ -94,16 +96,16 @@ class LoginForm extends StatelessWidget {
             Text(
               state.errorMessage!,
               style: const TextStyle(color: Colors.red),
-              maxLines: 3,
             ),
           OutlinedButton(
               onPressed: state.isLoading
                   ? null
                   : () {
-                      context.read<LoginBloc>().add(LoginWithEmailAndPassword(
-                          flowId: state.flowId!,
-                          email: state.email.value,
-                          password: state.password.value));
+                      context.read<RegistrationBloc>().add(
+                          RegisterWithEmailAndPassword(
+                              flowId: state.flowId!,
+                              email: state.email.value,
+                              password: state.password.value));
                     },
               child: const Text('Submit')),
           const SizedBox(
@@ -112,12 +114,12 @@ class LoginForm extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Don\'t have an account yet?'),
+              Text('Already have an account?'),
               TextButton(
                   onPressed: () => Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                          builder: (context) => const RegistrationPage())),
-                  child: const Text('Get started'))
+                          builder: (context) => const LoginPage())),
+                  child: Text('Log in'))
             ],
           )
         ],

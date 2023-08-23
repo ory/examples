@@ -1,15 +1,15 @@
-part of 'login_bloc.dart';
+part of 'registration_bloc.dart';
 
 @immutable
-sealed class LoginEvent extends Equatable {
+sealed class RegistrationEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-//create login flow
-final class CreateLoginFlow extends LoginEvent {}
+//create registration flow
+final class CreateRegistrationFlow extends RegistrationEvent {}
 
-final class ChangeEmail extends LoginEvent {
+final class ChangeEmail extends RegistrationEvent {
   final String value;
 
   ChangeEmail({required this.value});
@@ -18,7 +18,7 @@ final class ChangeEmail extends LoginEvent {
   List<Object> get props => [value];
 }
 
-final class ChangePassword extends LoginEvent {
+final class ChangePassword extends RegistrationEvent {
   final String value;
 
   ChangePassword({required this.value});
@@ -28,12 +28,12 @@ final class ChangePassword extends LoginEvent {
 }
 
 //log in
-final class LoginWithEmailAndPassword extends LoginEvent {
+final class RegisterWithEmailAndPassword extends RegistrationEvent {
   final String flowId;
   final String email;
   final String password;
 
-  LoginWithEmailAndPassword(
+  RegisterWithEmailAndPassword(
       {required this.flowId, required this.email, required this.password});
 
   @override

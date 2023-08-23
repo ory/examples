@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'message.dart';
+import '../entities/message.dart';
 
 part 'exceptions.freezed.dart';
 
@@ -9,7 +9,7 @@ part 'exceptions.freezed.dart';
 sealed class CustomException with _$CustomException {
   const CustomException._();
   const factory CustomException.badRequest(
-      {List<UiNodeMessage>? messages,
+      {List<NodeMessage>? messages,
       @Default(400) int statusCode}) = BadRequestException;
   const factory CustomException.unauthorized({@Default(401) int statusCode}) =
       UnauthorizedException;

@@ -8,26 +8,26 @@ import '../../repositories/auth.dart';
 import '../../services/exceptions.dart';
 import '../auth/auth_bloc.dart';
 
-part 'login_event.dart';
-part 'login_state.dart';
-part 'login_bloc.freezed.dart';
+part 'registration_event.dart';
+part 'registration_state.dart';
+part 'registration_bloc.freezed.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final AuthBloc authBloc;
   final AuthRepository repository;
-  LoginBloc({required this.authBloc, required this.repository})
-      : super(LoginState()) {
-    on<CreateLoginFlow>(_onCreateLoginFlow);
+  RegistrationBloc({required this.authBloc, required this.repository})
+      : super(RegistrationState()) {
+    on<CreateRegistrationFlow>(_onCreateRegistrationFlow);
     on<ChangeEmail>(_onChangeEmail);
     on<ChangePassword>(_onChangePassword);
-    on<LoginWithEmailAndPassword>(_onLoginWithEmailAndPassword);
+    on<RegisterWithEmailAndPassword>(_onRegisterWithEmailAndPassword);
   }
 
-  Future<void> _onCreateLoginFlow(
-      CreateLoginFlow event, Emitter<LoginState> emit) async {
+  Future<void> _onCreateRegistrationFlow(
+      CreateRegistrationFlow event, Emitter<RegistrationState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, errorMessage: null));
-      final flowId = await repository.createLoginFlow();
+      final flowId = await repository.createRegistrationFlow();
       emit(state.copyWith(flowId: flowId, isLoading: false));
     } on CustomException catch (e) {
       if (e case UnknownException _) {
@@ -38,33 +38,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  _onChangeEmail(ChangeEmail event, Emitter<LoginState> emit) {
+  _onChangeEmail(ChangeEmail event, Emitter<RegistrationState> emit) {
     // remove email and general error when changing email
     emit(state.copyWith
         .email(value: event.value, errorMessage: null)
         .copyWith(errorMessage: null));
   }
 
-  _onChangePassword(ChangePassword event, Emitter<LoginState> emit) {
+  _onChangePassword(ChangePassword event, Emitter<RegistrationState> emit) {
     // remove password and general error when changing email
     emit(state.copyWith
         .password(value: event.value, errorMessage: null)
         .copyWith(errorMessage: null));
   }
 
-  Future<void> _onLoginWithEmailAndPassword(
-      LoginWithEmailAndPassword event, Emitter<LoginState> emit) async {
+  Future<void> _onRegisterWithEmailAndPassword(
+      RegisterWithEmailAndPassword event,
+      Emitter<RegistrationState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, errorMessage: null));
 
-      await repository.loginWithEmailAndPassword(
+      await repository.registerWithEmailAndPassword(
           flowId: event.flowId, email: event.email, password: event.password);
 
       authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
     } on CustomException catch (e) {
       if (e case BadRequestException _) {
+        // get credential errors
         final emailMessage = e.messages
-            ?.firstWhereOrNull((element) => element.attr == 'identifier');
+            ?.firstWhereOrNull((element) => element.attr == 'traits.email');
         final passwordMessage = e.messages
             ?.firstWhereOrNull((element) => element.attr == 'password');
         final generalMessage = e.messages
@@ -79,7 +81,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             .password(errorMessage: passwordMessage?.text));
       } else if (e case FlowExpiredException _) {
         // use new flow id to log in user
-        add(LoginWithEmailAndPassword(
+        add(RegisterWithEmailAndPassword(
             flowId: e.flowId,
             email: state.email.value,
             password: state.password.value));

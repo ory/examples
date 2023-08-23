@@ -19,11 +19,24 @@ class AuthRepository {
     return flowId;
   }
 
+  Future<String> createRegistrationFlow() async {
+    final flowId = await service.createRegistrationFlow();
+    return flowId;
+  }
+
   Future<void> loginWithEmailAndPassword(
       {required String flowId,
       required String email,
       required String password}) async {
     await service.loginWithEmailAndPassword(
+        flowId: flowId, email: email, password: password);
+  }
+
+  Future<void> registerWithEmailAndPassword(
+      {required String flowId,
+      required String email,
+      required String password}) async {
+    await service.registerWithEmailAndPassword(
         flowId: flowId, email: email, password: password);
   }
 }
