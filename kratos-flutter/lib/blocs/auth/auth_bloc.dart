@@ -26,19 +26,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       GetCurrentSessionInformation event, Emitter<AuthState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, errorMessage: null));
+
       final session = await repository.getCurrentSessionInformation();
+
       emit(state.copyWith(
           isLoading: false,
           status: AuthStatus.authenticated,
           session: session));
     } on CustomException catch (e) {
-      if (e.exceptionType == OryExceptionType.unauthorizedException) {
+      if (e case UnauthorizedException _) {
         emit(state.copyWith(
-            status: AuthStatus.unauthenticated,
-            isLoading: false,
-            errorMessage: e.message));
+            status: AuthStatus.unauthenticated, isLoading: false));
+      } else if (e case UnknownException _) {
+        emit(state.copyWith(isLoading: false, errorMessage: e.message));
+      } else {
+        emit(state.copyWith(isLoading: false));
       }
-      emit(state.copyWith(isLoading: false, errorMessage: e.message));
     }
   }
 }

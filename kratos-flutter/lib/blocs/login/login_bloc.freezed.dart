@@ -17,8 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$LoginState {
   String? get flowId => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
+  FormField<String> get email => throw _privateConstructorUsedError;
+  FormField<String> get password => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
@@ -35,10 +35,13 @@ abstract class $LoginStateCopyWith<$Res> {
   @useResult
   $Res call(
       {String? flowId,
-      String email,
-      String password,
+      FormField<String> email,
+      FormField<String> password,
       bool isLoading,
       String? errorMessage});
+
+  $FormFieldCopyWith<String, $Res> get email;
+  $FormFieldCopyWith<String, $Res> get password;
 }
 
 /// @nodoc
@@ -68,11 +71,11 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as FormField<String>,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as FormField<String>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -82,6 +85,22 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FormFieldCopyWith<String, $Res> get email {
+    return $FormFieldCopyWith<String, $Res>(_value.email, (value) {
+      return _then(_value.copyWith(email: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FormFieldCopyWith<String, $Res> get password {
+    return $FormFieldCopyWith<String, $Res>(_value.password, (value) {
+      return _then(_value.copyWith(password: value) as $Val);
+    });
   }
 }
 
@@ -95,10 +114,15 @@ abstract class _$$_LoginStateCopyWith<$Res>
   @useResult
   $Res call(
       {String? flowId,
-      String email,
-      String password,
+      FormField<String> email,
+      FormField<String> password,
       bool isLoading,
       String? errorMessage});
+
+  @override
+  $FormFieldCopyWith<String, $Res> get email;
+  @override
+  $FormFieldCopyWith<String, $Res> get password;
 }
 
 /// @nodoc
@@ -126,11 +150,11 @@ class __$$_LoginStateCopyWithImpl<$Res>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as FormField<String>,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as FormField<String>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -148,8 +172,8 @@ class __$$_LoginStateCopyWithImpl<$Res>
 class _$_LoginState implements _LoginState {
   const _$_LoginState(
       {this.flowId,
-      this.email = '',
-      this.password = '',
+      this.email = const FormField<String>(value: ''),
+      this.password = const FormField<String>(value: ''),
       this.isLoading = false,
       this.errorMessage});
 
@@ -157,10 +181,10 @@ class _$_LoginState implements _LoginState {
   final String? flowId;
   @override
   @JsonKey()
-  final String email;
+  final FormField<String> email;
   @override
   @JsonKey()
-  final String password;
+  final FormField<String> password;
   @override
   @JsonKey()
   final bool isLoading;
@@ -201,17 +225,17 @@ class _$_LoginState implements _LoginState {
 abstract class _LoginState implements LoginState {
   const factory _LoginState(
       {final String? flowId,
-      final String email,
-      final String password,
+      final FormField<String> email,
+      final FormField<String> password,
       final bool isLoading,
       final String? errorMessage}) = _$_LoginState;
 
   @override
   String? get flowId;
   @override
-  String get email;
+  FormField<String> get email;
   @override
-  String get password;
+  FormField<String> get password;
   @override
   bool get isLoading;
   @override

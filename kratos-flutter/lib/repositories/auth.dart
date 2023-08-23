@@ -18,4 +18,12 @@ class AuthRepository {
     final flowId = await service.createLoginFlow();
     return flowId;
   }
+
+  Future<void> loginWithEmailAndPassword(
+      {required String flowId,
+      required String email,
+      required String password}) async {
+    await service.loginWithEmailAndPassword(
+        flowId: flowId, email: email, password: password);
+  }
 }

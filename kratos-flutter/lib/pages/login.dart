@@ -41,7 +41,11 @@ class LoginForm extends StatelessWidget {
 
   _buildLoginFlowNotCreated(BuildContext context, LoginState state) {
     if (state.errorMessage != null) {
-      return Center(child: Text(state.errorMessage!));
+      return Center(
+          child: Text(
+        state.errorMessage!,
+        style: const TextStyle(color: Colors.red),
+      ));
     } else {
       return const Center(child: CircularProgressIndicator());
     }
@@ -49,7 +53,7 @@ class LoginForm extends StatelessWidget {
 
   _buildLoginForm(BuildContext context, LoginState state) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(20.0),
       child: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -57,33 +61,45 @@ class LoginForm extends StatelessWidget {
         children: [
           TextFormField(
             enabled: !state.isLoading,
-            initialValue: state.email,
+            initialValue: state.email.value,
             onChanged: (String value) =>
                 context.read<LoginBloc>().add(ChangeEmail(value: value)),
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              label: Text('Email'),
-              hintText: 'Enter your email',
-            ),
+            decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                label: const Text('Email'),
+                hintText: 'Enter your email',
+                errorText: state.email.errorMessage),
           ),
           const SizedBox(
             height: 20,
           ),
           TextFormField(
             enabled: !state.isLoading,
-            initialValue: state.email,
+            initialValue: state.email.value,
             onChanged: (String value) =>
                 context.read<LoginBloc>().add(ChangePassword(value: value)),
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              label: Text('Password'),
-              hintText: 'Enter your password',
-            ),
+            decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                label: const Text('Password'),
+                hintText: 'Enter your password',
+                errorText: state.password.errorMessage),
+          ),
+          const SizedBox(
+            height: 20,
           ),
           if (state.errorMessage != null)
             Text(state.errorMessage!,
                 style: const TextStyle(color: Colors.red)),
-          OutlinedButton(onPressed: null, child: const Text('Submit'))
+          OutlinedButton(
+              onPressed: state.isLoading
+                  ? null
+                  : () {
+                      context.read<LoginBloc>().add(LoginWithEmailAndPassword(
+                          flowId: state.flowId!,
+                          email: state.email.value,
+                          password: state.password.value));
+                    },
+              child: const Text('Submit'))
         ],
       )),
     );

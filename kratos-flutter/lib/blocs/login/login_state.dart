@@ -4,8 +4,8 @@ part of 'login_bloc.dart';
 sealed class LoginState with _$LoginState {
   const factory LoginState(
       {String? flowId,
-      @Default('') String email,
-      @Default('') String password,
+      @Default(FormField<String>(value: '')) FormField<String> email,
+      @Default(FormField<String>(value: '')) FormField<String> password,
       @Default(false) bool isLoading,
       String? errorMessage}) = _LoginState;
 }
