@@ -22,17 +22,13 @@ class AuthService {
         // return session
         return response.data!;
       } else {
-        throw DioException(requestOptions: response.requestOptions);
+        throw const CustomException.unknown();
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         throw const CustomException.unauthorized();
       } else {
-        throw CustomException.unknown(
-            statusCode: e.response?.statusCode,
-            message: e.response?.data['error'] != null
-                ? e.response?.data['error']['message']
-                : null);
+        throw _handleUnknownException(e.response?.data);
       }
     }
   }
@@ -48,11 +44,7 @@ class AuthService {
         throw const CustomException.unknown();
       }
     } on DioException catch (e) {
-      throw CustomException.unknown(
-          statusCode: e.response?.statusCode,
-          message: e.response?.data['error'] != null
-              ? e.response?.data['error']['message']
-              : null);
+      throw _handleUnknownException(e.response?.data);
     }
   }
 
@@ -67,11 +59,7 @@ class AuthService {
         throw const CustomException.unknown();
       }
     } on DioException catch (e) {
-      throw CustomException.unknown(
-          statusCode: e.response?.statusCode,
-          message: e.response?.data['error'] != null
-              ? e.response?.data['error']['message']
-              : null);
+      throw _handleUnknownException(e.response?.data);
     }
   }
 
@@ -81,7 +69,7 @@ class AuthService {
       required String email,
       required String password}) async {
     try {
-      final UpdateLoginFlowWithPasswordMethod loginFLowBilder =
+      final UpdateLoginFlowWithPasswordMethod loginFLowBuilder =
           UpdateLoginFlowWithPasswordMethod((b) => b
             ..identifier = email
             ..password = password
@@ -90,8 +78,9 @@ class AuthService {
       final response = await _ory.updateLoginFlow(
           flow: flowId,
           updateLoginFlowBody: UpdateLoginFlowBody(
-              (b) => b..oneOf = OneOf.fromValue1(value: loginFLowBilder)));
-      if (response.statusCode == 200 && response.data?.sessionToken != null) {
+              (b) => b..oneOf = OneOf.fromValue1(value: loginFLowBuilder)));
+
+      if (response.statusCode == 200) {
         // save session token after successful login
         await storage.persistToken(response.data!.sessionToken!);
         return;
@@ -102,17 +91,13 @@ class AuthService {
       if (e.response?.statusCode == 401) {
         throw const CustomException.unauthorized();
       } else if (e.response?.statusCode == 400) {
-        final messages = checkFormForErrors(e.response?.data);
+        final messages = _checkFormForErrors(e.response?.data);
         throw CustomException.badRequest(messages: messages);
       } else if (e.response?.statusCode == 410) {
         throw CustomException.flowExpired(
             flowId: e.response?.data['use_flow_id']);
       } else {
-        throw CustomException.unknown(
-            statusCode: e.response?.statusCode,
-            message: e.response?.data['error'] != null
-                ? e.response?.data['error']['message']
-                : null);
+        throw _handleUnknownException(e.response?.data);
       }
     }
   }
@@ -144,22 +129,18 @@ class AuthService {
       if (e.response?.statusCode == 401) {
         throw const CustomException.unauthorized();
       } else if (e.response?.statusCode == 400) {
-        final messages = checkFormForErrors(e.response?.data);
+        final messages = _checkFormForErrors(e.response?.data);
         throw CustomException.badRequest(messages: messages);
       } else if (e.response?.statusCode == 410) {
         throw CustomException.flowExpired(
             flowId: e.response?.data['use_flow_id']);
       } else {
-        throw CustomException.unknown(
-            statusCode: e.response?.statusCode,
-            message: e.response?.data['error'] != null
-                ? e.response?.data['error']['message']
-                : null);
+        throw _handleUnknownException(e.response?.data);
       }
     }
   }
 
-  List<NodeMessage> checkFormForErrors(Map<String, dynamic> response) {
+  List<NodeMessage> _checkFormForErrors(Map<String, dynamic> response) {
     final ui = Map<String, dynamic>.from(response['ui']);
     final nodeList = ui['nodes'] as List;
 
@@ -189,5 +170,14 @@ class AuthService {
         nodeMessages.expand((element) => element).toList();
 
     return flattedNodeMessages;
+  }
+
+  CustomException _handleUnknownException(Map? response) {
+    // use error message if response contains it, otherwise use default value
+    if (response != null && response.containsKey('error')) {
+      return CustomException.unknown(message: response['error']['message']);
+    } else {
+      return const CustomException.unknown();
+    }
   }
 }

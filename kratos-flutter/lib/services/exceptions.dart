@@ -17,7 +17,6 @@ sealed class CustomException with _$CustomException {
       {@Default(410) int statusCode,
       required String flowId}) = FlowExpiredException;
   const factory CustomException.unknown(
-      {int? statusCode,
-      @Default('An error occured. Please try again later.')
-      String message}) = UnknownException;
+      {@Default('An error occured. Please try again later.')
+      String? message}) = UnknownException;
 }

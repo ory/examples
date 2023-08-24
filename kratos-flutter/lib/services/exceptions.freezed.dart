@@ -16,14 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CustomException {
-  int? get statusCode => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(List<NodeMessage>? messages, int statusCode)
         badRequest,
     required TResult Function(int statusCode) unauthorized,
     required TResult Function(int statusCode, String flowId) flowExpired,
-    required TResult Function(int? statusCode, String message) unknown,
+    required TResult Function(String? message) unknown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -31,7 +30,7 @@ mixin _$CustomException {
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
     TResult? Function(int statusCode, String flowId)? flowExpired,
-    TResult? Function(int? statusCode, String message)? unknown,
+    TResult? Function(String? message)? unknown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -39,7 +38,7 @@ mixin _$CustomException {
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
     TResult Function(int statusCode, String flowId)? flowExpired,
-    TResult Function(int? statusCode, String message)? unknown,
+    TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -68,10 +67,6 @@ mixin _$CustomException {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $CustomExceptionCopyWith<CustomException> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -79,8 +74,6 @@ abstract class $CustomExceptionCopyWith<$Res> {
   factory $CustomExceptionCopyWith(
           CustomException value, $Res Function(CustomException) then) =
       _$CustomExceptionCopyWithImpl<$Res, CustomException>;
-  @useResult
-  $Res call({int statusCode});
 }
 
 /// @nodoc
@@ -92,28 +85,13 @@ class _$CustomExceptionCopyWithImpl<$Res, $Val extends CustomException>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? statusCode = null,
-  }) {
-    return _then(_value.copyWith(
-      statusCode: null == statusCode
-          ? _value.statusCode!
-          : statusCode // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$BadRequestExceptionCopyWith<$Res>
-    implements $CustomExceptionCopyWith<$Res> {
+abstract class _$$BadRequestExceptionCopyWith<$Res> {
   factory _$$BadRequestExceptionCopyWith(_$BadRequestException value,
           $Res Function(_$BadRequestException) then) =
       __$$BadRequestExceptionCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({List<NodeMessage>? messages, int statusCode});
 }
@@ -210,7 +188,7 @@ class _$BadRequestException extends BadRequestException
         badRequest,
     required TResult Function(int statusCode) unauthorized,
     required TResult Function(int statusCode, String flowId) flowExpired,
-    required TResult Function(int? statusCode, String message) unknown,
+    required TResult Function(String? message) unknown,
   }) {
     return badRequest(messages, statusCode);
   }
@@ -221,7 +199,7 @@ class _$BadRequestException extends BadRequestException
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
     TResult? Function(int statusCode, String flowId)? flowExpired,
-    TResult? Function(int? statusCode, String message)? unknown,
+    TResult? Function(String? message)? unknown,
   }) {
     return badRequest?.call(messages, statusCode);
   }
@@ -232,7 +210,7 @@ class _$BadRequestException extends BadRequestException
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
     TResult Function(int statusCode, String flowId)? flowExpired,
-    TResult Function(int? statusCode, String message)? unknown,
+    TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) {
     if (badRequest != null) {
@@ -286,21 +264,17 @@ abstract class BadRequestException extends CustomException {
   const BadRequestException._() : super._();
 
   List<NodeMessage>? get messages;
-  @override
   int get statusCode;
-  @override
   @JsonKey(ignore: true)
   _$$BadRequestExceptionCopyWith<_$BadRequestException> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UnauthorizedExceptionCopyWith<$Res>
-    implements $CustomExceptionCopyWith<$Res> {
+abstract class _$$UnauthorizedExceptionCopyWith<$Res> {
   factory _$$UnauthorizedExceptionCopyWith(_$UnauthorizedException value,
           $Res Function(_$UnauthorizedException) then) =
       __$$UnauthorizedExceptionCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({int statusCode});
 }
@@ -376,7 +350,7 @@ class _$UnauthorizedException extends UnauthorizedException
         badRequest,
     required TResult Function(int statusCode) unauthorized,
     required TResult Function(int statusCode, String flowId) flowExpired,
-    required TResult Function(int? statusCode, String message) unknown,
+    required TResult Function(String? message) unknown,
   }) {
     return unauthorized(statusCode);
   }
@@ -387,7 +361,7 @@ class _$UnauthorizedException extends UnauthorizedException
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
     TResult? Function(int statusCode, String flowId)? flowExpired,
-    TResult? Function(int? statusCode, String message)? unknown,
+    TResult? Function(String? message)? unknown,
   }) {
     return unauthorized?.call(statusCode);
   }
@@ -398,7 +372,7 @@ class _$UnauthorizedException extends UnauthorizedException
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
     TResult Function(int statusCode, String flowId)? flowExpired,
-    TResult Function(int? statusCode, String message)? unknown,
+    TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) {
     if (unauthorized != null) {
@@ -450,21 +424,17 @@ abstract class UnauthorizedException extends CustomException {
       _$UnauthorizedException;
   const UnauthorizedException._() : super._();
 
-  @override
   int get statusCode;
-  @override
   @JsonKey(ignore: true)
   _$$UnauthorizedExceptionCopyWith<_$UnauthorizedException> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$FlowExpiredExceptionCopyWith<$Res>
-    implements $CustomExceptionCopyWith<$Res> {
+abstract class _$$FlowExpiredExceptionCopyWith<$Res> {
   factory _$$FlowExpiredExceptionCopyWith(_$FlowExpiredException value,
           $Res Function(_$FlowExpiredException) then) =
       __$$FlowExpiredExceptionCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({int statusCode, String flowId});
 }
@@ -550,7 +520,7 @@ class _$FlowExpiredException extends FlowExpiredException
         badRequest,
     required TResult Function(int statusCode) unauthorized,
     required TResult Function(int statusCode, String flowId) flowExpired,
-    required TResult Function(int? statusCode, String message) unknown,
+    required TResult Function(String? message) unknown,
   }) {
     return flowExpired(statusCode, flowId);
   }
@@ -561,7 +531,7 @@ class _$FlowExpiredException extends FlowExpiredException
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
     TResult? Function(int statusCode, String flowId)? flowExpired,
-    TResult? Function(int? statusCode, String message)? unknown,
+    TResult? Function(String? message)? unknown,
   }) {
     return flowExpired?.call(statusCode, flowId);
   }
@@ -572,7 +542,7 @@ class _$FlowExpiredException extends FlowExpiredException
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
     TResult Function(int statusCode, String flowId)? flowExpired,
-    TResult Function(int? statusCode, String message)? unknown,
+    TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) {
     if (flowExpired != null) {
@@ -625,24 +595,20 @@ abstract class FlowExpiredException extends CustomException {
       required final String flowId}) = _$FlowExpiredException;
   const FlowExpiredException._() : super._();
 
-  @override
   int get statusCode;
   String get flowId;
-  @override
   @JsonKey(ignore: true)
   _$$FlowExpiredExceptionCopyWith<_$FlowExpiredException> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UnknownExceptionCopyWith<$Res>
-    implements $CustomExceptionCopyWith<$Res> {
+abstract class _$$UnknownExceptionCopyWith<$Res> {
   factory _$$UnknownExceptionCopyWith(
           _$UnknownException value, $Res Function(_$UnknownException) then) =
       __$$UnknownExceptionCopyWithImpl<$Res>;
-  @override
   @useResult
-  $Res call({int? statusCode, String message});
+  $Res call({String? message});
 }
 
 /// @nodoc
@@ -656,18 +622,13 @@ class __$$UnknownExceptionCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? statusCode = freezed,
-    Object? message = null,
+    Object? message = freezed,
   }) {
     return _then(_$UnknownException(
-      statusCode: freezed == statusCode
-          ? _value.statusCode
-          : statusCode // ignore: cast_nullable_to_non_nullable
-              as int?,
-      message: null == message
+      message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -676,19 +637,16 @@ class __$$UnknownExceptionCopyWithImpl<$Res>
 
 class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
   const _$UnknownException(
-      {this.statusCode,
-      this.message = 'An error occured. Please try again later.'})
+      {this.message = 'An error occured. Please try again later.'})
       : super._();
 
   @override
-  final int? statusCode;
-  @override
   @JsonKey()
-  final String message;
+  final String? message;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CustomException.unknown(statusCode: $statusCode, message: $message)';
+    return 'CustomException.unknown(message: $message)';
   }
 
   @override
@@ -696,7 +654,6 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'CustomException.unknown'))
-      ..add(DiagnosticsProperty('statusCode', statusCode))
       ..add(DiagnosticsProperty('message', message));
   }
 
@@ -705,13 +662,11 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UnknownException &&
-            (identical(other.statusCode, statusCode) ||
-                other.statusCode == statusCode) &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, statusCode, message);
+  int get hashCode => Object.hash(runtimeType, message);
 
   @JsonKey(ignore: true)
   @override
@@ -726,9 +681,9 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
         badRequest,
     required TResult Function(int statusCode) unauthorized,
     required TResult Function(int statusCode, String flowId) flowExpired,
-    required TResult Function(int? statusCode, String message) unknown,
+    required TResult Function(String? message) unknown,
   }) {
-    return unknown(statusCode, message);
+    return unknown(message);
   }
 
   @override
@@ -737,9 +692,9 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
     TResult? Function(int statusCode, String flowId)? flowExpired,
-    TResult? Function(int? statusCode, String message)? unknown,
+    TResult? Function(String? message)? unknown,
   }) {
-    return unknown?.call(statusCode, message);
+    return unknown?.call(message);
   }
 
   @override
@@ -748,11 +703,11 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
     TResult Function(int statusCode, String flowId)? flowExpired,
-    TResult Function(int? statusCode, String message)? unknown,
+    TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) {
     if (unknown != null) {
-      return unknown(statusCode, message);
+      return unknown(message);
     }
     return orElse();
   }
@@ -796,14 +751,10 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
 }
 
 abstract class UnknownException extends CustomException {
-  const factory UnknownException(
-      {final int? statusCode, final String message}) = _$UnknownException;
+  const factory UnknownException({final String? message}) = _$UnknownException;
   const UnknownException._() : super._();
 
-  @override
-  int? get statusCode;
-  String get message;
-  @override
+  String? get message;
   @JsonKey(ignore: true)
   _$$UnknownExceptionCopyWith<_$UnknownException> get copyWith =>
       throw _privateConstructorUsedError;
