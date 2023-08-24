@@ -26,6 +26,7 @@ class AuthService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
+        await storage.deleteToken();
         throw const CustomException.unauthorized();
       } else {
         throw _handleUnknownException(e.response?.data);
@@ -80,7 +81,7 @@ class AuthService {
           updateLoginFlowBody: UpdateLoginFlowBody(
               (b) => b..oneOf = OneOf.fromValue1(value: loginFLowBuilder)));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data?.session != null) {
         // save session token after successful login
         await storage.persistToken(response.data!.sessionToken!);
         return;
@@ -89,6 +90,7 @@ class AuthService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
+        await storage.deleteToken();
         throw const CustomException.unauthorized();
       } else if (e.response?.statusCode == 400) {
         final messages = _checkFormForErrors(e.response?.data);
@@ -108,7 +110,7 @@ class AuthService {
       required String email,
       required String password}) async {
     try {
-      final UpdateRegistrationFlowWithPasswordMethod registrationFLowBuilder =
+      final UpdateRegistrationFlowWithPasswordMethod registrationFLow =
           UpdateRegistrationFlowWithPasswordMethod((b) => b
             ..traits = JsonObject({'email': email})
             ..password = password
@@ -116,8 +118,8 @@ class AuthService {
 
       final response = await _ory.updateRegistrationFlow(
           flow: flowId,
-          updateRegistrationFlowBody: UpdateRegistrationFlowBody((b) =>
-              b..oneOf = OneOf.fromValue1(value: registrationFLowBuilder)));
+          updateRegistrationFlowBody: UpdateRegistrationFlowBody(
+              (b) => b..oneOf = OneOf.fromValue1(value: registrationFLow)));
       if (response.statusCode == 200 && response.data?.sessionToken != null) {
         // save session token after successful login
         await storage.persistToken(response.data!.sessionToken!);
@@ -127,6 +129,7 @@ class AuthService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
+        await storage.deleteToken();
         throw const CustomException.unauthorized();
       } else if (e.response?.statusCode == 400) {
         final messages = _checkFormForErrors(e.response?.data);
@@ -134,6 +137,28 @@ class AuthService {
       } else if (e.response?.statusCode == 410) {
         throw CustomException.flowExpired(
             flowId: e.response?.data['use_flow_id']);
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      final token = await storage.getToken();
+
+      final PerformNativeLogoutBody logoutBody =
+          PerformNativeLogoutBody((b) => b..sessionToken = token);
+      final response =
+          await _ory.performNativeLogout(performNativeLogoutBody: logoutBody);
+      if (response.statusCode == 204) {
+        await storage.deleteToken();
+        return;
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        await storage.deleteToken();
+        throw const CustomException.unauthorized();
       } else {
         throw _handleUnknownException(e.response?.data);
       }

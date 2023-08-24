@@ -97,6 +97,7 @@ class LoginForm extends StatelessWidget {
               state.errorMessage!,
               style: const TextStyle(color: Colors.red),
             ),
+          if (state.isLoading) const CircularProgressIndicator(),
           OutlinedButton(
               onPressed: state.isLoading
                   ? null
@@ -116,9 +117,11 @@ class LoginForm extends StatelessWidget {
             children: [
               Text('Already have an account?'),
               TextButton(
-                  onPressed: () => Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage())),
+                  onPressed: state.isLoading
+                      ? null
+                      : () => Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage())),
                   child: Text('Log in'))
             ],
           )

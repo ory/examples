@@ -39,4 +39,8 @@ class AuthRepository {
     await service.registerWithEmailAndPassword(
         flowId: flowId, email: email, password: password);
   }
+
+  Future<void> logout() async {
+    await service.logout();
+  }
 }

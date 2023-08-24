@@ -102,6 +102,8 @@ class _MyAppViewState extends State<MyAppView> {
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return BlocListener<AuthBloc, AuthState>(
+          // navigate to pages only when auth status has changed
+          listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             switch (state.status) {
               case AuthStatus.authenticated:
