@@ -110,6 +110,11 @@ defmodule ExampleWeb.Flow do
         for={@node.attributes.name}
         text={@node.meta.label.text}
       />
+      <%= if @node.messages do %>
+        <%= for message <- @node.messages do %>
+          <.ui_message text={message.text} />
+        <% end %>
+      <% end %>
     </fieldset>
     """
   end
@@ -163,7 +168,7 @@ defmodule ExampleWeb.Flow do
     <div id={@node.attributes.id}>
       <pre>
         <code><%= @node.attributes.text.text %></code>
-        </pre>
+      </pre>
     </div>
     """
   end
@@ -173,6 +178,11 @@ defmodule ExampleWeb.Flow do
     <div class="mb-4">
       <.ui_label for={@node.attributes.name} text={@node.meta.label.text} />
       <.ui_input attributes={@node.attributes} />
+      <%= if @node.messages do %>
+        <%= for message <- @node.messages do %>
+          <.ui_message text={message.text} />
+        <% end %>
+      <% end %>
     </div>
     """
   end
@@ -206,4 +216,11 @@ defmodule ExampleWeb.Flow do
     />
     """
   end
+
+  # attr :message, :string, required: true
+  # def ui_node_message(assigns) do
+  #   ~H"""
+  #   <span><%= @message %></span>
+  #   """
+  # end
 end
