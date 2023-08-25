@@ -51,7 +51,7 @@ defmodule Example.MixProject do
 
       # {:ory_client, "~> 1.1.42"}
       {:ory_client,
-      git: "https://github.com/tobbbles/sdk.git", ref: "master", subdir: "clients/client/elixir"},
+       git: "https://github.com/tobbbles/sdk.git", ref: "master", subdir: "clients/client/elixir"}
     ]
   end
 

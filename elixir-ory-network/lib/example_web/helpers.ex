@@ -1,5 +1,4 @@
 defmodule ExampleWeb.Helpers do
-
   @doc """
   Helper function to format request cookie map into string
   """

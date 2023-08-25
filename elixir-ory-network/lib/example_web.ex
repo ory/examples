@@ -45,7 +45,6 @@ defmodule ExampleWeb do
       import Plug.Conn
       import ExampleWeb.Gettext
 
-
       unquote(verified_routes())
     end
   end

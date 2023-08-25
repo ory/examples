@@ -9,7 +9,9 @@ defmodule ExampleWeb.Flow do
   # TODO(@tobbbles): Figure out if this can be dynamically set up as a type union from Ory LoginFlow and RegistratinFlow
   attr :flow, :map, required: true
 
-  def flow(assigns) do
+  def flow(assigns) when not is_nil(assigns.flow) do
+    IO.inspect(assigns)
+
     ~H"""
     <.ui_message_group flow={@flow} />
 

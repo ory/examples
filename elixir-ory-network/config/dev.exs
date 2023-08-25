@@ -1,9 +1,10 @@
 import Config
 
-
 # Configure your Ory Network URL
 config :ory_client,
-  :base_url, "http://localhost:3000/.ory" # Via ory proxy
+       # Via ory proxy
+       :base_url,
+       "http://localhost:3000/.ory"
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
