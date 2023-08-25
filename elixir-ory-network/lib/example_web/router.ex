@@ -33,6 +33,7 @@ defmodule ExampleWeb.Router do
     pipe_through [:browser]
 
     get "/settings", AccountController, :settings
+    get "/verify", AccountController, :verify
   end
 
   # Other scopes may use custom stacks.
