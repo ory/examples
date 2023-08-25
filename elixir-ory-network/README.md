@@ -18,7 +18,7 @@ Set up your Custom UI to the following values:
 | Custom UI       | URL                                     |
 | --------------- | --------------------------------------- |
 | Login UI        | https://localhost:3000/auth/login       |
-| Registration UI | https://localhost:3000/auth/rgistration |
+| Register UI | https://localhost:3000/auth/register |
 
 > NOTE: The other UIs are currently not implemented in this example.
 

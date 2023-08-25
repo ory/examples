@@ -6,7 +6,7 @@ defmodule ExampleWeb.Flow do
   import ExampleWeb.Gettext
   import ExampleWeb.CoreComponents
 
-  # TODO(@tobbbles): Figure out if this can be dynamically set up as a type union from Ory LoginFlow and RegistratinFlow
+  # TODO(@tobbbles): Figure out if this can be dynamically set up as a type union from Ory LoginFlow and RegistrationFlow
   attr :flow, :map, required: true
 
   def flow(assigns) when not is_nil(assigns.flow) do

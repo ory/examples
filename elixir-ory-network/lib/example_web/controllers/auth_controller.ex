@@ -1,5 +1,6 @@
 defmodule ExampleWeb.AuthController do
   use ExampleWeb, :controller
+  use Phoenix.VerifiedRoutes, endpoint: ExampleWeb.Endpoint, router: ExampleWeb.Router
 
   import ExampleWeb.Helpers, only: [cookies: 1]
 
@@ -64,7 +65,7 @@ defmodule ExampleWeb.AuthController do
   def registration(conn, params) do
     {:ok, %{url: url}} =
       Frontend.create_browser_registration_flow(Ory.Connection.new(),
-        return_to: "http://localhost:3000/auth/registration"
+        return_to: url(conn, ~p"/auth/register")
       )
 
     redirect(conn, external: url)
