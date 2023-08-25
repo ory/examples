@@ -20,7 +20,6 @@ defmodule ExampleWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :home)
-
   end
 
   scope "/auth", ExampleWeb do
@@ -28,6 +27,12 @@ defmodule ExampleWeb.Router do
 
     get "/login", AuthController, :login
     get "/register", AuthController, :registration
+  end
+
+  scope "/account", ExampleWeb do
+    pipe_through [:browser]
+
+    get "/settings", AccountController, :settings
   end
 
   # Other scopes may use custom stacks.

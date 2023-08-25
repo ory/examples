@@ -56,6 +56,12 @@
       <p class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">
         Successfully logged in. Hello <%= @session.identity.traits["email"] %>!
       </p>
+
+      <.link navigate={~p"/account/settings"} class="text-sm font-semibold leading-6">
+        <p class="text-xl mt-4 leading-10 tracking-tighter text-blue-800">
+          Go to account settings ->
+        </p>
+      </.link>
     <% else %>
       <p class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">
         Peace of mind from prototype to production.
@@ -83,12 +89,6 @@
           >
             <span>Registration</span>
           </.link>
-        </:inner_block>
-      </.button>
-    <% else %>
-      <.button>
-        <:inner_block>
-          <%= Phoenix.HTML.Link.link("Log out", to: @logout_url) %>
         </:inner_block>
       </.button>
     <% end %>
