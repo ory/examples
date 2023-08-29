@@ -63,8 +63,66 @@ class _HomePageState extends State<HomePage> {
   }
 
   _buildSessionInformation(BuildContext context, Session session) {
-    return Column(
-      children: [Text("Session Information")],
+    return Padding(
+      padding: const EdgeInsets.all(30.0),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            Text(
+              "Welcome back,\n${session.identity.id}!",
+              style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 35),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: Text(
+                  "Hello, nice to have you! you signed up with this data:"),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Container(
+                padding: const EdgeInsets.all(35),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.grey[400]),
+                child: Text(session.identity.traits.toString()),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child:
+                  Text("You are signed in using an ORY Kratos Session Token:"),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Container(
+                padding: const EdgeInsets.all(35),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.grey[400]),
+                child: Text(session.id),
+              ),
+            ),
+            const Padding(
+                padding: EdgeInsets.only(top: 15.0),
+                child: Text(
+                    "This app mackes REST requests to ORY Kratos' Public API to validate and decode the ORY Kratos Session payload:")),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Container(
+                padding: const EdgeInsets.all(35),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.grey[400]),
+                child: Text(session.toString()),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
