@@ -1,16 +1,27 @@
-# kratos_flutter
+# Integrate Ory Network with Flutter
 
-A new Flutter project.
+This example demonstrates how to use Ory Network with a Flutter app. It includes login and registration with email and password.
 
-## Getting Started
+## Develop
+### Prerequisites
+1. [Flutter](https://docs.flutter.dev/get-started/install) version 3.13.1
+2. Xcode and Android Studio
+3. iOS Simulator or Android Emulator
+4. [Ory Network](https://console.ory.sh/) project 
 
-This project is a starting point for a Flutter application.
+### Environmental variables
+Create .env file with your project url in the root folder of the Flutter app
+```env
+ORY_BASE_URL=https://{your-project-slug}.projects.oryapis.com
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Run locally
+1. Install dependancies from `pubspec.yaml`
+```console
+flutter pub get
+```
+2. open iOS Simulator or Android Emulator
+3. Start the app
+```console
+flutter run
+```
