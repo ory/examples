@@ -1,3 +1,6 @@
+// Copyright © 2023 Ory Corp
+// SPDX-License-Identifier: Apache-2.0
+
 import 'package:built_value/json_object.dart';
 import 'package:dio/dio.dart';
 import 'package:one_of/one_of.dart';
