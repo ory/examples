@@ -38,7 +38,7 @@ class AuthService {
   Future<String> createLoginFlow() async {
     try {
       final response = await _ory.createNativeLoginFlow();
-      if (response.statusCode == 200) {
+      if (response.data != null) {
         // return flow id
         return response.data!.id;
       } else {
@@ -53,7 +53,7 @@ class AuthService {
   Future<String> createRegistrationFlow() async {
     try {
       final response = await _ory.createNativeRegistrationFlow();
-      if (response.statusCode == 200) {
+      if (response.data != null) {
         // return flow id
         return response.data!.id;
       } else {
@@ -81,7 +81,7 @@ class AuthService {
           updateLoginFlowBody: UpdateLoginFlowBody(
               (b) => b..oneOf = OneOf.fromValue1(value: loginFLowBuilder)));
 
-      if (response.statusCode == 200 && response.data?.session != null) {
+      if (response.data?.session != null) {
         // save session token after successful login
         await storage.persistToken(response.data!.sessionToken!);
         return;
@@ -96,8 +96,10 @@ class AuthService {
         final messages = _checkFormForErrors(e.response?.data);
         throw CustomException.badRequest(messages: messages);
       } else if (e.response?.statusCode == 410) {
+        // login flow expired, use new flow id and add error message
         throw CustomException.flowExpired(
-            flowId: e.response?.data['use_flow_id']);
+            flowId: e.response?.data['use_flow_id'],
+            message: 'Login flow has expired. Please enter credentials again.');
       } else {
         throw _handleUnknownException(e.response?.data);
       }
@@ -120,7 +122,7 @@ class AuthService {
           flow: flowId,
           updateRegistrationFlowBody: UpdateRegistrationFlowBody(
               (b) => b..oneOf = OneOf.fromValue1(value: registrationFLow)));
-      if (response.statusCode == 200 && response.data?.sessionToken != null) {
+      if (response.data?.sessionToken != null) {
         // save session token after successful login
         await storage.persistToken(response.data!.sessionToken!);
         return;
@@ -135,8 +137,11 @@ class AuthService {
         final messages = _checkFormForErrors(e.response?.data);
         throw CustomException.badRequest(messages: messages);
       } else if (e.response?.statusCode == 410) {
+        // registration flow expired, use new flow id and add error message
         throw CustomException.flowExpired(
-            flowId: e.response?.data['use_flow_id']);
+            flowId: e.response?.data['use_flow_id'],
+            message:
+                'Registration flow has expired. Please enter credentials again.');
       } else {
         throw _handleUnknownException(e.response?.data);
       }
@@ -165,6 +170,7 @@ class AuthService {
     }
   }
 
+  /// Search for error messages and their context in [response]
   List<NodeMessage> _checkFormForErrors(Map<String, dynamic> response) {
     final ui = Map<String, dynamic>.from(response['ui']);
     final nodeList = ui['nodes'] as List;

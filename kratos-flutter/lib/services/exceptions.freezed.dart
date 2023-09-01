@@ -21,7 +21,8 @@ mixin _$CustomException {
     required TResult Function(List<NodeMessage>? messages, int statusCode)
         badRequest,
     required TResult Function(int statusCode) unauthorized,
-    required TResult Function(int statusCode, String flowId) flowExpired,
+    required TResult Function(int statusCode, String flowId, String? message)
+        flowExpired,
     required TResult Function(String? message) unknown,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,7 +30,8 @@ mixin _$CustomException {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
-    TResult? Function(int statusCode, String flowId)? flowExpired,
+    TResult? Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult? Function(String? message)? unknown,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,7 +39,8 @@ mixin _$CustomException {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
-    TResult Function(int statusCode, String flowId)? flowExpired,
+    TResult Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) =>
@@ -187,7 +190,8 @@ class _$BadRequestException extends BadRequestException
     required TResult Function(List<NodeMessage>? messages, int statusCode)
         badRequest,
     required TResult Function(int statusCode) unauthorized,
-    required TResult Function(int statusCode, String flowId) flowExpired,
+    required TResult Function(int statusCode, String flowId, String? message)
+        flowExpired,
     required TResult Function(String? message) unknown,
   }) {
     return badRequest(messages, statusCode);
@@ -198,7 +202,8 @@ class _$BadRequestException extends BadRequestException
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
-    TResult? Function(int statusCode, String flowId)? flowExpired,
+    TResult? Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult? Function(String? message)? unknown,
   }) {
     return badRequest?.call(messages, statusCode);
@@ -209,7 +214,8 @@ class _$BadRequestException extends BadRequestException
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
-    TResult Function(int statusCode, String flowId)? flowExpired,
+    TResult Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) {
@@ -349,7 +355,8 @@ class _$UnauthorizedException extends UnauthorizedException
     required TResult Function(List<NodeMessage>? messages, int statusCode)
         badRequest,
     required TResult Function(int statusCode) unauthorized,
-    required TResult Function(int statusCode, String flowId) flowExpired,
+    required TResult Function(int statusCode, String flowId, String? message)
+        flowExpired,
     required TResult Function(String? message) unknown,
   }) {
     return unauthorized(statusCode);
@@ -360,7 +367,8 @@ class _$UnauthorizedException extends UnauthorizedException
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
-    TResult? Function(int statusCode, String flowId)? flowExpired,
+    TResult? Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult? Function(String? message)? unknown,
   }) {
     return unauthorized?.call(statusCode);
@@ -371,7 +379,8 @@ class _$UnauthorizedException extends UnauthorizedException
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
-    TResult Function(int statusCode, String flowId)? flowExpired,
+    TResult Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) {
@@ -436,7 +445,7 @@ abstract class _$$FlowExpiredExceptionCopyWith<$Res> {
           $Res Function(_$FlowExpiredException) then) =
       __$$FlowExpiredExceptionCopyWithImpl<$Res>;
   @useResult
-  $Res call({int statusCode, String flowId});
+  $Res call({int statusCode, String flowId, String? message});
 }
 
 /// @nodoc
@@ -452,6 +461,7 @@ class __$$FlowExpiredExceptionCopyWithImpl<$Res>
   $Res call({
     Object? statusCode = null,
     Object? flowId = null,
+    Object? message = freezed,
   }) {
     return _then(_$FlowExpiredException(
       statusCode: null == statusCode
@@ -462,6 +472,10 @@ class __$$FlowExpiredExceptionCopyWithImpl<$Res>
           ? _value.flowId
           : flowId // ignore: cast_nullable_to_non_nullable
               as String,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -470,7 +484,8 @@ class __$$FlowExpiredExceptionCopyWithImpl<$Res>
 
 class _$FlowExpiredException extends FlowExpiredException
     with DiagnosticableTreeMixin {
-  const _$FlowExpiredException({this.statusCode = 410, required this.flowId})
+  const _$FlowExpiredException(
+      {this.statusCode = 410, required this.flowId, this.message})
       : super._();
 
   @override
@@ -478,10 +493,12 @@ class _$FlowExpiredException extends FlowExpiredException
   final int statusCode;
   @override
   final String flowId;
+  @override
+  final String? message;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CustomException.flowExpired(statusCode: $statusCode, flowId: $flowId)';
+    return 'CustomException.flowExpired(statusCode: $statusCode, flowId: $flowId, message: $message)';
   }
 
   @override
@@ -490,7 +507,8 @@ class _$FlowExpiredException extends FlowExpiredException
     properties
       ..add(DiagnosticsProperty('type', 'CustomException.flowExpired'))
       ..add(DiagnosticsProperty('statusCode', statusCode))
-      ..add(DiagnosticsProperty('flowId', flowId));
+      ..add(DiagnosticsProperty('flowId', flowId))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override
@@ -500,11 +518,12 @@ class _$FlowExpiredException extends FlowExpiredException
             other is _$FlowExpiredException &&
             (identical(other.statusCode, statusCode) ||
                 other.statusCode == statusCode) &&
-            (identical(other.flowId, flowId) || other.flowId == flowId));
+            (identical(other.flowId, flowId) || other.flowId == flowId) &&
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, statusCode, flowId);
+  int get hashCode => Object.hash(runtimeType, statusCode, flowId, message);
 
   @JsonKey(ignore: true)
   @override
@@ -519,10 +538,11 @@ class _$FlowExpiredException extends FlowExpiredException
     required TResult Function(List<NodeMessage>? messages, int statusCode)
         badRequest,
     required TResult Function(int statusCode) unauthorized,
-    required TResult Function(int statusCode, String flowId) flowExpired,
+    required TResult Function(int statusCode, String flowId, String? message)
+        flowExpired,
     required TResult Function(String? message) unknown,
   }) {
-    return flowExpired(statusCode, flowId);
+    return flowExpired(statusCode, flowId, message);
   }
 
   @override
@@ -530,10 +550,11 @@ class _$FlowExpiredException extends FlowExpiredException
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
-    TResult? Function(int statusCode, String flowId)? flowExpired,
+    TResult? Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult? Function(String? message)? unknown,
   }) {
-    return flowExpired?.call(statusCode, flowId);
+    return flowExpired?.call(statusCode, flowId, message);
   }
 
   @override
@@ -541,12 +562,13 @@ class _$FlowExpiredException extends FlowExpiredException
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
-    TResult Function(int statusCode, String flowId)? flowExpired,
+    TResult Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) {
     if (flowExpired != null) {
-      return flowExpired(statusCode, flowId);
+      return flowExpired(statusCode, flowId, message);
     }
     return orElse();
   }
@@ -592,11 +614,13 @@ class _$FlowExpiredException extends FlowExpiredException
 abstract class FlowExpiredException extends CustomException {
   const factory FlowExpiredException(
       {final int statusCode,
-      required final String flowId}) = _$FlowExpiredException;
+      required final String flowId,
+      final String? message}) = _$FlowExpiredException;
   const FlowExpiredException._() : super._();
 
   int get statusCode;
   String get flowId;
+  String? get message;
   @JsonKey(ignore: true)
   _$$FlowExpiredExceptionCopyWith<_$FlowExpiredException> get copyWith =>
       throw _privateConstructorUsedError;
@@ -680,7 +704,8 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
     required TResult Function(List<NodeMessage>? messages, int statusCode)
         badRequest,
     required TResult Function(int statusCode) unauthorized,
-    required TResult Function(int statusCode, String flowId) flowExpired,
+    required TResult Function(int statusCode, String flowId, String? message)
+        flowExpired,
     required TResult Function(String? message) unknown,
   }) {
     return unknown(message);
@@ -691,7 +716,8 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult? Function(int statusCode)? unauthorized,
-    TResult? Function(int statusCode, String flowId)? flowExpired,
+    TResult? Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult? Function(String? message)? unknown,
   }) {
     return unknown?.call(message);
@@ -702,7 +728,8 @@ class _$UnknownException extends UnknownException with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(List<NodeMessage>? messages, int statusCode)? badRequest,
     TResult Function(int statusCode)? unauthorized,
-    TResult Function(int statusCode, String flowId)? flowExpired,
+    TResult Function(int statusCode, String flowId, String? message)?
+        flowExpired,
     TResult Function(String? message)? unknown,
     required TResult orElse(),
   }) {

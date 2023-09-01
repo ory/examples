@@ -19,6 +19,7 @@ mixin _$LoginState {
   String? get flowId => throw _privateConstructorUsedError;
   FormField<String> get email => throw _privateConstructorUsedError;
   FormField<String> get password => throw _privateConstructorUsedError;
+  bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
@@ -37,6 +38,7 @@ abstract class $LoginStateCopyWith<$Res> {
       {String? flowId,
       FormField<String> email,
       FormField<String> password,
+      bool isPasswordHidden,
       bool isLoading,
       String? errorMessage});
 
@@ -60,6 +62,7 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
     Object? flowId = freezed,
     Object? email = null,
     Object? password = null,
+    Object? isPasswordHidden = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -76,6 +79,10 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as FormField<String>,
+      isPasswordHidden: null == isPasswordHidden
+          ? _value.isPasswordHidden
+          : isPasswordHidden // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -116,6 +123,7 @@ abstract class _$$_LoginStateCopyWith<$Res>
       {String? flowId,
       FormField<String> email,
       FormField<String> password,
+      bool isPasswordHidden,
       bool isLoading,
       String? errorMessage});
 
@@ -139,6 +147,7 @@ class __$$_LoginStateCopyWithImpl<$Res>
     Object? flowId = freezed,
     Object? email = null,
     Object? password = null,
+    Object? isPasswordHidden = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -155,6 +164,10 @@ class __$$_LoginStateCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as FormField<String>,
+      isPasswordHidden: null == isPasswordHidden
+          ? _value.isPasswordHidden
+          : isPasswordHidden // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -174,6 +187,7 @@ class _$_LoginState implements _LoginState {
       {this.flowId,
       this.email = const FormField<String>(value: ''),
       this.password = const FormField<String>(value: ''),
+      this.isPasswordHidden = true,
       this.isLoading = false,
       this.errorMessage});
 
@@ -187,13 +201,16 @@ class _$_LoginState implements _LoginState {
   final FormField<String> password;
   @override
   @JsonKey()
+  final bool isPasswordHidden;
+  @override
+  @JsonKey()
   final bool isLoading;
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'LoginState(flowId: $flowId, email: $email, password: $password, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'LoginState(flowId: $flowId, email: $email, password: $password, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -205,6 +222,8 @@ class _$_LoginState implements _LoginState {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.isPasswordHidden, isPasswordHidden) ||
+                other.isPasswordHidden == isPasswordHidden) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -212,8 +231,8 @@ class _$_LoginState implements _LoginState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, flowId, email, password, isLoading, errorMessage);
+  int get hashCode => Object.hash(runtimeType, flowId, email, password,
+      isPasswordHidden, isLoading, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -227,6 +246,7 @@ abstract class _LoginState implements LoginState {
       {final String? flowId,
       final FormField<String> email,
       final FormField<String> password,
+      final bool isPasswordHidden,
       final bool isLoading,
       final String? errorMessage}) = _$_LoginState;
 
@@ -236,6 +256,8 @@ abstract class _LoginState implements LoginState {
   FormField<String> get email;
   @override
   FormField<String> get password;
+  @override
+  bool get isPasswordHidden;
   @override
   bool get isLoading;
   @override

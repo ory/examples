@@ -27,6 +27,15 @@ final class ChangePassword extends LoginEvent {
   List<Object> get props => [value];
 }
 
+final class ChangePasswordVisibility extends LoginEvent {
+  final bool value;
+
+  ChangePasswordVisibility({required this.value});
+
+  @override
+  List<Object> get props => [value];
+}
+
 //log in
 final class LoginWithEmailAndPassword extends LoginEvent {
   final String flowId;

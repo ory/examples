@@ -19,6 +19,7 @@ mixin _$RegistrationState {
   String? get flowId => throw _privateConstructorUsedError;
   FormField<String> get email => throw _privateConstructorUsedError;
   FormField<String> get password => throw _privateConstructorUsedError;
+  bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
@@ -37,6 +38,7 @@ abstract class $RegistrationStateCopyWith<$Res> {
       {String? flowId,
       FormField<String> email,
       FormField<String> password,
+      bool isPasswordHidden,
       bool isLoading,
       String? errorMessage});
 
@@ -60,6 +62,7 @@ class _$RegistrationStateCopyWithImpl<$Res, $Val extends RegistrationState>
     Object? flowId = freezed,
     Object? email = null,
     Object? password = null,
+    Object? isPasswordHidden = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -76,6 +79,10 @@ class _$RegistrationStateCopyWithImpl<$Res, $Val extends RegistrationState>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as FormField<String>,
+      isPasswordHidden: null == isPasswordHidden
+          ? _value.isPasswordHidden
+          : isPasswordHidden // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -116,6 +123,7 @@ abstract class _$$_RegistrationStateCopyWith<$Res>
       {String? flowId,
       FormField<String> email,
       FormField<String> password,
+      bool isPasswordHidden,
       bool isLoading,
       String? errorMessage});
 
@@ -139,6 +147,7 @@ class __$$_RegistrationStateCopyWithImpl<$Res>
     Object? flowId = freezed,
     Object? email = null,
     Object? password = null,
+    Object? isPasswordHidden = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -155,6 +164,10 @@ class __$$_RegistrationStateCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as FormField<String>,
+      isPasswordHidden: null == isPasswordHidden
+          ? _value.isPasswordHidden
+          : isPasswordHidden // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -174,6 +187,7 @@ class _$_RegistrationState implements _RegistrationState {
       {this.flowId,
       this.email = const FormField<String>(value: ''),
       this.password = const FormField<String>(value: ''),
+      this.isPasswordHidden = true,
       this.isLoading = false,
       this.errorMessage});
 
@@ -187,13 +201,16 @@ class _$_RegistrationState implements _RegistrationState {
   final FormField<String> password;
   @override
   @JsonKey()
+  final bool isPasswordHidden;
+  @override
+  @JsonKey()
   final bool isLoading;
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'RegistrationState(flowId: $flowId, email: $email, password: $password, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'RegistrationState(flowId: $flowId, email: $email, password: $password, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -205,6 +222,8 @@ class _$_RegistrationState implements _RegistrationState {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.isPasswordHidden, isPasswordHidden) ||
+                other.isPasswordHidden == isPasswordHidden) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -212,8 +231,8 @@ class _$_RegistrationState implements _RegistrationState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, flowId, email, password, isLoading, errorMessage);
+  int get hashCode => Object.hash(runtimeType, flowId, email, password,
+      isPasswordHidden, isLoading, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -228,6 +247,7 @@ abstract class _RegistrationState implements RegistrationState {
       {final String? flowId,
       final FormField<String> email,
       final FormField<String> password,
+      final bool isPasswordHidden,
       final bool isLoading,
       final String? errorMessage}) = _$_RegistrationState;
 
@@ -237,6 +257,8 @@ abstract class _RegistrationState implements RegistrationState {
   FormField<String> get email;
   @override
   FormField<String> get password;
+  @override
+  bool get isPasswordHidden;
   @override
   bool get isLoading;
   @override

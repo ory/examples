@@ -20,6 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<CreateLoginFlow>(_onCreateLoginFlow);
     on<ChangeEmail>(_onChangeEmail);
     on<ChangePassword>(_onChangePassword);
+    on<ChangePasswordVisibility>(_onChangePasswordVisibility);
     on<LoginWithEmailAndPassword>(_onLoginWithEmailAndPassword);
   }
 
@@ -52,10 +53,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         .copyWith(errorMessage: null));
   }
 
+  _onChangePasswordVisibility(
+      ChangePasswordVisibility event, Emitter<LoginState> emit) {
+    emit(state.copyWith(isPasswordHidden: event.value));
+  }
+
   Future<void> _onLoginWithEmailAndPassword(
       LoginWithEmailAndPassword event, Emitter<LoginState> emit) async {
     try {
-      emit(state.copyWith(isLoading: true, errorMessage: null));
+      // remove error messages when performing login
+      emit(state
+          .copyWith(isLoading: true, errorMessage: null)
+          .copyWith
+          .email(errorMessage: null)
+          .copyWith
+          .password(errorMessage: null));
 
       await repository.loginWithEmailAndPassword(
           flowId: event.flowId, email: event.email, password: event.password);
@@ -78,11 +90,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             .copyWith
             .password(errorMessage: passwordMessage?.text));
       } else if (e case FlowExpiredException _) {
-        // use new flow id to log in user
-        add(LoginWithEmailAndPassword(
-            flowId: e.flowId,
-            email: state.email.value,
-            password: state.password.value));
+        // use new flow id, reset fields and show error
+        emit(state
+            .copyWith(
+                flowId: e.flowId, errorMessage: e.message, isLoading: false)
+            .copyWith
+            .email(value: '')
+            .copyWith
+            .password(value: ''));
       } else if (e case UnknownException _) {
         emit(state.copyWith(isLoading: false, errorMessage: e.message));
       } else {

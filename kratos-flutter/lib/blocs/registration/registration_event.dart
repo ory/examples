@@ -27,7 +27,15 @@ final class ChangePassword extends RegistrationEvent {
   List<Object> get props => [value];
 }
 
-//log in
+final class ChangePasswordVisibility extends RegistrationEvent {
+  final bool value;
+
+  ChangePasswordVisibility({required this.value});
+
+  @override
+  List<Object> get props => [value];
+} //log in
+
 final class RegisterWithEmailAndPassword extends RegistrationEvent {
   final String flowId;
   final String email;

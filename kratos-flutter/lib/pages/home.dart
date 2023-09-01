@@ -27,6 +27,13 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Image.asset(
+            'assets/images/ory_logo.png',
+            width: 40,
+          ),
+          elevation: 0,
+          //shape: Border(bottom: BorderSide(color: Colors.green, width: 1)),
           actions: [
             // if auth is loading, show progress indicator, otherwise a logout icon
             isLoading
@@ -38,9 +45,7 @@ class _HomePageState extends State<HomePage> {
                       child: SizedBox(
                         height: 24,
                         width: 24,
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        ),
+                        child: CircularProgressIndicator(),
                       ),
                     ),
                   )
@@ -64,7 +69,7 @@ class _HomePageState extends State<HomePage> {
 
   _buildSessionInformation(BuildContext context, Session session) {
     return Padding(
-      padding: const EdgeInsets.all(30.0),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 32),
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -76,7 +81,7 @@ class _HomePageState extends State<HomePage> {
             const Padding(
               padding: EdgeInsets.only(top: 15.0),
               child: Text(
-                  "Hello, nice to have you! you signed up with this data:"),
+                  "Hello, nice to have you! You signed up with this data:"),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
@@ -85,8 +90,10 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey[400]),
-                child: Text(session.identity.traits.toString()),
+                    color: Colors.grey[600]),
+                child: Text(session.identity.traits.toString(),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.white)),
               ),
             ),
             const Padding(
@@ -101,8 +108,10 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey[400]),
-                child: Text(session.id),
+                    color: Colors.grey[600]),
+                child: Text(session.id,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.white)),
               ),
             ),
             const Padding(
@@ -116,8 +125,10 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey[400]),
-                child: Text(session.toString()),
+                    color: Colors.grey[600]),
+                child: Text(session.toString(),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.white)),
               ),
             ),
           ],

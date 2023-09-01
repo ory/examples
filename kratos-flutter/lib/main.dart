@@ -3,6 +3,7 @@ import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:kratos_flutter/widgets/ory_theme.dart';
 
 import 'blocs/auth/auth_bloc.dart';
 import 'pages/home.dart';
@@ -99,6 +100,7 @@ class _MyAppViewState extends State<MyAppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: OryTheme.defaultTheme,
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return BlocListener<AuthBloc, AuthState>(

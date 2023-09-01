@@ -20,6 +20,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<CreateRegistrationFlow>(_onCreateRegistrationFlow);
     on<ChangeEmail>(_onChangeEmail);
     on<ChangePassword>(_onChangePassword);
+    on<ChangePasswordVisibility>(_onChangePasswordVisibility);
     on<RegisterWithEmailAndPassword>(_onRegisterWithEmailAndPassword);
   }
 
@@ -52,11 +53,22 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         .copyWith(errorMessage: null));
   }
 
+  _onChangePasswordVisibility(
+      ChangePasswordVisibility event, Emitter<RegistrationState> emit) {
+    emit(state.copyWith(isPasswordHidden: event.value));
+  }
+
   Future<void> _onRegisterWithEmailAndPassword(
       RegisterWithEmailAndPassword event,
       Emitter<RegistrationState> emit) async {
     try {
-      emit(state.copyWith(isLoading: true, errorMessage: null));
+      // remove error messages when performing registration
+      emit(state
+          .copyWith(isLoading: true, errorMessage: null)
+          .copyWith
+          .email(errorMessage: null)
+          .copyWith
+          .password(errorMessage: null));
 
       await repository.registerWithEmailAndPassword(
           flowId: event.flowId, email: event.email, password: event.password);
@@ -80,11 +92,14 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             .copyWith
             .password(errorMessage: passwordMessage?.text));
       } else if (e case FlowExpiredException _) {
-        // use new flow id to log in user
-        add(RegisterWithEmailAndPassword(
-            flowId: e.flowId,
-            email: state.email.value,
-            password: state.password.value));
+        // use new flow id, reset fields and show error
+        emit(state
+            .copyWith(
+                flowId: e.flowId, errorMessage: e.message, isLoading: false)
+            .copyWith
+            .email(value: '')
+            .copyWith
+            .password(value: ''));
       } else if (e case UnknownException _) {
         emit(state.copyWith(isLoading: false, errorMessage: e.message));
       } else {

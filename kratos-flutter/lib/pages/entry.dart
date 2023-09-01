@@ -5,8 +5,13 @@ class EntryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+    return Scaffold(
+      body: Center(
+        child: Image.asset(
+          'assets/images/ory_logo.png',
+          width: 100,
+        ),
+      ),
     );
   }
 }
