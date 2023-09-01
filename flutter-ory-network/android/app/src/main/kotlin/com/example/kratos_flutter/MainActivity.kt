@@ -1,4 +1,4 @@
-package com.example.kratos_flutter
+package com.example.ory_network_flutter
 
 import io.flutter.embedding.android.FlutterActivity
 
