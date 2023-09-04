@@ -46,6 +46,7 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   dotenv: ^4.1.0
   google_fonts: ^5.1.0
+  built_value: ^8.6.2
 
 dev_dependencies:
   flutter_test:
