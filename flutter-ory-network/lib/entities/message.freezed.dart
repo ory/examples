@@ -23,9 +23,10 @@ NodeMessage _$NodeMessageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$NodeMessage {
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  MessageType get type => throw _privateConstructorUsedError;
+  MessageType get type =>
+      throw _privateConstructorUsedError; // allows to differentiate between contexts
   String get attr => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +41,7 @@ abstract class $NodeMessageCopyWith<$Res> {
           NodeMessage value, $Res Function(NodeMessage) then) =
       _$NodeMessageCopyWithImpl<$Res, NodeMessage>;
   @useResult
-  $Res call({int id, String text, MessageType type, String attr});
+  $Res call({int? id, String text, MessageType type, String attr});
 }
 
 /// @nodoc
@@ -56,16 +57,16 @@ class _$NodeMessageCopyWithImpl<$Res, $Val extends NodeMessage>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? text = null,
     Object? type = null,
     Object? attr = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -90,7 +91,7 @@ abstract class _$$_NodeMessageCopyWith<$Res>
       __$$_NodeMessageCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String text, MessageType type, String attr});
+  $Res call({int? id, String text, MessageType type, String attr});
 }
 
 /// @nodoc
@@ -104,16 +105,16 @@ class __$$_NodeMessageCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? text = null,
     Object? type = null,
     Object? attr = null,
   }) {
     return _then(_$_NodeMessage(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: null == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -134,20 +135,18 @@ class __$$_NodeMessageCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_NodeMessage implements _NodeMessage {
   const _$_NodeMessage(
-      {required this.id,
-      required this.text,
-      required this.type,
-      this.attr = 'general'});
+      {this.id, required this.text, required this.type, this.attr = 'general'});
 
   factory _$_NodeMessage.fromJson(Map<String, dynamic> json) =>
       _$$_NodeMessageFromJson(json);
 
   @override
-  final int id;
+  final int? id;
   @override
   final String text;
   @override
   final MessageType type;
+// allows to differentiate between contexts
   @override
   @JsonKey()
   final String attr;
@@ -188,7 +187,7 @@ class _$_NodeMessage implements _NodeMessage {
 
 abstract class _NodeMessage implements NodeMessage {
   const factory _NodeMessage(
-      {required final int id,
+      {final int? id,
       required final String text,
       required final MessageType type,
       final String attr}) = _$_NodeMessage;
@@ -197,12 +196,12 @@ abstract class _NodeMessage implements NodeMessage {
       _$_NodeMessage.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
   String get text;
   @override
   MessageType get type;
-  @override
+  @override // allows to differentiate between contexts
   String get attr;
   @override
   @JsonKey(ignore: true)

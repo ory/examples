@@ -16,11 +16,14 @@ sealed class CustomException with _$CustomException {
       @Default(400) int statusCode}) = BadRequestException;
   const factory CustomException.unauthorized({@Default(401) int statusCode}) =
       UnauthorizedException;
+  const factory CustomException.sessionRefreshRequired(
+      {@Default(403) int statusCode,
+      String? message}) = SessionRefreshRequiredException;
   const factory CustomException.flowExpired(
       {@Default(410) int statusCode,
       required String flowId,
-      String? message}) = FlowExpiredException;
+      required String message}) = FlowExpiredException;
   const factory CustomException.unknown(
       {@Default('An error occured. Please try again later.')
-      String? message}) = UnknownException;
+      String message}) = UnknownException;
 }

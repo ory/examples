@@ -11,7 +11,7 @@ part of 'message.dart';
 
 _$_NodeMessage _$$_NodeMessageFromJson(Map<String, dynamic> json) =>
     _$_NodeMessage(
-      id: json['id'] as int,
+      id: json['id'] as int?,
       text: json['text'] as String,
       type: $enumDecode(_$MessageTypeEnumMap, json['type']),
       attr: json['attr'] as String? ?? 'general',

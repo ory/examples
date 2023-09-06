@@ -22,7 +22,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogOut>(_logOut);
   }
 
-  _changeAuthStatus(ChangeAuthStatus event, Emitter<AuthState> emit) {
+  Future<void> _changeAuthStatus(
+      ChangeAuthStatus event, Emitter<AuthState> emit) async {
+    // if user auth status is changed to unauthenticated, remove old session token
+    if (event.status == AuthStatus.unauthenticated) {
+      await repository.deleteExpiredSessionToken();
+    }
     emit(state.copyWith(status: event.status, isLoading: false));
   }
 

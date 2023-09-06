@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
+import 'package:ory_network_flutter/pages/settings.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 
@@ -36,8 +37,14 @@ class _HomePageState extends State<HomePage> {
             width: 40,
           ),
           elevation: 0,
-          //shape: Border(bottom: BorderSide(color: Colors.green, width: 1)),
           actions: [
+            IconButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsPage())),
+              icon: Image.asset('assets/icons/settings.png'),
+            ),
             // if auth is loading, show progress indicator, otherwise a logout icon
             isLoading
                 ? const Padding(

@@ -12,6 +12,10 @@ class AuthRepository {
 
   AuthRepository({required this.service});
 
+  Future<void> deleteExpiredSessionToken() async {
+    await service.deleteExpiredSessionToken();
+  }
+
   Future<Session> getCurrentSessionInformation() async {
     final session = await service.getCurrentSessionInformation();
     return session;
