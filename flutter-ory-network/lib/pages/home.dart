@@ -149,11 +149,14 @@ class _HomePageState extends State<HomePage> {
 
   _buildSessionNotFetched(BuildContext context, AuthState state) {
     if (state.errorMessage != null) {
-      return Center(
-          child: Text(
-        state.errorMessage!,
-        style: const TextStyle(color: Colors.red),
-      ));
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Center(
+            child: Text(
+          state.errorMessage!,
+          style: const TextStyle(color: Colors.red),
+        )),
+      );
     } else {
       return const Center(child: CircularProgressIndicator());
     }

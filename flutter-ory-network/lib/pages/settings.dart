@@ -101,11 +101,14 @@ class _SettingsFormState extends State<SettingsForm> {
 
   _buildSettingsFlowNotCreated(BuildContext context, SettingsState state) {
     if (state.message != null) {
-      return Center(
-          child: Text(
-        state.message!.text,
-        style: TextStyle(color: _getMessageColor(state.message!.type)),
-      ));
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Center(
+            child: Text(
+          state.message!.text,
+          style: TextStyle(color: _getMessageColor(state.message!.type)),
+        )),
+      );
     } else {
       return const Center(child: CircularProgressIndicator());
     }
