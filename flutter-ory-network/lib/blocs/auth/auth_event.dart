@@ -6,15 +6,16 @@ part of 'auth_bloc.dart';
 @immutable
 sealed class AuthEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class ChangeAuthStatus extends AuthEvent {
   final AuthStatus status;
+  final Session? session;
 
-  ChangeAuthStatus({required this.status});
+  ChangeAuthStatus({required this.status, this.session});
   @override
-  List<Object> get props => [status];
+  List<Object?> get props => [status, session];
 }
 
 //get current session information

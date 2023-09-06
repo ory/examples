@@ -31,12 +31,13 @@ class AuthRepository {
     return flowId;
   }
 
-  Future<void> loginWithEmailAndPassword(
+  Future<Session> loginWithEmailAndPassword(
       {required String flowId,
       required String email,
       required String password}) async {
-    await service.loginWithEmailAndPassword(
+    final session = await service.loginWithEmailAndPassword(
         flowId: flowId, email: email, password: password);
+    return session;
   }
 
   Future<void> registerWithEmailAndPassword(

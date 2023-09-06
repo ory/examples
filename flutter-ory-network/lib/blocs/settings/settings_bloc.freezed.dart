@@ -23,6 +23,7 @@ mixin _$SettingsState {
   FormField<String> get password => throw _privateConstructorUsedError;
   bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isSessionRefreshRequired => throw _privateConstructorUsedError;
   NodeMessage? get message => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -41,6 +42,7 @@ abstract class $SettingsStateCopyWith<$Res> {
       FormField<String> password,
       bool isPasswordHidden,
       bool isLoading,
+      bool isSessionRefreshRequired,
       NodeMessage? message});
 
   $FormFieldCopyWith<String, $Res> get password;
@@ -64,6 +66,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? password = null,
     Object? isPasswordHidden = null,
     Object? isLoading = null,
+    Object? isSessionRefreshRequired = null,
     Object? message = freezed,
   }) {
     return _then(_value.copyWith(
@@ -82,6 +85,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSessionRefreshRequired: null == isSessionRefreshRequired
+          ? _value.isSessionRefreshRequired
+          : isSessionRefreshRequired // ignore: cast_nullable_to_non_nullable
               as bool,
       message: freezed == message
           ? _value.message
@@ -124,6 +131,7 @@ abstract class _$$_SettingsStateCopyWith<$Res>
       FormField<String> password,
       bool isPasswordHidden,
       bool isLoading,
+      bool isSessionRefreshRequired,
       NodeMessage? message});
 
   @override
@@ -147,6 +155,7 @@ class __$$_SettingsStateCopyWithImpl<$Res>
     Object? password = null,
     Object? isPasswordHidden = null,
     Object? isLoading = null,
+    Object? isSessionRefreshRequired = null,
     Object? message = freezed,
   }) {
     return _then(_$_SettingsState(
@@ -166,6 +175,10 @@ class __$$_SettingsStateCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSessionRefreshRequired: null == isSessionRefreshRequired
+          ? _value.isSessionRefreshRequired
+          : isSessionRefreshRequired // ignore: cast_nullable_to_non_nullable
+              as bool,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -182,6 +195,7 @@ class _$_SettingsState implements _SettingsState {
       this.password = const FormField<String>(value: ''),
       this.isPasswordHidden = true,
       this.isLoading = false,
+      this.isSessionRefreshRequired = false,
       this.message});
 
   @override
@@ -196,11 +210,14 @@ class _$_SettingsState implements _SettingsState {
   @JsonKey()
   final bool isLoading;
   @override
+  @JsonKey()
+  final bool isSessionRefreshRequired;
+  @override
   final NodeMessage? message;
 
   @override
   String toString() {
-    return 'SettingsState(flowId: $flowId, password: $password, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, message: $message)';
+    return 'SettingsState(flowId: $flowId, password: $password, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, isSessionRefreshRequired: $isSessionRefreshRequired, message: $message)';
   }
 
   @override
@@ -215,12 +232,15 @@ class _$_SettingsState implements _SettingsState {
                 other.isPasswordHidden == isPasswordHidden) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(
+                    other.isSessionRefreshRequired, isSessionRefreshRequired) ||
+                other.isSessionRefreshRequired == isSessionRefreshRequired) &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, flowId, password, isPasswordHidden, isLoading, message);
+  int get hashCode => Object.hash(runtimeType, flowId, password,
+      isPasswordHidden, isLoading, isSessionRefreshRequired, message);
 
   @JsonKey(ignore: true)
   @override
@@ -235,6 +255,7 @@ abstract class _SettingsState implements SettingsState {
       final FormField<String> password,
       final bool isPasswordHidden,
       final bool isLoading,
+      final bool isSessionRefreshRequired,
       final NodeMessage? message}) = _$_SettingsState;
 
   @override
@@ -245,6 +266,8 @@ abstract class _SettingsState implements SettingsState {
   bool get isPasswordHidden;
   @override
   bool get isLoading;
+  @override
+  bool get isSessionRefreshRequired;
   @override
   NodeMessage? get message;
   @override

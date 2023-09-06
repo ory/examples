@@ -9,6 +9,7 @@ import 'package:ory_network_flutter/repositories/settings.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/settings/settings_bloc.dart';
 import '../repositories/auth.dart';
+import 'login.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -66,26 +67,45 @@ class _SettingsFormState extends State<SettingsForm> {
   @override
   Widget build(BuildContext context) {
     final settingsBloc = BlocProvider.of<SettingsBloc>(context);
-    return BlocConsumer<SettingsBloc, SettingsState>(
-        bloc: settingsBloc,
-        // listen to password changes
-        listenWhen: (previous, current) {
-          return previous.password.value != current.password.value &&
-              passwordController.text != current.password.value;
-        },
-        // if password value has changed, update text controller value
-        listener: (BuildContext context, SettingsState state) {
-          passwordController.text = state.password.value;
-        },
-        builder: (context, state) {
-          // settings flow was created
-          if (state.flowId != null) {
-            return _buildSettingsForm(context, state);
-          } // otherwise, show loading or error
-          else {
-            return _buildSettingsFlowNotCreated(context, state);
-          }
-        });
+    return BlocListener<SettingsBloc, SettingsState>(
+      listener: (context, state) async {
+        if (state.isSessionRefreshRequired) {
+          await Navigator.push(
+              context,
+              MaterialPageRoute<bool?>(
+                  builder: (context) => const LoginPage(
+                        isSessionRefresh: true,
+                      ))).then((value) {
+            if (value != null) {
+              if (value && state.flowId != null) {
+                settingsBloc.add(SubmitNewPassword(
+                    flowId: state.flowId!, value: state.password.value));
+              }
+            }
+          });
+        }
+      },
+      child: BlocConsumer<SettingsBloc, SettingsState>(
+          bloc: settingsBloc,
+          // listen to password changes
+          listenWhen: (previous, current) {
+            return previous.password.value != current.password.value &&
+                passwordController.text != current.password.value;
+          },
+          // if password value has changed, update text controller value
+          listener: (BuildContext context, SettingsState state) {
+            passwordController.text = state.password.value;
+          },
+          builder: (context, state) {
+            // settings flow was created
+            if (state.flowId != null) {
+              return _buildSettingsForm(context, state);
+            } // otherwise, show loading or error
+            else {
+              return _buildSettingsFlowNotCreated(context, state);
+            }
+          }),
+    );
   }
 
   _getMessageColor(MessageType type) {

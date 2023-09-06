@@ -44,7 +44,10 @@ class AuthService {
   /// Create login flow
   Future<String> createLoginFlow() async {
     try {
-      final response = await _ory.createNativeLoginFlow();
+      final token = await _storage.getToken();
+      // create native login flow. If session token is available, refresh the session
+      final response = await _ory.createNativeLoginFlow(
+          xSessionToken: token, refresh: token != null);
       if (response.data != null) {
         // return flow id
         return response.data!.id;
@@ -72,11 +75,12 @@ class AuthService {
   }
 
   /// Log in with [email] and [password] using login flow with [flowId]
-  Future<void> loginWithEmailAndPassword(
+  Future<Session> loginWithEmailAndPassword(
       {required String flowId,
       required String email,
       required String password}) async {
     try {
+      final token = await _storage.getToken();
       final UpdateLoginFlowWithPasswordMethod loginFLowBuilder =
           UpdateLoginFlowWithPasswordMethod((b) => b
             ..identifier = email
@@ -85,13 +89,14 @@ class AuthService {
 
       final response = await _ory.updateLoginFlow(
           flow: flowId,
+          xSessionToken: token,
           updateLoginFlowBody: UpdateLoginFlowBody(
               (b) => b..oneOf = OneOf.fromValue1(value: loginFLowBuilder)));
 
       if (response.data?.session != null) {
         // save session token after successful login
         await _storage.persistToken(response.data!.sessionToken!);
-        return;
+        return response.data!.session;
       } else {
         throw const CustomException.unknown();
       }

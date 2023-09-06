@@ -11,24 +11,56 @@ import '../widgets/social_provider_box.dart';
 import 'registration.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  final bool isSessionRefresh;
+  const LoginPage({super.key, this.isSessionRefresh = false});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: !isSessionRefresh,
+      appBar: isSessionRefresh
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leadingWidth: 72,
+              toolbarHeight: 72,
+              // use row to avoid force resizing of leading widget
+              leading: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 32, top: 32),
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                                width: 1, color: const Color(0xFFE2E8F0))),
+                        child: const Icon(Icons.arrow_back, size: 16),
+                      ),
+                    ),
+                  ),
+                ],
+              ))
+          : null,
       body: BlocProvider(
           create: (context) => LoginBloc(
               authBloc: context.read<AuthBloc>(),
               repository: RepositoryProvider.of<AuthRepository>(context))
             ..add(CreateLoginFlow()),
-          child: const LoginForm()),
+          child: LoginForm(
+            isSessionRefresh: isSessionRefresh,
+          )),
     );
   }
 }
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  final bool isSessionRefresh;
+  const LoginForm({super.key, required this.isSessionRefresh});
 
   @override
   State<StatefulWidget> createState() => LoginFormState();
@@ -40,29 +72,40 @@ class LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final loginBloc = BlocProvider.of<LoginBloc>(context);
-    return BlocConsumer<LoginBloc, LoginState>(
-        bloc: loginBloc,
-        // listen to email and password changes
-        listenWhen: (previous, current) {
-          return (previous.email.value != current.email.value &&
-                  emailController.text != current.email.value) ||
-              (previous.password.value != current.password.value &&
-                  passwordController.text != current.password.value);
-        },
-        // if email or password value have changed, update text controller values
-        listener: (BuildContext context, LoginState state) {
-          emailController.text = state.email.value;
-          passwordController.text = state.password.value;
-        },
-        builder: (context, state) {
-          // login flow was created
-          if (state.flowId != null) {
-            return _buildLoginForm(context, state);
-          } // otherwise, show loading or error
-          else {
-            return _buildLoginFlowNotCreated(context, state);
-          }
-        });
+    return BlocListener<AuthBloc, AuthState>(
+      // listen when the user was already authenticated and session was updated
+      listenWhen: (previous, current) =>
+          previous.session != null &&
+          current.session != null &&
+          previous.session != current.session,
+      listener: (context, state) {
+        // pop with true to trigger change password flow
+        Navigator.of(context).pop(true);
+      },
+      child: BlocConsumer<LoginBloc, LoginState>(
+          bloc: loginBloc,
+          // listen to email and password changes
+          listenWhen: (previous, current) {
+            return (previous.email.value != current.email.value &&
+                    emailController.text != current.email.value) ||
+                (previous.password.value != current.password.value &&
+                    passwordController.text != current.password.value);
+          },
+          // if email or password value have changed, update text controller values
+          listener: (BuildContext context, LoginState state) {
+            emailController.text = state.email.value;
+            passwordController.text = state.password.value;
+          },
+          builder: (context, state) {
+            // login flow was created
+            if (state.flowId != null) {
+              return _buildLoginForm(context, state);
+            } // otherwise, show loading or error
+            else {
+              return _buildLoginFlowNotCreated(context, state);
+            }
+          }),
+    );
   }
 
   _buildLoginFlowNotCreated(BuildContext context, LoginState state) {
@@ -90,15 +133,17 @@ class LoginFormState extends State<LoginForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  //status bar height + padding
-                  top: MediaQuery.of(context).viewPadding.top + 48),
-              child: Image.asset(
-                'assets/images/ory_logo.png',
-                width: 70,
+            // show Ory logo when the user is not authenticated, otherwise back button will be shown
+            if (!widget.isSessionRefresh)
+              Padding(
+                padding: EdgeInsets.only(
+                    //status bar height + padding
+                    top: MediaQuery.of(context).viewPadding.top + 48),
+                child: Image.asset(
+                  'assets/images/ory_logo.png',
+                  width: 70,
+                ),
               ),
-            ),
             const SizedBox(
               height: 32,
             ),
@@ -171,12 +216,14 @@ class LoginFormState extends State<LoginForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Password'),
-                      TextButton(
-                          onPressed: null, child: Text("Forgot password?"))
+                      const Text('Password'),
+                      // show forgot password only for initial login
+                      if (!widget.isSessionRefresh)
+                        const TextButton(
+                            onPressed: null, child: Text("Forgot password?"))
                     ],
                   ),
                   const SizedBox(
@@ -251,21 +298,37 @@ class LoginFormState extends State<LoginForm> {
             const SizedBox(
               height: 32,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Text('No account?'),
-                TextButton(
-                    // disable button when state is loading
-                    onPressed: state.isLoading
-                        ? null
-                        : () => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const RegistrationPage())),
-                    child: const Text('Sign up'))
-              ],
-            )
+            // show logout button is session needs to be refreshed
+            if (widget.isSessionRefresh)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text('Something not working?'),
+                  TextButton(
+                      // disable button when state is loading
+                      onPressed: state.isLoading
+                          ? null
+                          : () => context.read<AuthBloc>()..add(LogOut()),
+                      child: const Text('Logout'))
+                ],
+              ),
+            // show registration button only for initial login
+            if (!widget.isSessionRefresh)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text('No account?'),
+                  TextButton(
+                      // disable button when state is loading
+                      onPressed: state.isLoading
+                          ? null
+                          : () => Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RegistrationPage())),
+                      child: const Text('Sign up'))
+                ],
+              )
           ],
         ),
       ),

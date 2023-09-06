@@ -32,12 +32,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     // remove password and general error when changing email
     emit(state.copyWith
         .password(value: event.value, errorMessage: null)
-        .copyWith(message: null));
+        .copyWith(message: null, isSessionRefreshRequired: false));
   }
 
   _onChangePasswordVisibility(
       ChangePasswordVisibility event, Emitter<SettingsState> emit) {
-    emit(state.copyWith(isPasswordHidden: event.value));
+    emit(state.copyWith(
+        isPasswordHidden: event.value, isSessionRefreshRequired: false));
   }
 
   Future<void> _onCreateSettingsFlow(
@@ -66,7 +67,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       SubmitNewPassword event, Emitter<SettingsState> emit) async {
     try {
       emit(state
-          .copyWith(isLoading: true, message: null)
+          .copyWith(
+              isLoading: true, message: null, isSessionRefreshRequired: false)
           .copyWith
           .password(errorMessage: null));
 
@@ -105,6 +107,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
                 isLoading: false)
             .copyWith
             .password(value: ''));
+      } else if (e case SessionRefreshRequiredException _) {
+        // set session required flag to navigate to login page and reset password field
+        emit(state.copyWith(isSessionRefreshRequired: true, isLoading: false));
       } else if (e case UnknownException _) {
         emit(state.copyWith(
             isLoading: false,

@@ -28,7 +28,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event.status == AuthStatus.unauthenticated) {
       await repository.deleteExpiredSessionToken();
     }
-    emit(state.copyWith(status: event.status, isLoading: false));
+    emit(state.copyWith(
+        status: event.status, session: event.session, isLoading: false));
   }
 
   Future<void> _onGetCurrentSessionInformation(

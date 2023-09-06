@@ -72,10 +72,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           .copyWith
           .password(errorMessage: null));
 
-      await repository.loginWithEmailAndPassword(
+      final session = await repository.loginWithEmailAndPassword(
           flowId: event.flowId, email: event.email, password: event.password);
 
-      authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
+      authBloc.add(
+          ChangeAuthStatus(status: AuthStatus.authenticated, session: session));
     } on CustomException catch (e) {
       if (e case BadRequestException _) {
         final emailMessage = e.messages

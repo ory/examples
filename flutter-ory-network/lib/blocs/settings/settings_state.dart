@@ -10,5 +10,6 @@ sealed class SettingsState with _$SettingsState {
       @Default(FormField<String>(value: '')) FormField<String> password,
       @Default(true) bool isPasswordHidden,
       @Default(false) bool isLoading,
+      @Default(false) bool isSessionRefreshRequired,
       NodeMessage? message}) = _SettingsState;
 }
