@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "193053703241",
+    "project_id": "ory-test-90fa8",
+    "storage_bucket": "ory-test-90fa8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193053703241:android:320d8db6d7f6f9796dd398",
+        "android_client_info": {
+          "package_name": "com.example.ory_network_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193053703241-gfibqv46pbmfhjhbrf6mehm56qnmhjdl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ory_network_flutter",
+            "certificate_hash": "11899622fbe633adaffa23044b3ced5df07d4854"
+          }
+        },
+        {
+          "client_id": "193053703241-v6hs2m4i64mlj0s1a76kt4pvvb5rg5j9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_E7oUFIHfT-_5NqUH-7HwbrLr1qbiXuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193053703241-v6hs2m4i64mlj0s1a76kt4pvvb5rg5j9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "193053703241-ncah8t910nou6sh7q1o7887rtm01l8qh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ory.kratos-selfservice-ui-react-native"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193053703241:android:63ff80e658ecaa4c6dd398",
+        "android_client_info": {
+          "package_name": "com.ory.kratos_self_service_ui_react_native"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193053703241-ska5369d9faq4eoum735amgvo5b2erit.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ory.kratos_self_service_ui_react_native",
+            "certificate_hash": "11899622fbe633adaffa23044b3ced5df07d4854"
+          }
+        },
+        {
+          "client_id": "193053703241-v6hs2m4i64mlj0s1a76kt4pvvb5rg5j9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_E7oUFIHfT-_5NqUH-7HwbrLr1qbiXuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193053703241-v6hs2m4i64mlj0s1a76kt4pvvb5rg5j9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "193053703241-ncah8t910nou6sh7q1o7887rtm01l8qh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ory.kratos-selfservice-ui-react-native"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

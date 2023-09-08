@@ -14,11 +14,16 @@ import 'pages/login.dart';
 import 'pages/entry.dart';
 import 'repositories/auth.dart';
 import 'services/auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
   final baseUrl = dotenv.get('ORY_BASE_URL');
 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // create the dio client for http requests
   final options = BaseOptions(
     baseUrl: baseUrl,
