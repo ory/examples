@@ -103,10 +103,10 @@ class RegistrationFormState extends State<RegistrationForm> {
             const SizedBox(
               height: 32,
             ),
-            const Text("Sign up",
+            const Text('Sign up',
                 style: TextStyle(
                     fontWeight: FontWeight.w600, height: 1.5, fontSize: 18)),
-            const Text("Sign up with a social provider or with your email"),
+            const Text('Sign up with a social provider or with your email'),
             const SizedBox(
               height: 32,
             ),
@@ -138,7 +138,8 @@ class RegistrationFormState extends State<RegistrationForm> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Email'),
+                const Text('Email',
+                    style: TextStyle(fontWeight: FontWeight.w600)),
                 const SizedBox(
                   height: 4,
                 ),
@@ -162,7 +163,8 @@ class RegistrationFormState extends State<RegistrationForm> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Password'),
+                const Text('Password',
+                    style: TextStyle(fontWeight: FontWeight.w600)),
                 const SizedBox(
                   height: 4,
                 ),

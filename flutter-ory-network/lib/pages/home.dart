@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                   )
                 : IconButton(
                     onPressed: () => context.read<AuthBloc>()..add(LogOut()),
-                    icon: const Icon(Icons.logout),
+                    icon: Image.asset('assets/icons/logout.png'),
                   ),
           ],
         ),

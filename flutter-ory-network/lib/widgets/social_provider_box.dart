@@ -17,8 +17,7 @@ class SocialProviderBox extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(width: 1, color: const Color(0xFFE2E8F0))),
           child: // get icon from assets depending on provider
-              Image.asset(
-                  'assets/images/flows-auth-buttons-social-${provider.name}.png'),
+              Image.asset('assets/images/${provider.name}.png'),
         ),
       ),
     );

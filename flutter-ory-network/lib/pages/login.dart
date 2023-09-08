@@ -147,11 +147,11 @@ class LoginFormState extends State<LoginForm> {
             const SizedBox(
               height: 32,
             ),
-            const Text("Sign in",
+            const Text('Sign in',
                 style: TextStyle(
                     fontWeight: FontWeight.w600, height: 1.5, fontSize: 18)),
             const Text(
-                "Sign in with a social provider or with your email and password"),
+                'Sign in with a social provider or with your email and password'),
             const SizedBox(
               height: 32,
             ),
@@ -191,7 +191,8 @@ class LoginFormState extends State<LoginForm> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Email'),
+                const Text('Email',
+                    style: TextStyle(fontWeight: FontWeight.w600)),
                 const SizedBox(
                   height: 4,
                 ),
@@ -219,11 +220,14 @@ class LoginFormState extends State<LoginForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Password'),
+                      const Text(
+                        'Password',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
                       // show forgot password only for initial login
                       if (!widget.isSessionRefresh)
                         const TextButton(
-                            onPressed: null, child: Text("Forgot password?"))
+                            onPressed: null, child: Text('Forgot password?'))
                     ],
                   ),
                   const SizedBox(
@@ -298,7 +302,7 @@ class LoginFormState extends State<LoginForm> {
             const SizedBox(
               height: 32,
             ),
-            // show logout button is session needs to be refreshed
+            // show logout button if session needs to be refreshed
             if (widget.isSessionRefresh)
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
