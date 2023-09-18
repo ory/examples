@@ -184,7 +184,7 @@ class AuthService {
   }
 
   /// Create settings flow
-  Future<String> createSettingsFlow() async {
+  Future<SettingsFlow> createSettingsFlow() async {
     try {
       final token = await _storage.getToken();
       final response =
@@ -192,7 +192,7 @@ class AuthService {
 
       if (response.data != null) {
         // return flow id
-        return response.data!.id;
+        return response.data!;
       } else {
         throw const CustomException.unknown();
       }
@@ -203,6 +203,65 @@ class AuthService {
       } else {
         throw _handleUnknownException(e.response?.data);
       }
+    }
+  }
+
+  Future<SettingsFlow?> submitNewSettings(
+      {required String flowId,
+      required UiNodeGroupEnum group,
+      required Map value}) async {
+    try {
+      final token = await _storage.getToken();
+      final OneOf oneOf;
+      print(value);
+
+      switch (group) {
+        case UiNodeGroupEnum.password:
+          oneOf = OneOf.fromValue1(
+              value: UpdateSettingsFlowWithPasswordMethod((b) => b
+                ..method = group.name
+                ..password = value['password']));
+        case UiNodeGroupEnum.profile:
+          oneOf = OneOf.fromValue1(
+              value: UpdateSettingsFlowWithProfileMethod((b) => b
+                ..method = group.name
+                ..traits = JsonObject(value['traits'])));
+        case UiNodeGroupEnum.lookupSecret:
+          oneOf = OneOf.fromValue1(
+              value: UpdateSettingsFlowWithLookupMethod((b) => b
+                ..method = group.name
+                ..lookupSecretConfirm =
+                    getLookupValue(value['lookup_secret_confirm'])
+                ..lookupSecretDisable =
+                    getLookupValue(value['lookup_secret_disable'])
+                ..lookupSecretReveal =
+                    getLookupValue(value['lookup_secret_reveal'])
+                ..lookupSecretRegenerate =
+                    getLookupValue(value['lookup_secret_regenerate'])));
+        default:
+          oneOf = OneOf.fromValue1(value: null);
+      }
+
+      final response = await _ory.updateSettingsFlow(
+          flow: flowId,
+          xSessionToken: token,
+          updateSettingsFlowBody:
+              UpdateSettingsFlowBody((b) => b..oneOf = oneOf));
+      print(response.data?.ui.messages);
+
+      return response.data;
+    } on DioException catch (e) {
+      print(e.error);
+      print(e.response?.data);
+    }
+    return null;
+  }
+
+  bool? getLookupValue(String? value) {
+    if (value == null) {
+      return null;
+    } else {
+      return value == 'true' ? true : false;
     }
   }
 

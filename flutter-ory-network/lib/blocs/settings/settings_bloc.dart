@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:collection/collection.dart';
+import 'package:ory_client/ory_client.dart';
 import 'package:ory_network_flutter/entities/message.dart';
 import 'package:ory_network_flutter/repositories/auth.dart';
 
@@ -27,6 +28,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<ChangePassword>(_onChangePassword);
     on<ChangePasswordVisibility>(_onChangePasswordVisibility);
     on<SubmitNewPassword>(_onSubmitNewPassword);
+    on<ChangeNodeValue>(_changeNodeValue);
+    on<SubmitNewSettings>(_onSubmitNewSettings);
   }
   _onChangePassword(ChangePassword event, Emitter<SettingsState> emit) {
     // remove password and general error when changing email
@@ -41,14 +44,34 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         isPasswordHidden: event.value, isSessionRefreshRequired: false));
   }
 
+  _changeNodeValue(ChangeNodeValue event, Emitter<SettingsState> emit) {
+    final newSettingsState = repository.changeNodeValue(
+        settings: state.settingsFlow, name: event.name, value: event.value);
+    emit(state.copyWith(settingsFlow: newSettingsState));
+  }
+
+  Future<void> _onSubmitNewSettings(
+      SubmitNewSettings event, Emitter<SettingsState> emit) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      final settings = await repository.submitNewSettings(
+          flowId: event.flowId,
+          group: event.group,
+          nodes: state.settingsFlow?.ui.nodes.toList());
+      emit(state.copyWith(isLoading: false, settingsFlow: settings));
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> _onCreateSettingsFlow(
       SettingsEvent event, Emitter<SettingsState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, message: null));
 
-      final flowId = await repository.createSettingsFlow();
+      final settingsFlow = await repository.createSettingsFlow();
 
-      emit(state.copyWith(isLoading: false, flowId: flowId));
+      emit(state.copyWith(isLoading: false, settingsFlow: settingsFlow));
     } on CustomException catch (e) {
       if (e case UnauthorizedException _) {
         // change auth status as the user is not authenticated
@@ -102,7 +125,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         // use new flow id, reset fields and show error
         emit(state
             .copyWith(
-                flowId: e.flowId,
+                // settings: e.flowId,
                 message: NodeMessage(text: e.message, type: MessageType.error),
                 isLoading: false)
             .copyWith

@@ -1,6 +1,3 @@
-// Copyright © 2023 Ory Corp
-// SPDX-License-Identifier: Apache-2.0
-
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -19,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SettingsState {
-  String? get flowId => throw _privateConstructorUsedError;
+  SettingsFlow? get settingsFlow => throw _privateConstructorUsedError;
   FormField<String> get password => throw _privateConstructorUsedError;
   bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
@@ -38,7 +35,7 @@ abstract class $SettingsStateCopyWith<$Res> {
       _$SettingsStateCopyWithImpl<$Res, SettingsState>;
   @useResult
   $Res call(
-      {String? flowId,
+      {SettingsFlow? settingsFlow,
       FormField<String> password,
       bool isPasswordHidden,
       bool isLoading,
@@ -62,7 +59,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? flowId = freezed,
+    Object? settingsFlow = freezed,
     Object? password = null,
     Object? isPasswordHidden = null,
     Object? isLoading = null,
@@ -70,10 +67,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
     Object? message = freezed,
   }) {
     return _then(_value.copyWith(
-      flowId: freezed == flowId
-          ? _value.flowId
-          : flowId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      settingsFlow: freezed == settingsFlow
+          ? _value.settingsFlow
+          : settingsFlow // ignore: cast_nullable_to_non_nullable
+              as SettingsFlow?,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -127,7 +124,7 @@ abstract class _$$_SettingsStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? flowId,
+      {SettingsFlow? settingsFlow,
       FormField<String> password,
       bool isPasswordHidden,
       bool isLoading,
@@ -151,7 +148,7 @@ class __$$_SettingsStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? flowId = freezed,
+    Object? settingsFlow = freezed,
     Object? password = null,
     Object? isPasswordHidden = null,
     Object? isLoading = null,
@@ -159,10 +156,10 @@ class __$$_SettingsStateCopyWithImpl<$Res>
     Object? message = freezed,
   }) {
     return _then(_$_SettingsState(
-      flowId: freezed == flowId
-          ? _value.flowId
-          : flowId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      settingsFlow: freezed == settingsFlow
+          ? _value.settingsFlow
+          : settingsFlow // ignore: cast_nullable_to_non_nullable
+              as SettingsFlow?,
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -191,7 +188,7 @@ class __$$_SettingsStateCopyWithImpl<$Res>
 
 class _$_SettingsState implements _SettingsState {
   const _$_SettingsState(
-      {this.flowId,
+      {this.settingsFlow,
       this.password = const FormField<String>(value: ''),
       this.isPasswordHidden = true,
       this.isLoading = false,
@@ -199,7 +196,7 @@ class _$_SettingsState implements _SettingsState {
       this.message});
 
   @override
-  final String? flowId;
+  final SettingsFlow? settingsFlow;
   @override
   @JsonKey()
   final FormField<String> password;
@@ -217,7 +214,7 @@ class _$_SettingsState implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(flowId: $flowId, password: $password, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, isSessionRefreshRequired: $isSessionRefreshRequired, message: $message)';
+    return 'SettingsState(settingsFlow: $settingsFlow, password: $password, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, isSessionRefreshRequired: $isSessionRefreshRequired, message: $message)';
   }
 
   @override
@@ -225,7 +222,8 @@ class _$_SettingsState implements _SettingsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SettingsState &&
-            (identical(other.flowId, flowId) || other.flowId == flowId) &&
+            const DeepCollectionEquality()
+                .equals(other.settingsFlow, settingsFlow) &&
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.isPasswordHidden, isPasswordHidden) ||
@@ -239,8 +237,14 @@ class _$_SettingsState implements _SettingsState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, flowId, password,
-      isPasswordHidden, isLoading, isSessionRefreshRequired, message);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(settingsFlow),
+      password,
+      isPasswordHidden,
+      isLoading,
+      isSessionRefreshRequired,
+      message);
 
   @JsonKey(ignore: true)
   @override
@@ -251,7 +255,7 @@ class _$_SettingsState implements _SettingsState {
 
 abstract class _SettingsState implements SettingsState {
   const factory _SettingsState(
-      {final String? flowId,
+      {final SettingsFlow? settingsFlow,
       final FormField<String> password,
       final bool isPasswordHidden,
       final bool isLoading,
@@ -259,7 +263,7 @@ abstract class _SettingsState implements SettingsState {
       final NodeMessage? message}) = _$_SettingsState;
 
   @override
-  String? get flowId;
+  SettingsFlow? get settingsFlow;
   @override
   FormField<String> get password;
   @override

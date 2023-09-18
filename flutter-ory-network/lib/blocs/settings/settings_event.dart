@@ -38,3 +38,19 @@ final class SubmitNewPassword extends SettingsEvent {
   @override
   List<Object> get props => [flowId, value];
 }
+
+class ChangeNodeValue<T> extends SettingsEvent {
+  final T value;
+  final String name;
+
+  ChangeNodeValue({required this.value, required this.name});
+}
+
+class SubmitNewSettings extends SettingsEvent {
+  final String flowId;
+  final UiNodeGroupEnum group;
+
+  SubmitNewSettings({required this.flowId, required this.group});
+  @override
+  List<Object> get props => [flowId, group];
+}

@@ -1,14 +1,19 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ory_network_flutter/entities/message.dart';
+import 'package:ory_client/ory_client.dart';
 import 'package:ory_network_flutter/repositories/settings.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/settings/settings_bloc.dart';
 import '../repositories/auth.dart';
+import '../widgets/input_button.dart';
+import '../widgets/input_field.dart';
 import 'login.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -67,54 +72,65 @@ class _SettingsFormState extends State<SettingsForm> {
   @override
   Widget build(BuildContext context) {
     final settingsBloc = BlocProvider.of<SettingsBloc>(context);
-    return BlocListener<SettingsBloc, SettingsState>(
-      listener: (context, state) async {
-        if (state.isSessionRefreshRequired) {
-          await Navigator.push(
-              context,
-              MaterialPageRoute<bool?>(
-                  builder: (context) => const LoginPage(
-                        isSessionRefresh: true,
-                      ))).then((value) {
-            if (value != null) {
-              if (value && state.flowId != null) {
-                settingsBloc.add(SubmitNewPassword(
-                    flowId: state.flowId!, value: state.password.value));
+    return MultiBlocListener(
+        listeners: [
+          // if session needs to be refreshed, navigate to login flow screen
+          BlocListener(
+            bloc: settingsBloc,
+            listener: (BuildContext context, SettingsState state) async {
+              if (state.isSessionRefreshRequired) {
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute<bool?>(
+                        builder: (context) => const LoginPage(
+                              isSessionRefresh: true,
+                            ))).then((value) {
+                  if (value != null) {
+                    // if (value && state.flowId != null) {
+                    //   settingsBloc.add(SubmitNewPassword(
+                    //       flowId: state.flowId!, value: state.password.value));
+                    // }
+                  }
+                });
               }
-            }
-          });
-        }
-      },
-      child: BlocConsumer<SettingsBloc, SettingsState>(
-          bloc: settingsBloc,
-          // listen to password changes
-          listenWhen: (previous, current) {
-            return previous.password.value != current.password.value &&
-                passwordController.text != current.password.value;
-          },
-          // if password value has changed, update text controller value
-          listener: (BuildContext context, SettingsState state) {
-            passwordController.text = state.password.value;
-          },
+            },
+          ),
+          // listens to message changes and displays them as a snackbar
+          BlocListener(
+              bloc: settingsBloc,
+              listenWhen: (SettingsState previous, SettingsState current) =>
+                  previous.isLoading != current.isLoading && !current.isLoading,
+              listener: (BuildContext context, SettingsState state) {
+                if (state.settingsFlow!.ui.messages != null) {
+                  // for simplicity, we will only show the first message in snackbar
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(state.settingsFlow!.ui.messages!.first.text),
+                  ));
+                }
+              }),
+        ],
+        child: BlocBuilder<SettingsBloc, SettingsState>(
+          buildWhen: (previous, current) =>
+              previous.isLoading != current.isLoading,
           builder: (context, state) {
             // settings flow was created
-            if (state.flowId != null) {
-              return _buildSettingsForm(context, state);
+            if (state.settingsFlow != null) {
+              return _buildUi(context, state);
             } // otherwise, show loading or error
             else {
               return _buildSettingsFlowNotCreated(context, state);
             }
-          }),
-    );
+          },
+        ));
   }
 
-  _getMessageColor(MessageType type) {
+  _getMessageColor(UiTextTypeEnum type) {
     switch (type) {
-      case MessageType.success:
+      case UiTextTypeEnum.success:
         return Colors.green;
-      case MessageType.error:
+      case UiTextTypeEnum.error:
         return Colors.red;
-      case MessageType.info:
+      case UiTextTypeEnum.info:
         return Colors.grey;
     }
   }
@@ -123,109 +139,117 @@ class _SettingsFormState extends State<SettingsForm> {
     if (state.message != null) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Center(
-            child: Text(
-          state.message!.text,
-          style: TextStyle(color: _getMessageColor(state.message!.type)),
-        )),
+        child: Center(child: Text(state.message!.text)),
       );
     } else {
       return const Center(child: CircularProgressIndicator());
     }
   }
 
-  _buildSettingsForm(BuildContext context, SettingsState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 32,
-            ),
-            const Text('Set a new password',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, height: 1.5, fontSize: 18)),
-            const Text(
-                'The key aspects of a strong password are length, varying characters, no ties to your personal information and no dictionary words.'),
-            const SizedBox(
-              height: 32,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('New password'),
-                const SizedBox(
-                  height: 4,
-                ),
-                TextFormField(
-                  enabled: !state.isLoading,
-                  controller: passwordController,
-                  onChanged: (String value) => context
-                      .read<SettingsBloc>()
-                      .add(ChangePassword(value: value)),
-                  obscureText: state.isPasswordHidden,
-                  decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: 'Enter a password',
-                      // change password visibility
-                      suffixIcon: GestureDetector(
-                        onTap: () => context.read<SettingsBloc>().add(
-                            ChangePasswordVisibility(
-                                value: !state.isPasswordHidden)),
-                        child: ImageIcon(
-                          state.isPasswordHidden
-                              ? const AssetImage('assets/icons/eye.png')
-                              : const AssetImage('assets/icons/eye-off.png'),
-                          size: 16,
-                        ),
-                      ),
-                      errorText: state.password.errorMessage,
-                      errorMaxLines: 3),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            // show general error message if it exists
-            if (state.message != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 15.0),
-                child: Text(
-                  state.message!.text,
-                  style:
-                      TextStyle(color: _getMessageColor(state.message!.type)),
-                  maxLines: 3,
-                ),
-              ),
+  _buildUi(BuildContext context, SettingsState state) {
+    final nodes = state.settingsFlow!.ui.nodes;
+    final profileNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.profile).toList();
+    final passwordNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.password).toList();
+    final lookupSecretNodes = nodes
+        .where((node) => node.group == UiNodeGroupEnum.lookupSecret)
+        .toList();
+    final totpNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.totp).toList();
 
-            // show loading indicator when state is in a loading mode
-            if (state.isLoading)
-              const Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Center(
-                    child: SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: CircularProgressIndicator())),
+    return Stack(children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 32,
               ),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                // disable button when state is loading
-                onPressed: state.isLoading
-                    ? null
-                    : () {
-                        context.read<SettingsBloc>().add(SubmitNewPassword(
-                            flowId: state.flowId!,
-                            value: state.password.value));
-                      },
-                child: const Text('Submit'),
-              ),
-            ),
-          ]),
+              _buildGroup(context, state.settingsFlow!.id, profileNodes),
+              _buildGroup(context, state.settingsFlow!.id, passwordNodes),
+              _buildGroup(context, state.settingsFlow!.id, lookupSecretNodes),
+              _buildGroup(context, state.settingsFlow!.id, totpNodes),
+            ],
+          ),
+        ),
+      ),
+      if (state.isLoading)
+        const Opacity(
+          opacity: 0.8,
+          child: ModalBarrier(dismissible: false, color: Colors.white30),
+        ),
+      if (state.isLoading)
+        const Center(
+          child: CircularProgressIndicator(),
+        ),
+    ]);
+  }
+
+  _buildTextNode(BuildContext context, UiNode node) {
+    final attributes = node.attributes.oneOf.value as UiNodeTextAttributes;
+    return Text(attributes.text.text);
+  }
+
+  _buildGroup(BuildContext context, String flowId, List<UiNode> nodes) {
+    final formKey = GlobalKey<FormState>();
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: ((BuildContext context, index) {
+                final attributes = nodes[index].attributes.oneOf;
+                if (attributes.isType(UiNodeInputAttributes)) {
+                  return _buildInputNode(
+                      context, flowId, formKey, nodes[index]);
+                } else if (attributes.isType(UiNodeTextAttributes)) {
+                  return _buildTextNode(context, nodes[index]);
+                } else if (attributes.isType(UiNodeImageAttributes)) {
+                  return _buildImageNode(
+                      context, flowId, formKey, nodes[index]);
+                } else {
+                  return Container();
+                }
+              }),
+              separatorBuilder: (BuildContext context, int index) =>
+                  const SizedBox(
+                    height: 20,
+                  ),
+              itemCount: nodes.length),
+        ],
+      ),
+    );
+  }
+
+  _buildInputNode(BuildContext context, String flowId,
+      GlobalKey<FormState> formKey, UiNode node) {
+    final inputNode = node.attributes.oneOf.value as UiNodeInputAttributes;
+    switch (inputNode.type) {
+      case UiNodeInputAttributesTypeEnum.submit:
+        return InputButton(flowId: flowId, node: node, formKey: formKey);
+      case UiNodeInputAttributesTypeEnum.button:
+        return InputButton(flowId: flowId, node: node, formKey: formKey);
+      case UiNodeInputAttributesTypeEnum.hidden:
+        return Container();
+
+      default:
+        return InputField(node: node);
+    }
+  }
+
+  _buildImageNode(BuildContext context, String flowId,
+      GlobalKey<FormState> formKey, UiNode node) {
+    final imageNode = node.attributes.oneOf.value as UiNodeImageAttributes;
+    Uint8List bytes = base64.decode(imageNode.src.split(',').last);
+    return Center(
+      child: SizedBox(
+          width: imageNode.width.toDouble(),
+          height: imageNode.height.toDouble(),
+          child: Image.memory(bytes)),
     );
   }
 }

@@ -85,13 +85,13 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Text(
-              "Welcome back,\n${session.identity.id}!",
+              'Welcome back,\n${session.identity.id}!',
               style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 35),
             ),
             const Padding(
               padding: EdgeInsets.only(top: 15.0),
               child: Text(
-                  "Hello, nice to have you! You signed up with this data:"),
+                  'Hello, nice to have you! You signed up with this data:'),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
             const Padding(
               padding: EdgeInsets.only(top: 15.0),
               child:
-                  Text("You are signed in using an ORY Kratos Session Token:"),
+                  Text('You are signed in using an ORY Kratos Session Token:'),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
             const Padding(
                 padding: EdgeInsets.only(top: 15.0),
                 child: Text(
-                    "This app mackes REST requests to ORY Kratos' Public API to validate and decode the ORY Kratos Session payload:")),
+                    'This app mackes REST requests to ORY Kratos Public API to validate and decode the ORY Kratos Session payload:')),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Container(

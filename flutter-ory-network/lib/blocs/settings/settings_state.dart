@@ -6,7 +6,7 @@ part of 'settings_bloc.dart';
 @freezed
 sealed class SettingsState with _$SettingsState {
   const factory SettingsState(
-      {String? flowId,
+      {SettingsFlow? settingsFlow,
       @Default(FormField<String>(value: '')) FormField<String> password,
       @Default(true) bool isPasswordHidden,
       @Default(false) bool isLoading,
