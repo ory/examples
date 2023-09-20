@@ -231,13 +231,19 @@ class AuthService {
               value: UpdateSettingsFlowWithLookupMethod((b) => b
                 ..method = group.name
                 ..lookupSecretConfirm =
-                    getLookupValue(value['lookup_secret_confirm'])
+                    getBoolValue(value['lookup_secret_confirm'])
                 ..lookupSecretDisable =
-                    getLookupValue(value['lookup_secret_disable'])
+                    getBoolValue(value['lookup_secret_disable'])
                 ..lookupSecretReveal =
-                    getLookupValue(value['lookup_secret_reveal'])
+                    getBoolValue(value['lookup_secret_reveal'])
                 ..lookupSecretRegenerate =
-                    getLookupValue(value['lookup_secret_regenerate'])));
+                    getBoolValue(value['lookup_secret_regenerate'])));
+        case UiNodeGroupEnum.totp:
+          oneOf = OneOf.fromValue1(
+              value: UpdateSettingsFlowWithTotpMethod((b) => b
+                ..method = group.name
+                ..totpCode = value['totp_code']
+                ..totpUnlink = getBoolValue(value['totp_unlink'])));
         default:
           oneOf = OneOf.fromValue1(value: null);
       }
@@ -257,7 +263,7 @@ class AuthService {
     return null;
   }
 
-  bool? getLookupValue(String? value) {
+  bool? getBoolValue(String? value) {
     if (value == null) {
       return null;
     } else {

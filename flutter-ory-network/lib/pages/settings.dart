@@ -12,8 +12,10 @@ import 'package:ory_network_flutter/repositories/settings.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/settings/settings_bloc.dart';
 import '../repositories/auth.dart';
-import '../widgets/input_button.dart';
-import '../widgets/input_field.dart';
+import '../widgets/nodes/image.dart';
+import '../widgets/nodes/input_submit.dart';
+import '../widgets/nodes/input.dart';
+import '../widgets/nodes/text.dart';
 import 'login.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -104,6 +106,8 @@ class _SettingsFormState extends State<SettingsForm> {
                 if (state.settingsFlow!.ui.messages != null) {
                   // for simplicity, we will only show the first message in snackbar
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: _getMessageColor(
+                        state.settingsFlow!.ui.messages!.first.type),
                     content: Text(state.settingsFlow!.ui.messages!.first.text),
                   ));
                 }
@@ -167,14 +171,19 @@ class _SettingsFormState extends State<SettingsForm> {
               const SizedBox(
                 height: 32,
               ),
-              _buildGroup(context, state.settingsFlow!.id, profileNodes),
-              _buildGroup(context, state.settingsFlow!.id, passwordNodes),
-              _buildGroup(context, state.settingsFlow!.id, lookupSecretNodes),
-              _buildGroup(context, state.settingsFlow!.id, totpNodes),
+              _buildGroup(context, state.settingsFlow!.id,
+                  UiNodeGroupEnum.profile, profileNodes),
+              _buildGroup(context, state.settingsFlow!.id,
+                  UiNodeGroupEnum.password, passwordNodes),
+              _buildGroup(context, state.settingsFlow!.id,
+                  UiNodeGroupEnum.lookupSecret, lookupSecretNodes),
+              _buildGroup(context, state.settingsFlow!.id, UiNodeGroupEnum.totp,
+                  totpNodes),
             ],
           ),
         ),
       ),
+      // if state is loading, show loading indicator on screen to disable interaction
       if (state.isLoading)
         const Opacity(
           opacity: 0.8,
@@ -187,40 +196,57 @@ class _SettingsFormState extends State<SettingsForm> {
     ]);
   }
 
-  _buildTextNode(BuildContext context, UiNode node) {
-    final attributes = node.attributes.oneOf.value as UiNodeTextAttributes;
-    return Text(attributes.text.text);
+  // get group heading
+  _buildGroupHeadingText(UiNodeGroupEnum group) {
+    switch (group) {
+      case UiNodeGroupEnum.lookupSecret:
+        return 'Backup Recovery Codes';
+      case UiNodeGroupEnum.password:
+        return 'Change Password';
+      case UiNodeGroupEnum.profile:
+        return 'Profile Settings';
+      case UiNodeGroupEnum.totp:
+        return '2FA Authenticator';
+      default:
+        return 'Settings';
+    }
   }
 
-  _buildGroup(BuildContext context, String flowId, List<UiNode> nodes) {
+  _buildGroup(BuildContext context, String flowId, UiNodeGroupEnum group,
+      List<UiNode> nodes) {
     final formKey = GlobalKey<FormState>();
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          ListView.separated(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: ((BuildContext context, index) {
-                final attributes = nodes[index].attributes.oneOf;
-                if (attributes.isType(UiNodeInputAttributes)) {
-                  return _buildInputNode(
-                      context, flowId, formKey, nodes[index]);
-                } else if (attributes.isType(UiNodeTextAttributes)) {
-                  return _buildTextNode(context, nodes[index]);
-                } else if (attributes.isType(UiNodeImageAttributes)) {
-                  return _buildImageNode(
-                      context, flowId, formKey, nodes[index]);
-                } else {
-                  return Container();
-                }
-              }),
-              separatorBuilder: (BuildContext context, int index) =>
-                  const SizedBox(
-                    height: 20,
-                  ),
-              itemCount: nodes.length),
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(_buildGroupHeadingText(group),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, height: 1.5, fontSize: 18)),
+            const SizedBox(
+              height: 30,
+            ),
+            ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: ((BuildContext context, index) {
+                  final attributes = nodes[index].attributes.oneOf;
+                  if (attributes.isType(UiNodeInputAttributes)) {
+                    return _buildInputNode(
+                        context, flowId, formKey, nodes[index]);
+                  } else if (attributes.isType(UiNodeTextAttributes)) {
+                    return TextNode(node: nodes[index]);
+                  } else if (attributes.isType(UiNodeImageAttributes)) {
+                    return ImageNode(node: nodes[index]);
+                  } else {
+                    return Container();
+                  }
+                }),
+                itemCount: nodes.length),
+          ],
+        ),
       ),
     );
   }
@@ -230,26 +256,14 @@ class _SettingsFormState extends State<SettingsForm> {
     final inputNode = node.attributes.oneOf.value as UiNodeInputAttributes;
     switch (inputNode.type) {
       case UiNodeInputAttributesTypeEnum.submit:
-        return InputButton(flowId: flowId, node: node, formKey: formKey);
+        return InputSubmitNode(flowId: flowId, node: node, formKey: formKey);
       case UiNodeInputAttributesTypeEnum.button:
-        return InputButton(flowId: flowId, node: node, formKey: formKey);
+        return InputSubmitNode(flowId: flowId, node: node, formKey: formKey);
       case UiNodeInputAttributesTypeEnum.hidden:
         return Container();
 
       default:
-        return InputField(node: node);
+        return InputNode(node: node);
     }
-  }
-
-  _buildImageNode(BuildContext context, String flowId,
-      GlobalKey<FormState> formKey, UiNode node) {
-    final imageNode = node.attributes.oneOf.value as UiNodeImageAttributes;
-    Uint8List bytes = base64.decode(imageNode.src.split(',').last);
-    return Center(
-      child: SizedBox(
-          width: imageNode.width.toDouble(),
-          height: imageNode.height.toDouble(),
-          child: Image.memory(bytes)),
-    );
   }
 }

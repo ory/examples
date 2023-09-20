@@ -8,8 +8,6 @@ import 'package:ory_client/ory_client.dart';
 import 'package:ory_network_flutter/entities/message.dart';
 import 'package:collection/collection.dart';
 
-import 'package:built_value/built_value.dart';
-
 import '../services/auth.dart';
 
 class SettingsRepository {
@@ -65,9 +63,16 @@ class SettingsRepository {
       {SettingsFlow? settings, required String name, required T value}) {
     // get edited node
     if (settings != null) {
-      final node = settings.ui.nodes.firstWhereOrNull((p0) =>
-          p0.attributes.oneOf.isType(UiNodeInputAttributes) &&
-          (p0.attributes.oneOf.value as UiNodeInputAttributes).name == name);
+      final node = settings.ui.nodes.firstWhereOrNull((element) {
+        if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
+          return (element.attributes.oneOf.value as UiNodeInputAttributes)
+                  .name ==
+              name;
+        } else {
+          return false;
+        }
+      });
+
       final updatedNode = node?.rebuild((p0) => p0
         ..attributes.update((b) {
           final oldValue = b.oneOf?.value as UiNodeInputAttributes;
