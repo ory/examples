@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SettingsState {
   SettingsFlow? get settingsFlow => throw _privateConstructorUsedError;
-  FormField<String> get password => throw _privateConstructorUsedError;
   bool get isPasswordHidden => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isSessionRefreshRequired => throw _privateConstructorUsedError;
@@ -36,13 +35,11 @@ abstract class $SettingsStateCopyWith<$Res> {
   @useResult
   $Res call(
       {SettingsFlow? settingsFlow,
-      FormField<String> password,
       bool isPasswordHidden,
       bool isLoading,
       bool isSessionRefreshRequired,
       NodeMessage? message});
 
-  $FormFieldCopyWith<String, $Res> get password;
   $NodeMessageCopyWith<$Res>? get message;
 }
 
@@ -60,7 +57,6 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
   @override
   $Res call({
     Object? settingsFlow = freezed,
-    Object? password = null,
     Object? isPasswordHidden = null,
     Object? isLoading = null,
     Object? isSessionRefreshRequired = null,
@@ -71,10 +67,6 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
           ? _value.settingsFlow
           : settingsFlow // ignore: cast_nullable_to_non_nullable
               as SettingsFlow?,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as FormField<String>,
       isPasswordHidden: null == isPasswordHidden
           ? _value.isPasswordHidden
           : isPasswordHidden // ignore: cast_nullable_to_non_nullable
@@ -92,14 +84,6 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
           : message // ignore: cast_nullable_to_non_nullable
               as NodeMessage?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $FormFieldCopyWith<String, $Res> get password {
-    return $FormFieldCopyWith<String, $Res>(_value.password, (value) {
-      return _then(_value.copyWith(password: value) as $Val);
-    });
   }
 
   @override
@@ -125,14 +109,11 @@ abstract class _$$_SettingsStateCopyWith<$Res>
   @useResult
   $Res call(
       {SettingsFlow? settingsFlow,
-      FormField<String> password,
       bool isPasswordHidden,
       bool isLoading,
       bool isSessionRefreshRequired,
       NodeMessage? message});
 
-  @override
-  $FormFieldCopyWith<String, $Res> get password;
   @override
   $NodeMessageCopyWith<$Res>? get message;
 }
@@ -149,7 +130,6 @@ class __$$_SettingsStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? settingsFlow = freezed,
-    Object? password = null,
     Object? isPasswordHidden = null,
     Object? isLoading = null,
     Object? isSessionRefreshRequired = null,
@@ -160,10 +140,6 @@ class __$$_SettingsStateCopyWithImpl<$Res>
           ? _value.settingsFlow
           : settingsFlow // ignore: cast_nullable_to_non_nullable
               as SettingsFlow?,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as FormField<String>,
       isPasswordHidden: null == isPasswordHidden
           ? _value.isPasswordHidden
           : isPasswordHidden // ignore: cast_nullable_to_non_nullable
@@ -189,7 +165,6 @@ class __$$_SettingsStateCopyWithImpl<$Res>
 class _$_SettingsState implements _SettingsState {
   const _$_SettingsState(
       {this.settingsFlow,
-      this.password = const FormField<String>(value: ''),
       this.isPasswordHidden = true,
       this.isLoading = false,
       this.isSessionRefreshRequired = false,
@@ -197,9 +172,6 @@ class _$_SettingsState implements _SettingsState {
 
   @override
   final SettingsFlow? settingsFlow;
-  @override
-  @JsonKey()
-  final FormField<String> password;
   @override
   @JsonKey()
   final bool isPasswordHidden;
@@ -214,7 +186,7 @@ class _$_SettingsState implements _SettingsState {
 
   @override
   String toString() {
-    return 'SettingsState(settingsFlow: $settingsFlow, password: $password, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, isSessionRefreshRequired: $isSessionRefreshRequired, message: $message)';
+    return 'SettingsState(settingsFlow: $settingsFlow, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, isSessionRefreshRequired: $isSessionRefreshRequired, message: $message)';
   }
 
   @override
@@ -222,10 +194,8 @@ class _$_SettingsState implements _SettingsState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SettingsState &&
-            const DeepCollectionEquality()
-                .equals(other.settingsFlow, settingsFlow) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
+            (identical(other.settingsFlow, settingsFlow) ||
+                other.settingsFlow == settingsFlow) &&
             (identical(other.isPasswordHidden, isPasswordHidden) ||
                 other.isPasswordHidden == isPasswordHidden) &&
             (identical(other.isLoading, isLoading) ||
@@ -237,14 +207,8 @@ class _$_SettingsState implements _SettingsState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(settingsFlow),
-      password,
-      isPasswordHidden,
-      isLoading,
-      isSessionRefreshRequired,
-      message);
+  int get hashCode => Object.hash(runtimeType, settingsFlow, isPasswordHidden,
+      isLoading, isSessionRefreshRequired, message);
 
   @JsonKey(ignore: true)
   @override
@@ -256,7 +220,6 @@ class _$_SettingsState implements _SettingsState {
 abstract class _SettingsState implements SettingsState {
   const factory _SettingsState(
       {final SettingsFlow? settingsFlow,
-      final FormField<String> password,
       final bool isPasswordHidden,
       final bool isLoading,
       final bool isSessionRefreshRequired,
@@ -264,8 +227,6 @@ abstract class _SettingsState implements SettingsState {
 
   @override
   SettingsFlow? get settingsFlow;
-  @override
-  FormField<String> get password;
   @override
   bool get isPasswordHidden;
   @override

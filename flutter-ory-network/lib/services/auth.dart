@@ -191,7 +191,7 @@ class AuthService {
           await _ory.createNativeSettingsFlow(xSessionToken: token);
 
       if (response.data != null) {
-        // return flow id
+        // return flow
         return response.data!;
       } else {
         throw const CustomException.unknown();
@@ -206,15 +206,39 @@ class AuthService {
     }
   }
 
-  Future<SettingsFlow?> submitNewSettings(
+  /// Get settings flow with [flowId]
+  Future<SettingsFlow> getSettingsFlow({required String flowId}) async {
+    try {
+      final token = await _storage.getToken();
+      final response =
+          await _ory.getSettingsFlow(id: flowId, xSessionToken: token);
+
+      if (response.data != null) {
+        // return flow
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        await _storage.deleteToken();
+        throw const CustomException.unauthorized();
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
+    }
+  }
+
+  /// Update settings flow with [flowId] for [group] with [value]
+  Future<SettingsFlow> updateSettingsFlow(
       {required String flowId,
       required UiNodeGroupEnum group,
       required Map value}) async {
     try {
       final token = await _storage.getToken();
       final OneOf oneOf;
-      print(value);
 
+      // create update body depending on method
       switch (group) {
         case UiNodeGroupEnum.password:
           oneOf = OneOf.fromValue1(
@@ -244,8 +268,9 @@ class AuthService {
                 ..method = group.name
                 ..totpCode = value['totp_code']
                 ..totpUnlink = getBoolValue(value['totp_unlink'])));
+        // if method is not implemented, throw exception
         default:
-          oneOf = OneOf.fromValue1(value: null);
+          throw const CustomException.unknown();
       }
 
       final response = await _ory.updateSettingsFlow(
@@ -253,87 +278,13 @@ class AuthService {
           xSessionToken: token,
           updateSettingsFlowBody:
               UpdateSettingsFlowBody((b) => b..oneOf = oneOf));
-      print(response.data?.ui.messages);
 
-      return response.data;
-    } on DioException catch (e) {
-      print(e.error);
-      print(e.response?.data);
-    }
-    return null;
-  }
-
-  bool? getBoolValue(String? value) {
-    if (value == null) {
-      return null;
-    } else {
-      return value == 'true' ? true : false;
-    }
-  }
-
-  /// Change old password to new [password] using settings flow with [flowId]
-  Future<List<NodeMessage>?> submitNewPassword(
-      {required String flowId, required String password}) async {
-    try {
-      final token = await _storage.getToken();
-      final UpdateSettingsFlowWithPasswordMethod body =
-          UpdateSettingsFlowWithPasswordMethod((b) => b
-            ..method = 'password'
-            ..password = password);
-
-      final response = await _ory.updateSettingsFlow(
-          flow: flowId,
-          xSessionToken: token,
-          updateSettingsFlowBody: UpdateSettingsFlowBody(
-              (b) => b..oneOf = OneOf.fromValue1(value: body)));
-      if (response.statusCode == 400) {
-        // get input nodes with messages
-        final inputNodesWithMessages = response.data?.ui.nodes
-            .asList()
-            .where((e) =>
-                e.attributes.oneOf.isType(UiNodeInputAttributes) &&
-                e.messages.isNotEmpty)
-            .toList();
-
-        // get input node messages
-        final nodeMessages = inputNodesWithMessages
-            ?.map((node) => node.messages
-                .asList()
-                .map((msg) => NodeMessage(
-                    id: msg.id,
-                    text: msg.text,
-                    type: msg.type.name.messageType,
-                    attr: (node.attributes.oneOf.value as UiNodeInputAttributes)
-                        .name))
-                .toList())
-            .toList();
-
-        // get general messages
-        final generalMessages = response.data?.ui.messages
-            ?.asList()
-            .map((e) => NodeMessage(
-                id: e.id, text: e.text, type: e.type.name.messageType))
-            .toList();
-
-        // add general messages to input node messages if they exist
-        if (generalMessages != null) {
-          nodeMessages?.add(generalMessages);
-        }
-
-        // flatten message list
-        final flattedNodeMessages =
-            nodeMessages?.expand((element) => element).toList();
-
-        throw CustomException.badRequest(messages: flattedNodeMessages);
+      if (response.data != null) {
+        // return updated settings flow
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
       }
-
-      // get messages on success
-      final messages = response.data?.ui.messages
-          ?.asList()
-          .map((msg) => NodeMessage(
-              id: msg.id, text: msg.text, type: msg.type.name.messageType))
-          .toList();
-      return messages;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         await _storage.deleteToken();
@@ -343,12 +294,19 @@ class AuthService {
       } else if (e.response?.statusCode == 410) {
         // settings flow expired, use new flow id and add error message
         throw CustomException.flowExpired(
-            flowId: e.response?.data['use_flow_id'],
-            message:
-                'Settings flow has expired. Please enter credentials again.');
+            flowId: e.response?.data['use_flow_id']);
       } else {
         throw _handleUnknownException(e.response?.data);
       }
+    }
+  }
+
+  /// Get bool value of string [value]
+  bool? getBoolValue(String? value) {
+    if (value == null) {
+      return null;
+    } else {
+      return value == 'true' ? true : false;
     }
   }
 

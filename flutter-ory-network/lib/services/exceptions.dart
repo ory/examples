@@ -22,7 +22,7 @@ sealed class CustomException with _$CustomException {
   const factory CustomException.flowExpired(
       {@Default(410) int statusCode,
       required String flowId,
-      required String message}) = FlowExpiredException;
+      String? message}) = FlowExpiredException;
   const factory CustomException.unknown(
       {@Default('An error occured. Please try again later.')
       String message}) = UnknownException;

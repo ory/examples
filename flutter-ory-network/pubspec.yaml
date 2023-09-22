@@ -49,6 +49,7 @@ dependencies:
   built_value: ^8.6.2
   collection: ^1.17.2
   deep_collection: ^1.0.2
+  bloc_concurrency: ^0.2.2
 
 dev_dependencies:
   flutter_test:

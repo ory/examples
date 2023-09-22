@@ -11,13 +11,10 @@ sealed class SettingsEvent extends Equatable {
 
 final class CreateSettingsFlow extends SettingsEvent {}
 
-final class ChangePassword extends SettingsEvent {
-  final String value;
+final class GetSettingsFlow extends SettingsEvent {
+  final String flowId;
 
-  ChangePassword({required this.value});
-
-  @override
-  List<Object> get props => [value];
+  GetSettingsFlow({required this.flowId});
 }
 
 final class ChangePasswordVisibility extends SettingsEvent {
@@ -29,28 +26,21 @@ final class ChangePasswordVisibility extends SettingsEvent {
   List<Object> get props => [value];
 }
 
-final class SubmitNewPassword extends SettingsEvent {
-  final String flowId;
-  final String value;
-
-  SubmitNewPassword({required this.flowId, required this.value});
-
-  @override
-  List<Object> get props => [flowId, value];
-}
-
 class ChangeNodeValue<T> extends SettingsEvent {
   final T value;
   final String name;
 
   ChangeNodeValue({required this.value, required this.name});
+  @override
+  List<Object> get props => [name];
 }
 
-class SubmitNewSettings extends SettingsEvent {
-  final String flowId;
+class ResetButtonValues extends SettingsEvent {}
+
+class UpdateSettingsFlow extends SettingsEvent {
   final UiNodeGroupEnum group;
 
-  SubmitNewSettings({required this.flowId, required this.group});
+  UpdateSettingsFlow({required this.group});
   @override
-  List<Object> get props => [flowId, group];
+  List<Object> get props => [group];
 }

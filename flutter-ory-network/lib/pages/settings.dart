@@ -1,9 +1,6 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
@@ -61,25 +58,21 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class SettingsForm extends StatefulWidget {
+class SettingsForm extends StatelessWidget {
   const SettingsForm({super.key});
-
-  @override
-  State<StatefulWidget> createState() => _SettingsFormState();
-}
-
-class _SettingsFormState extends State<SettingsForm> {
-  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final settingsBloc = BlocProvider.of<SettingsBloc>(context);
     return MultiBlocListener(
         listeners: [
-          // if session needs to be refreshed, navigate to login flow screen
           BlocListener(
             bloc: settingsBloc,
+            listenWhen: (SettingsState previous, SettingsState current) =>
+                previous.isSessionRefreshRequired !=
+                current.isSessionRefreshRequired,
             listener: (BuildContext context, SettingsState state) async {
+              // if session needs to be refreshed, navigate to login flow screen
               if (state.isSessionRefreshRequired) {
                 await Navigator.push(
                     context,
@@ -87,21 +80,31 @@ class _SettingsFormState extends State<SettingsForm> {
                         builder: (context) => const LoginPage(
                               isSessionRefresh: true,
                             ))).then((value) {
+                  // retry updating settings when session was refreshed
                   if (value != null) {
-                    // if (value && state.flowId != null) {
-                    //   settingsBloc.add(SubmitNewPassword(
-                    //       flowId: state.flowId!, value: state.password.value));
-                    // }
+                    if (value && state.settingsFlow?.id != null) {
+                      settingsBloc.retry();
+                    }
+                  } else {
+                    // if user goes back without finishing login,
+                    // reset button values to prevent submitting values that
+                    // were selected prior to session refresh navigation
+                    settingsBloc.add(ResetButtonValues());
                   }
                 });
               }
             },
           ),
-          // listens to message changes and displays them as a snackbar
+          // listen to message changes and display them as a snackbar
           BlocListener(
               bloc: settingsBloc,
               listenWhen: (SettingsState previous, SettingsState current) =>
-                  previous.isLoading != current.isLoading && !current.isLoading,
+                  // listen to changes only when previous
+                  // state was loading (e.g. updating settings),
+                  // current state is not loading and session refresh is not required
+                  previous.isLoading != current.isLoading &&
+                  !current.isLoading &&
+                  !current.isSessionRefreshRequired,
               listener: (BuildContext context, SettingsState state) {
                 if (state.settingsFlow!.ui.messages != null) {
                   // for simplicity, we will only show the first message in snackbar
@@ -112,6 +115,21 @@ class _SettingsFormState extends State<SettingsForm> {
                   ));
                 }
               }),
+
+          // when there is a general message,
+          // jump to the page start in order to show the message
+          BlocListener(
+              bloc: settingsBloc,
+              listener: (BuildContext context, SettingsState state) {
+                if (state.message != null) {
+                  // for simplicity,
+                  // we will only show the first message in snackbar
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text(state.message!.text),
+                  ));
+                }
+              })
         ],
         child: BlocBuilder<SettingsBloc, SettingsState>(
           buildWhen: (previous, current) =>
@@ -152,13 +170,21 @@ class _SettingsFormState extends State<SettingsForm> {
 
   _buildUi(BuildContext context, SettingsState state) {
     final nodes = state.settingsFlow!.ui.nodes;
+
+    // get profile nodes from all nodes
     final profileNodes =
         nodes.where((node) => node.group == UiNodeGroupEnum.profile).toList();
+
+    // get password nodes from all nodes
     final passwordNodes =
         nodes.where((node) => node.group == UiNodeGroupEnum.password).toList();
+
+    // get lookup secret nodes from all nodes
     final lookupSecretNodes = nodes
         .where((node) => node.group == UiNodeGroupEnum.lookupSecret)
         .toList();
+
+    // get totp nodes from all nodes
     final totpNodes =
         nodes.where((node) => node.group == UiNodeGroupEnum.totp).toList();
 
@@ -171,28 +197,41 @@ class _SettingsFormState extends State<SettingsForm> {
               const SizedBox(
                 height: 32,
               ),
-              _buildGroup(context, state.settingsFlow!.id,
-                  UiNodeGroupEnum.profile, profileNodes),
-              _buildGroup(context, state.settingsFlow!.id,
-                  UiNodeGroupEnum.password, passwordNodes),
-              _buildGroup(context, state.settingsFlow!.id,
-                  UiNodeGroupEnum.lookupSecret, lookupSecretNodes),
-              _buildGroup(context, state.settingsFlow!.id, UiNodeGroupEnum.totp,
-                  totpNodes),
+              _buildGroup(context, UiNodeGroupEnum.profile, profileNodes),
+              _buildGroup(context, UiNodeGroupEnum.password, passwordNodes),
+              _buildGroup(
+                  context, UiNodeGroupEnum.lookupSecret, lookupSecretNodes),
+              _buildGroup(context, UiNodeGroupEnum.totp, totpNodes),
             ],
           ),
         ),
       ),
-      // if state is loading, show loading indicator on screen to disable interaction
-      if (state.isLoading)
-        const Opacity(
-          opacity: 0.8,
-          child: ModalBarrier(dismissible: false, color: Colors.white30),
-        ),
-      if (state.isLoading)
-        const Center(
-          child: CircularProgressIndicator(),
-        ),
+      // build progress indicator when state is loading
+      BlocSelector<SettingsBloc, SettingsState, bool>(
+          bloc: (context).read<SettingsBloc>(),
+          selector: (SettingsState state) => state.isLoading,
+          builder: (BuildContext context, bool booleanState) {
+            if (booleanState) {
+              return const Opacity(
+                opacity: 0.8,
+                child: ModalBarrier(dismissible: false, color: Colors.white30),
+              );
+            } else {
+              return Container();
+            }
+          }),
+      BlocSelector<SettingsBloc, SettingsState, bool>(
+          bloc: (context).read<SettingsBloc>(),
+          selector: (SettingsState state) => state.isLoading,
+          builder: (BuildContext context, bool booleanState) {
+            if (booleanState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Container();
+            }
+          })
     ]);
   }
 
@@ -212,8 +251,7 @@ class _SettingsFormState extends State<SettingsForm> {
     }
   }
 
-  _buildGroup(BuildContext context, String flowId, UiNodeGroupEnum group,
-      List<UiNode> nodes) {
+  _buildGroup(BuildContext context, UiNodeGroupEnum group, List<UiNode> nodes) {
     final formKey = GlobalKey<FormState>();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
@@ -234,8 +272,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 itemBuilder: ((BuildContext context, index) {
                   final attributes = nodes[index].attributes.oneOf;
                   if (attributes.isType(UiNodeInputAttributes)) {
-                    return _buildInputNode(
-                        context, flowId, formKey, nodes[index]);
+                    return _buildInputNode(context, formKey, nodes[index]);
                   } else if (attributes.isType(UiNodeTextAttributes)) {
                     return TextNode(node: nodes[index]);
                   } else if (attributes.isType(UiNodeImageAttributes)) {
@@ -251,14 +288,14 @@ class _SettingsFormState extends State<SettingsForm> {
     );
   }
 
-  _buildInputNode(BuildContext context, String flowId,
-      GlobalKey<FormState> formKey, UiNode node) {
+  _buildInputNode(
+      BuildContext context, GlobalKey<FormState> formKey, UiNode node) {
     final inputNode = node.attributes.oneOf.value as UiNodeInputAttributes;
     switch (inputNode.type) {
       case UiNodeInputAttributesTypeEnum.submit:
-        return InputSubmitNode(flowId: flowId, node: node, formKey: formKey);
+        return InputSubmitNode(node: node, formKey: formKey);
       case UiNodeInputAttributesTypeEnum.button:
-        return InputSubmitNode(flowId: flowId, node: node, formKey: formKey);
+        return InputSubmitNode(node: node, formKey: formKey);
       case UiNodeInputAttributesTypeEnum.hidden:
         return Container();
 

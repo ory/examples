@@ -36,6 +36,30 @@ class _InputNodeState extends State<InputNode> {
     }
   }
 
+// get text input type of a specific node
+  _getTextInputType(UiNodeInputAttributesTypeEnum type) {
+    switch (type) {
+      case UiNodeInputAttributesTypeEnum.datetimeLocal:
+        return TextInputType.datetime;
+      case UiNodeInputAttributesTypeEnum.email:
+        return TextInputType.emailAddress;
+      case UiNodeInputAttributesTypeEnum.hidden:
+        return TextInputType.none;
+      case UiNodeInputAttributesTypeEnum.number:
+        return TextInputType.number;
+      case UiNodeInputAttributesTypeEnum.password:
+        return TextInputType.text;
+      case UiNodeInputAttributesTypeEnum.tel:
+        return TextInputType.phone;
+      case UiNodeInputAttributesTypeEnum.text:
+        return TextInputType.text;
+      case UiNodeInputAttributesTypeEnum.url:
+        return TextInputType.url;
+      default:
+        return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final attributes =
@@ -78,6 +102,7 @@ class _InputNodeState extends State<InputNode> {
             TextFormField(
               controller: textEditingController,
               enabled: !attributes.disabled,
+              keyboardType: _getTextInputType(attributes.type),
               onChanged: (value) => context
                   .read<SettingsBloc>()
                   .add(ChangeNodeValue(value: value, name: attributes.name)),

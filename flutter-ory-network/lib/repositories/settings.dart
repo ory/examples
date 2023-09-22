@@ -5,7 +5,6 @@ import 'package:built_value/json_object.dart';
 import 'package:deep_collection/deep_collection.dart';
 import 'package:one_of/one_of.dart';
 import 'package:ory_client/ory_client.dart';
-import 'package:ory_network_flutter/entities/message.dart';
 import 'package:collection/collection.dart';
 
 import '../services/auth.dart';
@@ -17,22 +16,42 @@ class SettingsRepository {
 
   Future<SettingsFlow> createSettingsFlow() async {
     final settingsFlow = await service.createSettingsFlow();
+    return resetButtonValues(settingsFlow: settingsFlow);
+  }
+
+  Future<SettingsFlow> getSettingsFlow({required String flowId}) async {
+    final settingsFlow = await service.getSettingsFlow(flowId: flowId);
+    return resetButtonValues(settingsFlow: settingsFlow);
+  }
+
+  SettingsFlow resetButtonValues({required SettingsFlow settingsFlow}) {
+    final submitInputNodes = settingsFlow.ui.nodes.where((p0) {
+      if (p0.attributes.oneOf.isType(UiNodeInputAttributes)) {
+        final attributes = p0.attributes.oneOf.value as UiNodeInputAttributes;
+        final type = attributes.type;
+        if (type == UiNodeInputAttributesTypeEnum.button ||
+            type == UiNodeInputAttributesTypeEnum.submit) {
+          return true;
+        }
+      }
+      return false;
+    });
+    for (var node in submitInputNodes) {
+      final attributes = node.attributes.oneOf.value as UiNodeInputAttributes;
+      // reset button value to false
+      // to prevent submitting values that were not selected
+      settingsFlow = changeNodeValue(
+          settings: settingsFlow, name: attributes.name, value: 'false');
+    }
     return settingsFlow;
   }
 
-  Future<List<NodeMessage>?> submitNewPassword(
-      {required String flowId, required String password}) async {
-    final messages =
-        await service.submitNewPassword(flowId: flowId, password: password);
-    return messages;
-  }
-
-  Future<SettingsFlow?> submitNewSettings(
+  Future<SettingsFlow?> updateSettingsFlow(
       {required String flowId,
       required UiNodeGroupEnum group,
-      List<UiNode>? nodes}) async {
+      required List<UiNode> nodes}) async {
     // get input nodes of the same group
-    final inputNodes = nodes?.where((p0) {
+    final inputNodes = nodes.where((p0) {
       if (p0.attributes.oneOf.isType(UiNodeInputAttributes)) {
         final type = (p0.attributes.oneOf.value as UiNodeInputAttributes).type;
         return p0.group == group &&
@@ -42,8 +61,8 @@ class SettingsRepository {
       }
     });
 
-// create maps from attribute names and their values
-    final nestedMaps = inputNodes?.map((e) {
+    // create maps from attribute names and their values
+    final nestedMaps = inputNodes.map((e) {
       final attributes = e.attributes.oneOf.value as UiNodeInputAttributes;
 
       return generateNestedMap(attributes.name, attributes.value!.asString);
@@ -51,47 +70,43 @@ class SettingsRepository {
 
     // merge nested maps into one
     final mergedMap =
-        nestedMaps?.reduce((value, element) => value.deepMerge(element));
-    print('mergedMap ${mergedMap}');
+        nestedMaps.reduce((value, element) => value.deepMerge(element));
 
-    final updatedSettings = await service.submitNewSettings(
-        flowId: flowId, group: group, value: mergedMap!);
-    return updatedSettings;
+    final updatedSettings = await service.updateSettingsFlow(
+        flowId: flowId, group: group, value: mergedMap);
+    return resetButtonValues(settingsFlow: updatedSettings);
   }
 
-  SettingsFlow? changeNodeValue<T>(
-      {SettingsFlow? settings, required String name, required T value}) {
+  SettingsFlow changeNodeValue<T>(
+      {required SettingsFlow settings,
+      required String name,
+      required T value}) {
     // get edited node
-    if (settings != null) {
-      final node = settings.ui.nodes.firstWhereOrNull((element) {
-        if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
-          return (element.attributes.oneOf.value as UiNodeInputAttributes)
-                  .name ==
-              name;
-        } else {
-          return false;
-        }
-      });
+    final node = settings.ui.nodes.firstWhereOrNull((element) {
+      if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
+        return (element.attributes.oneOf.value as UiNodeInputAttributes).name ==
+            name;
+      } else {
+        return false;
+      }
+    });
 
-      final updatedNode = node?.rebuild((p0) => p0
-        ..attributes.update((b) {
-          final oldValue = b.oneOf?.value as UiNodeInputAttributes;
-          final newValue =
-              oldValue.rebuild((p0) => p0.value = JsonObject(value));
-          b.oneOf = OneOf1(value: newValue);
-        }));
-
-      final nodeIndex = settings.ui.nodes.indexOf(node!);
-
-      final newList = settings.ui.nodes.rebuild((p0) => p0
-        ..removeAt(nodeIndex)
-        ..insert(nodeIndex, updatedNode!));
-      final newSettings =
-          settings.rebuild((p0) => p0..ui.nodes.replace(newList));
-      return newSettings;
-    } else {
-      return settings;
-    }
+    // udate value of edited node
+    final updatedNode = node?.rebuild((p0) => p0
+      ..attributes.update((b) {
+        final oldValue = b.oneOf?.value as UiNodeInputAttributes;
+        final newValue = oldValue.rebuild((p0) => p0.value = JsonObject(value));
+        b.oneOf = OneOf1(value: newValue);
+      }));
+    // get index of to be updated node
+    final nodeIndex = settings.ui.nodes.indexOf(node!);
+    // update list of nodes to iclude updated node
+    final newList = settings.ui.nodes.rebuild((p0) => p0
+      ..removeAt(nodeIndex)
+      ..insert(nodeIndex, updatedNode!));
+    // update settings' node
+    final newSettings = settings.rebuild((p0) => p0..ui.nodes.replace(newList));
+    return newSettings;
   }
 
   /// Generate nested map from  [path] with [value]
