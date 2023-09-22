@@ -1,3 +1,6 @@
+// Copyright © 2023 Ory Corp
+// SPDX-License-Identifier: Apache-2.0
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'node_attribute.dart';
