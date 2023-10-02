@@ -106,7 +106,7 @@ packages:
     source: hosted
     version: "7.2.10"
   built_collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: built_collection
       sha256: "376e3dd27b51ea877c28d525560790aee2e6fbb5f20e2f85d5081027d94e2100"
@@ -532,10 +532,10 @@ packages:
     dependency: "direct main"
     description:
       name: ory_client
-      sha256: a7cdf22fb8f057e773cd6764831aaf4dab7dc8b6cfefc643b5b545b574b214c9
+      sha256: "151372511353601d4afd81213523ea0662be0f754b44b4be17c40c91bf1967cc"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.49"
+    version: "1.2.10"
   package_config:
     dependency: transitive
     description:

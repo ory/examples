@@ -9,10 +9,7 @@ import 'package:ory_network_flutter/repositories/settings.dart';
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/settings/settings_bloc.dart';
 import '../repositories/auth.dart';
-import '../widgets/nodes/image.dart';
-import '../widgets/nodes/input_submit.dart';
-import '../widgets/nodes/input.dart';
-import '../widgets/nodes/text.dart';
+import '../widgets/helpers.dart';
 import 'login.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -79,6 +76,7 @@ class SettingsForm extends StatelessWidget {
                     MaterialPageRoute<bool?>(
                         builder: (context) => const LoginPage(
                               isSessionRefresh: true,
+                              aal: 'aal1',
                             ))).then((value) {
                   // retry updating settings when session was refreshed
                   if (value != null) {
@@ -109,7 +107,7 @@ class SettingsForm extends StatelessWidget {
                 if (state.settingsFlow!.ui.messages != null) {
                   // for simplicity, we will only show the first message in snackbar
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: _getMessageColor(
+                    backgroundColor: getMessageColor(
                         state.settingsFlow!.ui.messages!.first.type),
                     content: Text(state.settingsFlow!.ui.messages!.first.text),
                   ));
@@ -126,7 +124,7 @@ class SettingsForm extends StatelessWidget {
                   // we will only show the first message in snackbar
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     backgroundColor: Colors.red,
-                    content: Text(state.message!.text),
+                    content: Text(state.message!),
                   ));
                 }
               })
@@ -140,36 +138,18 @@ class SettingsForm extends StatelessWidget {
               return _buildUi(context, state);
             } // otherwise, show loading or error
             else {
-              return _buildSettingsFlowNotCreated(context, state);
+              return buildFlowNotCreated(context, state.message);
             }
           },
         ));
   }
 
-  _getMessageColor(UiTextTypeEnum type) {
-    switch (type) {
-      case UiTextTypeEnum.success:
-        return Colors.green;
-      case UiTextTypeEnum.error:
-        return Colors.red;
-      case UiTextTypeEnum.info:
-        return Colors.grey;
-    }
-  }
-
-  _buildSettingsFlowNotCreated(BuildContext context, SettingsState state) {
-    if (state.message != null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Center(child: Text(state.message!.text)),
-      );
-    } else {
-      return const Center(child: CircularProgressIndicator());
-    }
-  }
-
   _buildUi(BuildContext context, SettingsState state) {
     final nodes = state.settingsFlow!.ui.nodes;
+
+    // get default nodes from all nodes
+    final defaultNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.default_).toList();
 
     // get profile nodes from all nodes
     final profileNodes =
@@ -188,20 +168,108 @@ class SettingsForm extends StatelessWidget {
     final totpNodes =
         nodes.where((node) => node.group == UiNodeGroupEnum.totp).toList();
 
+    // get oidc nodes from all nodes
+    final oidcNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.oidc).toList();
+
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: SingleChildScrollView(
+          // do not show scrolling indicator
+          physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
+              if (defaultNodes.isNotEmpty)
+                buildGroup<SettingsBloc>(context, UiNodeGroupEnum.default_,
+                    defaultNodes, _onInputChange, _onInputSubmit),
+              if (profileNodes.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_buildGroupHeadingText(UiNodeGroupEnum.profile),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            height: 1.5,
+                            fontSize: 18)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    buildGroup<SettingsBloc>(context, UiNodeGroupEnum.profile,
+                        profileNodes, _onInputChange, _onInputSubmit)
+                  ],
+                ),
+              if (passwordNodes.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_buildGroupHeadingText(UiNodeGroupEnum.password),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            height: 1.5,
+                            fontSize: 18)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    buildGroup<SettingsBloc>(context, UiNodeGroupEnum.password,
+                        passwordNodes, _onInputChange, _onInputSubmit)
+                  ],
+                ),
+              if (lookupSecretNodes.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_buildGroupHeadingText(UiNodeGroupEnum.lookupSecret),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            height: 1.5,
+                            fontSize: 18)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    buildGroup<SettingsBloc>(
+                        context,
+                        UiNodeGroupEnum.lookupSecret,
+                        lookupSecretNodes,
+                        _onInputChange,
+                        _onInputSubmit)
+                  ],
+                ),
+              if (totpNodes.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_buildGroupHeadingText(UiNodeGroupEnum.totp),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            height: 1.5,
+                            fontSize: 18)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    buildGroup<SettingsBloc>(context, UiNodeGroupEnum.totp,
+                        totpNodes, _onInputChange, _onInputSubmit),
+                  ],
+                ),
+              if (oidcNodes.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_buildGroupHeadingText(UiNodeGroupEnum.oidc),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            height: 1.5,
+                            fontSize: 18)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    buildGroup<SettingsBloc>(context, UiNodeGroupEnum.oidc,
+                        totpNodes, _onInputChange, _onInputSubmit),
+                  ],
+                ),
               const SizedBox(
                 height: 32,
-              ),
-              _buildGroup(context, UiNodeGroupEnum.profile, profileNodes),
-              _buildGroup(context, UiNodeGroupEnum.password, passwordNodes),
-              _buildGroup(
-                  context, UiNodeGroupEnum.lookupSecret, lookupSecretNodes),
-              _buildGroup(context, UiNodeGroupEnum.totp, totpNodes),
+              )
             ],
           ),
         ),
@@ -231,7 +299,7 @@ class SettingsForm extends StatelessWidget {
             } else {
               return Container();
             }
-          })
+          }),
     ]);
   }
 
@@ -251,56 +319,14 @@ class SettingsForm extends StatelessWidget {
     }
   }
 
-  _buildGroup(BuildContext context, UiNodeGroupEnum group, List<UiNode> nodes) {
-    final formKey = GlobalKey<FormState>();
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(_buildGroupHeadingText(group),
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, height: 1.5, fontSize: 18)),
-            const SizedBox(
-              height: 30,
-            ),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: ((BuildContext context, index) {
-                  final attributes = nodes[index].attributes.oneOf;
-                  if (attributes.isType(UiNodeInputAttributes)) {
-                    return _buildInputNode(context, formKey, nodes[index]);
-                  } else if (attributes.isType(UiNodeTextAttributes)) {
-                    return TextNode(node: nodes[index]);
-                  } else if (attributes.isType(UiNodeImageAttributes)) {
-                    return ImageNode(node: nodes[index]);
-                  } else {
-                    return Container();
-                  }
-                }),
-                itemCount: nodes.length),
-          ],
-        ),
-      ),
-    );
+  _onInputChange(BuildContext context, String value, String name) {
+    context
+        .read<SettingsBloc>()
+        .add(ChangeSettingsNodeValue(value: value, name: name));
   }
 
-  _buildInputNode(
-      BuildContext context, GlobalKey<FormState> formKey, UiNode node) {
-    final inputNode = node.attributes.oneOf.value as UiNodeInputAttributes;
-    switch (inputNode.type) {
-      case UiNodeInputAttributesTypeEnum.submit:
-        return InputSubmitNode(node: node, formKey: formKey);
-      case UiNodeInputAttributesTypeEnum.button:
-        return InputSubmitNode(node: node, formKey: formKey);
-      case UiNodeInputAttributesTypeEnum.hidden:
-        return Container();
-
-      default:
-        return InputNode(node: node);
-    }
+  _onInputSubmit(
+      BuildContext context, UiNodeGroupEnum group, String name, String value) {
+    context.read<SettingsBloc>().add(UpdateSettingsFlow(group: group));
   }
 }

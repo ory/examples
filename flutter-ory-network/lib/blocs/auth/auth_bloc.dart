@@ -18,16 +18,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required this.repository})
       : super(const AuthState(status: AuthStatus.uninitialized)) {
     on<GetCurrentSessionInformation>(_onGetCurrentSessionInformation);
-    on<ChangeAuthStatus>(_changeAuthStatus);
-    on<LogOut>(_logOut);
+    on<ChangeAuthStatus>(_onChangeAuthStatus);
+    on<LogOut>(_onLogOut);
   }
 
-  Future<void> _changeAuthStatus(
-      ChangeAuthStatus event, Emitter<AuthState> emit) async {
-    // if user auth status is changed to unauthenticated, remove old session token
-    if (event.status == AuthStatus.unauthenticated) {
-      await repository.deleteExpiredSessionToken();
-    }
+  _onChangeAuthStatus(ChangeAuthStatus event, Emitter<AuthState> emit) {
     emit(state.copyWith(
         status: event.status, session: event.session, isLoading: false));
   }
@@ -49,6 +44,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             status: AuthStatus.unauthenticated,
             session: null,
             isLoading: false));
+      } else if (e case TwoFactorAuthRequiredException _) {
+        emit(state.copyWith(
+            isLoading: false, session: null, status: AuthStatus.aal2Requested));
       } else if (e case UnknownException _) {
         emit(state.copyWith(isLoading: false, errorMessage: e.message));
       } else {
@@ -57,7 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _logOut(LogOut event, Emitter<AuthState> emit) async {
+  Future<void> _onLogOut(LogOut event, Emitter<AuthState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, errorMessage: null));
 

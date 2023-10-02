@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Text(
-              'Welcome back,\n${session.identity.id}!',
+              'Welcome back,\n${session.identity?.id}!',
               style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 35),
             ),
             const Padding(
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.grey[600]),
-                child: Text(session.identity.traits.toString(),
+                child: Text(session.identity!.traits.toString(),
                     style: const TextStyle(
                         fontWeight: FontWeight.w500, color: Colors.white)),
               ),

@@ -5,38 +5,39 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
+import 'package:ory_network_flutter/blocs/login/login_bloc.dart';
+import 'package:ory_network_flutter/blocs/registration/registration_bloc.dart';
 
 import '../../blocs/settings/settings_bloc.dart';
+import '../helpers.dart';
 
-class InputNode extends StatefulWidget {
+class InputNode<T extends Bloc> extends StatefulWidget {
   final UiNode node;
+  final void Function(BuildContext, String, String) onChange;
 
-  const InputNode({super.key, required this.node});
+  const InputNode({super.key, required this.node, required this.onChange});
   @override
-  State<StatefulWidget> createState() => _InputNodeState();
+  State<StatefulWidget> createState() => _InputNodeState<T>();
 }
 
-class _InputNodeState extends State<InputNode> {
+class _InputNodeState<T extends Bloc> extends State<InputNode> {
   TextEditingController textEditingController = TextEditingController();
+  bool? isPasswordHidden;
 
   @override
   void initState() {
     super.initState();
-    // ssign node value to text controller on init
-    final fieldValue =
-        (widget.node.attributes.oneOf.value as UiNodeInputAttributes).value;
-    textEditingController.text = fieldValue != null ? fieldValue.asString : '';
-  }
-
-  _getMessageColor(UiTextTypeEnum type) {
-    switch (type) {
-      case UiTextTypeEnum.success:
-        return Colors.green;
-      case UiTextTypeEnum.error:
-        return Colors.red;
-      case UiTextTypeEnum.info:
-        return Colors.grey;
+    final attributes =
+        widget.node.attributes.oneOf.value as UiNodeInputAttributes;
+    // if this is a password field, hide the text
+    if (attributes.name == 'password') {
+      setState(() {
+        isPasswordHidden = true;
+      });
     }
+    final fieldValue = attributes.value;
+    // assign node value to text controller on init
+    textEditingController.text = fieldValue != null ? fieldValue.asString : '';
   }
 
 // get text input type of a specific node
@@ -68,20 +69,43 @@ class _InputNodeState extends State<InputNode> {
     final attributes =
         widget.node.attributes.oneOf.value as UiNodeInputAttributes;
 
-    return BlocListener<SettingsBloc, SettingsState>(
-      listenWhen: (previous, current) =>
-          previous.settingsFlow != current.settingsFlow,
+    return BlocListener(
+      bloc: (context).read<T>(),
       listener: (context, state) {
+        UiNode? node;
         // find current node in updated state
-        final node = state.settingsFlow?.ui.nodes.firstWhereOrNull((element) {
-          if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
-            return (element.attributes.oneOf.value as UiNodeInputAttributes)
-                    .name ==
-                attributes.name;
-          } else {
-            return false;
-          }
-        });
+        if (state is LoginState) {
+          node = state.loginFlow?.ui.nodes.firstWhereOrNull((element) {
+            if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
+              return (element.attributes.oneOf.value as UiNodeInputAttributes)
+                      .name ==
+                  attributes.name;
+            } else {
+              return false;
+            }
+          });
+        } else if (state is RegistrationState) {
+          node = state.registrationFlow?.ui.nodes.firstWhereOrNull((element) {
+            if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
+              return (element.attributes.oneOf.value as UiNodeInputAttributes)
+                      .name ==
+                  attributes.name;
+            } else {
+              return false;
+            }
+          });
+        } else if (state is SettingsState) {
+          node = state.settingsFlow?.ui.nodes.firstWhereOrNull((element) {
+            if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
+              return (element.attributes.oneOf.value as UiNodeInputAttributes)
+                      .name ==
+                  attributes.name;
+            } else {
+              return false;
+            }
+          });
+        }
+
         // assign new value of node to text controller
         textEditingController.text =
             (node?.attributes.oneOf.value as UiNodeInputAttributes)
@@ -106,9 +130,21 @@ class _InputNodeState extends State<InputNode> {
               controller: textEditingController,
               enabled: !attributes.disabled,
               keyboardType: _getTextInputType(attributes.type),
-              onChanged: (value) => context
-                  .read<SettingsBloc>()
-                  .add(ChangeNodeValue(value: value, name: attributes.name)),
+              onChanged: (String value) {
+                widget.onChange(context, value, attributes.name);
+              },
+              obscureText: isPasswordHidden ?? false,
+              decoration: isPasswordHidden == null
+                  ? null
+                  : InputDecoration(
+                      suffixIcon: GestureDetector(
+                      onTap: () => setState(() {
+                        isPasswordHidden = !isPasswordHidden!;
+                      }),
+                      child: ImageIcon(isPasswordHidden!
+                          ? const AssetImage('assets/icons/eye.png')
+                          : const AssetImage('assets/icons/eye-off.png')),
+                    )),
               validator: (value) {
                 if (attributes.required_ != null) {
                   if (attributes.required_! &&
@@ -123,7 +159,7 @@ class _InputNodeState extends State<InputNode> {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Text(message.text,
-                    style: TextStyle(color: _getMessageColor(message.type))),
+                    style: TextStyle(color: getMessageColor(message.type))),
               ),
           ],
         ),

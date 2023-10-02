@@ -5,9 +5,7 @@ import 'package:built_value/json_object.dart';
 import 'package:dio/dio.dart';
 import 'package:one_of/one_of.dart';
 import 'package:ory_client/ory_client.dart';
-import '../entities/form_node.dart';
 import 'exceptions.dart';
-import '../entities/message.dart';
 import 'storage.dart';
 
 class AuthService {
@@ -15,16 +13,12 @@ class AuthService {
   final FrontendApi _ory;
   AuthService(Dio dio) : _ory = OryClient(dio: dio).getFrontendApi();
 
-  /// Delete expired session token from storage
-  Future<void> deleteExpiredSessionToken() async {
-    await _storage.deleteToken();
-  }
-
   /// Get current session information
   Future<Session> getCurrentSessionInformation() async {
     try {
       final token = await _storage.getToken();
       final response = await _ory.toSession(xSessionToken: token);
+
       if (response.data != null) {
         // return session
         return response.data!;
@@ -35,6 +29,12 @@ class AuthService {
       if (e.response?.statusCode == 401) {
         await _storage.deleteToken();
         throw const CustomException.unauthorized();
+      } else if (e.response?.statusCode == 403) {
+        if (e.response?.data['error']['id'] == 'session_aal2_required') {
+          throw const CustomException.twoFactorAuthRequired();
+        } else {
+          throw _handleUnknownException(e.response?.data);
+        }
       } else {
         throw _handleUnknownException(e.response?.data);
       }
@@ -42,15 +42,15 @@ class AuthService {
   }
 
   /// Create login flow
-  Future<String> createLoginFlow() async {
+  Future<LoginFlow> createLoginFlow(
+      {required String aal, required bool refresh}) async {
     try {
       final token = await _storage.getToken();
-      // create native login flow. If session token is available, refresh the session
       final response = await _ory.createNativeLoginFlow(
-          xSessionToken: token, refresh: token != null);
+          aal: aal, refresh: refresh, xSessionToken: token);
       if (response.data != null) {
         // return flow id
-        return response.data!.id;
+        return response.data!;
       } else {
         throw const CustomException.unknown();
       }
@@ -60,12 +60,12 @@ class AuthService {
   }
 
   /// Create registration flow
-  Future<String> createRegistrationFlow() async {
+  Future<RegistrationFlow> createRegistrationFlow() async {
     try {
       final response = await _ory.createNativeRegistrationFlow();
       if (response.data != null) {
         // return flow id
-        return response.data!.id;
+        return response.data!;
       } else {
         throw const CustomException.unknown();
       }
@@ -74,29 +74,54 @@ class AuthService {
     }
   }
 
-  /// Log in with [email] and [password] using login flow with [flowId]
-  Future<Session> loginWithEmailAndPassword(
+  /// Update login flow with [flowId] for [group] with [value]
+  Future<Session> updateLoginFlow(
       {required String flowId,
-      required String email,
-      required String password}) async {
+      required UiNodeGroupEnum group,
+      required Map value}) async {
     try {
       final token = await _storage.getToken();
-      final UpdateLoginFlowWithPasswordMethod loginFLowBuilder =
-          UpdateLoginFlowWithPasswordMethod((b) => b
-            ..identifier = email
-            ..password = password
-            ..method = 'password');
+      final OneOf oneOf;
+
+      // create update body depending on method
+      switch (group) {
+        case UiNodeGroupEnum.password:
+          oneOf = OneOf.fromValue1(
+              value: UpdateLoginFlowWithPasswordMethod((b) => b
+                ..method = group.name
+                ..identifier = value['identifier']
+                ..password = value['password']));
+        case UiNodeGroupEnum.lookupSecret:
+          oneOf = OneOf.fromValue1(
+              value: UpdateLoginFlowWithLookupSecretMethod((b) => b
+                // use pre-defined string as enum value doesn't include an underscore
+                ..method = 'lookup_secret'
+                ..lookupSecret = value['lookup_secret']));
+        case UiNodeGroupEnum.totp:
+          oneOf = OneOf.fromValue1(
+              value: UpdateLoginFlowWithTotpMethod((b) => b
+                ..method = group.name
+                ..totpCode = value['totp_code']));
+
+        // if method is not implemented, throw exception
+        default:
+          throw const CustomException.unknown();
+      }
 
       final response = await _ory.updateLoginFlow(
           flow: flowId,
           xSessionToken: token,
-          updateLoginFlowBody: UpdateLoginFlowBody(
-              (b) => b..oneOf = OneOf.fromValue1(value: loginFLowBuilder)));
+          updateLoginFlowBody: UpdateLoginFlowBody((b) => b..oneOf = oneOf));
 
       if (response.data?.session != null) {
         // save session token after successful login
         await _storage.persistToken(response.data!.sessionToken!);
-        return response.data!.session;
+        if (response.data!.session.identity != null) {
+          return response.data!.session;
+        } else {
+          // identity is null, aal2 is required
+          throw const CustomException.twoFactorAuthRequired();
+        }
       } else {
         throw const CustomException.unknown();
       }
@@ -105,39 +130,31 @@ class AuthService {
         await _storage.deleteToken();
         throw const CustomException.unauthorized();
       } else if (e.response?.statusCode == 400) {
-        final messages = _checkFormForErrors(e.response?.data);
-        throw CustomException.badRequest(messages: messages);
+        final loginFlow = standardSerializers.deserializeWith(
+            LoginFlow.serializer, e.response?.data);
+        if (loginFlow != null) {
+          throw CustomException<LoginFlow>.badRequest(flow: loginFlow);
+        } else {
+          throw const CustomException.unknown();
+        }
       } else if (e.response?.statusCode == 410) {
-        // login flow expired, use new flow id and add error message
+        // settings flow expired, use new flow id
         throw CustomException.flowExpired(
-            flowId: e.response?.data['use_flow_id'],
-            message: 'Login flow has expired. Please enter credentials again.');
+            flowId: e.response?.data['use_flow_id']);
       } else {
         throw _handleUnknownException(e.response?.data);
       }
     }
   }
 
-  /// Register with [email] and [password] using registration flow with [flowId]
-  Future<void> registerWithEmailAndPassword(
-      {required String flowId,
-      required String email,
-      required String password}) async {
+  /// Get login flow with [flowId]
+  Future<LoginFlow> getLoginFlow({required String flowId}) async {
     try {
-      final UpdateRegistrationFlowWithPasswordMethod registrationFLow =
-          UpdateRegistrationFlowWithPasswordMethod((b) => b
-            ..traits = JsonObject({'email': email})
-            ..password = password
-            ..method = 'password');
+      final response = await _ory.getLoginFlow(id: flowId);
 
-      final response = await _ory.updateRegistrationFlow(
-          flow: flowId,
-          updateRegistrationFlowBody: UpdateRegistrationFlowBody(
-              (b) => b..oneOf = OneOf.fromValue1(value: registrationFLow)));
-      if (response.data?.sessionToken != null) {
-        // save session token after successful login
-        await _storage.persistToken(response.data!.sessionToken!);
-        return;
+      if (response.data != null) {
+        // return flow
+        return response.data!;
       } else {
         throw const CustomException.unknown();
       }
@@ -145,15 +162,80 @@ class AuthService {
       if (e.response?.statusCode == 401) {
         await _storage.deleteToken();
         throw const CustomException.unauthorized();
-      } else if (e.response?.statusCode == 400) {
-        final messages = _checkFormForErrors(e.response?.data);
-        throw CustomException.badRequest(messages: messages);
       } else if (e.response?.statusCode == 410) {
-        // registration flow expired, use new flow id and add error message
+        // settings flow expired, use new flow id and add error message
         throw CustomException.flowExpired(
-            flowId: e.response?.data['use_flow_id'],
-            message:
-                'Registration flow has expired. Please enter credentials again.');
+            flowId: e.response?.data['use_flow_id']);
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
+    }
+  }
+
+  /// Get registration flow with [flowId]
+  Future<RegistrationFlow> getRegistrationFlow({required String flowId}) async {
+    try {
+      final response = await _ory.getRegistrationFlow(id: flowId);
+
+      if (response.data != null) {
+        // return flow
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      throw _handleUnknownException(e.response?.data);
+    }
+  }
+
+  /// Update registration flow with [flowId] for [group] with [value]
+  Future<Session> updateRegistrationFlow(
+      {required String flowId,
+      required UiNodeGroupEnum group,
+      required Map value}) async {
+    try {
+      final OneOf oneOf;
+
+      // create update body depending on method
+      switch (group) {
+        case UiNodeGroupEnum.password:
+          oneOf = OneOf.fromValue1(
+              value: UpdateRegistrationFlowWithPasswordMethod((b) => b
+                ..method = group.name
+                ..traits = JsonObject(value['traits'])
+                ..password = value['password']));
+
+        // if method is not implemented, throw exception
+        default:
+          throw const CustomException.unknown();
+      }
+
+      final response = await _ory.updateRegistrationFlow(
+          flow: flowId,
+          updateRegistrationFlowBody:
+              UpdateRegistrationFlowBody((b) => b..oneOf = oneOf));
+
+      if (response.data?.session != null) {
+        // save session token after successful login
+        await _storage.persistToken(response.data!.sessionToken!);
+        return response.data!.session!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 400) {
+        final registrationFlow = standardSerializers.deserializeWith(
+            RegistrationFlow.serializer, e.response?.data);
+        if (registrationFlow != null) {
+          throw CustomException<RegistrationFlow>.badRequest(
+              flow: registrationFlow);
+        } else {
+          throw const CustomException.unknown();
+        }
+      } else if (e.response?.statusCode == 410) {
+        // settings flow expired, use new flow id and add error message
+        throw CustomException.flowExpired(
+            flowId: e.response?.data['use_flow_id']);
       } else {
         throw _handleUnknownException(e.response?.data);
       }
@@ -308,39 +390,6 @@ class AuthService {
     } else {
       return value == 'true' ? true : false;
     }
-  }
-
-  /// Search for error messages and their context in [response]
-  List<NodeMessage> _checkFormForErrors(Map<String, dynamic> response) {
-    final ui = Map<String, dynamic>.from(response['ui']);
-    final nodeList = ui['nodes'] as List;
-
-    // parse ui nodes
-    final nodes = nodeList.map<FormNode>((e) => FormNode.fromJson(e)).toList();
-
-    // get only nodes that have messages
-    final nonEmptyNodes =
-        nodes.where((element) => element.messages.isNotEmpty).toList();
-
-    // get node messages
-    final nodeMessages = nonEmptyNodes
-        .map((node) => node.messages
-            .map((msg) => msg.copyWith(attr: node.attributes.name))
-            .toList())
-        .toList();
-
-    // get general message if it exists
-    if (ui['messages'] != null) {
-      final messageList = ui['messages'] as List;
-      final messages =
-          messageList.map<NodeMessage>((e) => NodeMessage.fromJson(e)).toList();
-      nodeMessages.add(messages);
-    }
-    // flatten message lists
-    final flattedNodeMessages =
-        nodeMessages.expand((element) => element).toList();
-
-    return flattedNodeMessages;
   }
 
   CustomException _handleUnknownException(Map? response) {

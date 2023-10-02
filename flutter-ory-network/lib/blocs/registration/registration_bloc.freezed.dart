@@ -1,6 +1,3 @@
-// Copyright © 2023 Ory Corp
-// SPDX-License-Identifier: Apache-2.0
-
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -19,12 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$RegistrationState {
-  String? get flowId => throw _privateConstructorUsedError;
-  FormField<String> get email => throw _privateConstructorUsedError;
-  FormField<String> get password => throw _privateConstructorUsedError;
-  bool get isPasswordHidden => throw _privateConstructorUsedError;
+  RegistrationFlow? get registrationFlow => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
+  String? get message => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RegistrationStateCopyWith<RegistrationState> get copyWith =>
@@ -38,15 +32,7 @@ abstract class $RegistrationStateCopyWith<$Res> {
       _$RegistrationStateCopyWithImpl<$Res, RegistrationState>;
   @useResult
   $Res call(
-      {String? flowId,
-      FormField<String> email,
-      FormField<String> password,
-      bool isPasswordHidden,
-      bool isLoading,
-      String? errorMessage});
-
-  $FormFieldCopyWith<String, $Res> get email;
-  $FormFieldCopyWith<String, $Res> get password;
+      {RegistrationFlow? registrationFlow, bool isLoading, String? message});
 }
 
 /// @nodoc
@@ -62,55 +48,24 @@ class _$RegistrationStateCopyWithImpl<$Res, $Val extends RegistrationState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? flowId = freezed,
-    Object? email = null,
-    Object? password = null,
-    Object? isPasswordHidden = null,
+    Object? registrationFlow = freezed,
     Object? isLoading = null,
-    Object? errorMessage = freezed,
+    Object? message = freezed,
   }) {
     return _then(_value.copyWith(
-      flowId: freezed == flowId
-          ? _value.flowId
-          : flowId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as FormField<String>,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as FormField<String>,
-      isPasswordHidden: null == isPasswordHidden
-          ? _value.isPasswordHidden
-          : isPasswordHidden // ignore: cast_nullable_to_non_nullable
-              as bool,
+      registrationFlow: freezed == registrationFlow
+          ? _value.registrationFlow
+          : registrationFlow // ignore: cast_nullable_to_non_nullable
+              as RegistrationFlow?,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $FormFieldCopyWith<String, $Res> get email {
-    return $FormFieldCopyWith<String, $Res>(_value.email, (value) {
-      return _then(_value.copyWith(email: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $FormFieldCopyWith<String, $Res> get password {
-    return $FormFieldCopyWith<String, $Res>(_value.password, (value) {
-      return _then(_value.copyWith(password: value) as $Val);
-    });
   }
 }
 
@@ -123,17 +78,7 @@ abstract class _$$_RegistrationStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? flowId,
-      FormField<String> email,
-      FormField<String> password,
-      bool isPasswordHidden,
-      bool isLoading,
-      String? errorMessage});
-
-  @override
-  $FormFieldCopyWith<String, $Res> get email;
-  @override
-  $FormFieldCopyWith<String, $Res> get password;
+      {RegistrationFlow? registrationFlow, bool isLoading, String? message});
 }
 
 /// @nodoc
@@ -147,37 +92,22 @@ class __$$_RegistrationStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? flowId = freezed,
-    Object? email = null,
-    Object? password = null,
-    Object? isPasswordHidden = null,
+    Object? registrationFlow = freezed,
     Object? isLoading = null,
-    Object? errorMessage = freezed,
+    Object? message = freezed,
   }) {
     return _then(_$_RegistrationState(
-      flowId: freezed == flowId
-          ? _value.flowId
-          : flowId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as FormField<String>,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as FormField<String>,
-      isPasswordHidden: null == isPasswordHidden
-          ? _value.isPasswordHidden
-          : isPasswordHidden // ignore: cast_nullable_to_non_nullable
-              as bool,
+      registrationFlow: freezed == registrationFlow
+          ? _value.registrationFlow
+          : registrationFlow // ignore: cast_nullable_to_non_nullable
+              as RegistrationFlow?,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -187,33 +117,19 @@ class __$$_RegistrationStateCopyWithImpl<$Res>
 
 class _$_RegistrationState implements _RegistrationState {
   const _$_RegistrationState(
-      {this.flowId,
-      this.email = const FormField<String>(value: ''),
-      this.password = const FormField<String>(value: ''),
-      this.isPasswordHidden = true,
-      this.isLoading = false,
-      this.errorMessage});
+      {this.registrationFlow, this.isLoading = false, this.message});
 
   @override
-  final String? flowId;
-  @override
-  @JsonKey()
-  final FormField<String> email;
-  @override
-  @JsonKey()
-  final FormField<String> password;
-  @override
-  @JsonKey()
-  final bool isPasswordHidden;
+  final RegistrationFlow? registrationFlow;
   @override
   @JsonKey()
   final bool isLoading;
   @override
-  final String? errorMessage;
+  final String? message;
 
   @override
   String toString() {
-    return 'RegistrationState(flowId: $flowId, email: $email, password: $password, isPasswordHidden: $isPasswordHidden, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'RegistrationState(registrationFlow: $registrationFlow, isLoading: $isLoading, message: $message)';
   }
 
   @override
@@ -221,21 +137,16 @@ class _$_RegistrationState implements _RegistrationState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_RegistrationState &&
-            (identical(other.flowId, flowId) || other.flowId == flowId) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
-            (identical(other.isPasswordHidden, isPasswordHidden) ||
-                other.isPasswordHidden == isPasswordHidden) &&
+            (identical(other.registrationFlow, registrationFlow) ||
+                other.registrationFlow == registrationFlow) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, flowId, email, password,
-      isPasswordHidden, isLoading, errorMessage);
+  int get hashCode =>
+      Object.hash(runtimeType, registrationFlow, isLoading, message);
 
   @JsonKey(ignore: true)
   @override
@@ -247,25 +158,16 @@ class _$_RegistrationState implements _RegistrationState {
 
 abstract class _RegistrationState implements RegistrationState {
   const factory _RegistrationState(
-      {final String? flowId,
-      final FormField<String> email,
-      final FormField<String> password,
-      final bool isPasswordHidden,
+      {final RegistrationFlow? registrationFlow,
       final bool isLoading,
-      final String? errorMessage}) = _$_RegistrationState;
+      final String? message}) = _$_RegistrationState;
 
   @override
-  String? get flowId;
-  @override
-  FormField<String> get email;
-  @override
-  FormField<String> get password;
-  @override
-  bool get isPasswordHidden;
+  RegistrationFlow? get registrationFlow;
   @override
   bool get isLoading;
   @override
-  String? get errorMessage;
+  String? get message;
   @override
   @JsonKey(ignore: true)
   _$$_RegistrationStateCopyWith<_$_RegistrationState> get copyWith =>

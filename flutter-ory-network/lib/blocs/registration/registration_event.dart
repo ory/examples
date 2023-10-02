@@ -9,44 +9,32 @@ sealed class RegistrationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-//create registration flow
 final class CreateRegistrationFlow extends RegistrationEvent {}
 
-final class ChangeEmail extends RegistrationEvent {
-  final String value;
-
-  ChangeEmail({required this.value});
-
-  @override
-  List<Object> get props => [value];
-}
-
-final class ChangePassword extends RegistrationEvent {
-  final String value;
-
-  ChangePassword({required this.value});
-
-  @override
-  List<Object> get props => [value];
-}
-
-final class ChangePasswordVisibility extends RegistrationEvent {
-  final bool value;
-
-  ChangePasswordVisibility({required this.value});
-
-  @override
-  List<Object> get props => [value];
-} //log in
-
-final class RegisterWithEmailAndPassword extends RegistrationEvent {
+final class GetRegistrationFlow extends RegistrationEvent {
   final String flowId;
-  final String email;
-  final String password;
 
-  RegisterWithEmailAndPassword(
-      {required this.flowId, required this.email, required this.password});
-
+  GetRegistrationFlow({required this.flowId});
   @override
-  List<Object> get props => [flowId, email, password];
+  List<Object> get props => [flowId];
+}
+
+class ChangeNodeValue extends RegistrationEvent {
+  final String value;
+  final String name;
+
+  ChangeNodeValue({required this.value, required this.name});
+  @override
+  List<Object> get props => [value, name];
+}
+
+class UpdateRegistrationFlow extends RegistrationEvent {
+  final UiNodeGroupEnum group;
+  final String name;
+  final String value;
+
+  UpdateRegistrationFlow(
+      {required this.group, required this.name, required this.value});
+  @override
+  List<Object> get props => [group, name, value];
 }

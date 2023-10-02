@@ -2,16 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
-
-import '../../blocs/settings/settings_bloc.dart';
 
 class InputSubmitNode extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final UiNode node;
+  final void Function(BuildContext, String, String) onChange;
+  final void Function(BuildContext, UiNodeGroupEnum, String, String) onSubmit;
 
-  const InputSubmitNode({super.key, required this.formKey, required this.node});
+  const InputSubmitNode(
+      {super.key,
+      required this.formKey,
+      required this.node,
+      required this.onChange,
+      required this.onSubmit});
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +30,21 @@ class InputSubmitNode extends StatelessWidget {
                 final attributes =
                     node.attributes.oneOf.value as UiNodeInputAttributes;
                 final type = attributes.type;
-                // if attribute type is a button, set its value to true on submit
+                // if attribute type is a button with value 'false', set its value to true on submit
                 if (type == UiNodeInputAttributesTypeEnum.button ||
-                    type == UiNodeInputAttributesTypeEnum.submit) {
+                    type == UiNodeInputAttributesTypeEnum.submit &&
+                        attributes.value?.value == 'false') {
                   final nodeName = attributes.name;
 
-                  context
-                      .read<SettingsBloc>()
-                      .add(ChangeNodeValue(value: 'true', name: nodeName));
+                  onChange(context, 'true', nodeName);
                 }
-
-                context
-                    .read<SettingsBloc>()
-                    .add(UpdateSettingsFlow(group: node.group));
+                onSubmit(
+                    context,
+                    node.group,
+                    attributes.name,
+                    attributes.value!.isString
+                        ? attributes.value!.asString
+                        : '');
               }
             },
             child: Text(node.meta.label?.text ?? ''),

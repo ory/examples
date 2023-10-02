@@ -6,7 +6,6 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ory_client/ory_client.dart';
-import 'package:ory_network_flutter/entities/message.dart';
 import 'package:ory_network_flutter/repositories/auth.dart';
 
 import '../../repositories/settings.dart';
@@ -26,8 +25,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       : super(SettingsState()) {
     on<CreateSettingsFlow>(_onCreateSettingsFlow);
     on<GetSettingsFlow>(_onGetSettingsFlow);
-    on<ChangePasswordVisibility>(_onChangePasswordVisibility);
-    on<ChangeNodeValue>(_onChangeNodeValue, transformer: sequential());
+    on<ChangeSettingsNodeValue>(_onChangeNodeValue, transformer: sequential());
     on<ResetButtonValues>(_onResetButtonValues);
     on<UpdateSettingsFlow>(_onUpdateSettingsFlow);
   }
@@ -44,13 +42,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     }
   }
 
-  _onChangePasswordVisibility(
-      ChangePasswordVisibility event, Emitter<SettingsState> emit) {
-    emit(state.copyWith(
-        isPasswordHidden: event.value, isSessionRefreshRequired: false));
-  }
-
-  _onChangeNodeValue(ChangeNodeValue event, Emitter<SettingsState> emit) {
+  _onChangeNodeValue(
+      ChangeSettingsNodeValue event, Emitter<SettingsState> emit) {
     if (state.settingsFlow != null) {
       final newSettingsState = repository.changeNodeValue(
           settings: state.settingsFlow!, name: event.name, value: event.value);
@@ -89,9 +82,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         // set session required flag to navigate to login page
         emit(state.copyWith(isSessionRefreshRequired: true, isLoading: false));
       } else if (e case UnknownException _) {
-        emit(state.copyWith(
-            isLoading: false,
-            message: NodeMessage(text: e.message, type: MessageType.error)));
+        emit(state.copyWith(isLoading: false, message: e.message));
       } else {
         emit(state.copyWith(isLoading: false));
       }
@@ -111,9 +102,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         // change auth status as the user is not authenticated
         authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
       } else if (e case UnknownException _) {
-        emit(state.copyWith(
-            isLoading: false,
-            message: NodeMessage(text: e.message, type: MessageType.error)));
+        emit(state.copyWith(isLoading: false, message: e.message));
       } else {
         emit(state.copyWith(isLoading: false));
       }
@@ -132,9 +121,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         // change auth status as the user is not authenticated
         authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
       } else if (e case UnknownException _) {
-        emit(state.copyWith(
-            isLoading: false,
-            message: NodeMessage(text: e.message, type: MessageType.error)));
+        emit(state.copyWith(isLoading: false, message: e.message));
       } else {
         emit(state.copyWith(isLoading: false));
       }

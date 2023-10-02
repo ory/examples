@@ -17,22 +17,13 @@ final class GetSettingsFlow extends SettingsEvent {
   GetSettingsFlow({required this.flowId});
 }
 
-final class ChangePasswordVisibility extends SettingsEvent {
-  final bool value;
-
-  ChangePasswordVisibility({required this.value});
-
-  @override
-  List<Object> get props => [value];
-}
-
-class ChangeNodeValue<T> extends SettingsEvent {
-  final T value;
+class ChangeSettingsNodeValue extends SettingsEvent {
+  final String value;
   final String name;
 
-  ChangeNodeValue({required this.value, required this.name});
+  ChangeSettingsNodeValue({required this.value, required this.name});
   @override
-  List<Object> get props => [name];
+  List<Object> get props => [value, name];
 }
 
 class ResetButtonValues extends SettingsEvent {}
