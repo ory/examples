@@ -6,48 +6,41 @@ part of 'login_bloc.dart';
 @immutable
 sealed class LoginEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-//create login flow
-final class CreateLoginFlow extends LoginEvent {}
+final class CreateLoginFlow extends LoginEvent {
+  final String aal;
 
-final class ChangeEmail extends LoginEvent {
+  CreateLoginFlow({required this.aal});
+  @override
+  List<Object> get props => [aal];
+}
+
+class ChangeNodeValue extends LoginEvent {
   final String value;
+  final String name;
 
-  ChangeEmail({required this.value});
-
+  ChangeNodeValue({required this.value, required this.name});
   @override
-  List<Object> get props => [value];
+  List<Object> get props => [value, name];
 }
 
-final class ChangePassword extends LoginEvent {
-  final String value;
-
-  ChangePassword({required this.value});
-
-  @override
-  List<Object> get props => [value];
-}
-
-final class ChangePasswordVisibility extends LoginEvent {
-  final bool value;
-
-  ChangePasswordVisibility({required this.value});
-
-  @override
-  List<Object> get props => [value];
-}
-
-//log in
-final class LoginWithEmailAndPassword extends LoginEvent {
+class GetLoginFlow extends LoginEvent {
   final String flowId;
-  final String email;
-  final String password;
 
-  LoginWithEmailAndPassword(
-      {required this.flowId, required this.email, required this.password});
-
+  GetLoginFlow({required this.flowId});
   @override
-  List<Object> get props => [flowId, email, password];
+  List<Object> get props => [flowId];
+}
+
+class UpdateLoginFlow extends LoginEvent {
+  final UiNodeGroupEnum group;
+  final String name;
+  final String value;
+
+  UpdateLoginFlow(
+      {required this.group, required this.name, required this.value});
+  @override
+  List<Object> get props => [group, name, value];
 }

@@ -47,6 +47,9 @@ dependencies:
   dotenv: ^4.1.0
   google_fonts: ^5.1.0
   built_value: ^8.6.2
+  deep_collection: ^1.0.2
+  collection: ^1.17.2
+  built_collection: ^5.1.1
 
 dev_dependencies:
   flutter_test:

@@ -4,9 +4,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:collection/collection.dart';
+import 'package:ory_client/ory_client.dart';
 
-import '../../entities/formfield.dart';
 import '../../repositories/auth.dart';
 import '../../services/exceptions.dart';
 import '../auth/auth_bloc.dart';
@@ -21,88 +20,71 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({required this.authBloc, required this.repository})
       : super(LoginState()) {
     on<CreateLoginFlow>(_onCreateLoginFlow);
-    on<ChangeEmail>(_onChangeEmail);
-    on<ChangePassword>(_onChangePassword);
-    on<ChangePasswordVisibility>(_onChangePasswordVisibility);
-    on<LoginWithEmailAndPassword>(_onLoginWithEmailAndPassword);
+    on<GetLoginFlow>(_onGetLoginFlow);
+    on<ChangeNodeValue>(_onChangeNodeValue);
+    on<UpdateLoginFlow>(_onUpdateLoginFlow);
   }
 
   Future<void> _onCreateLoginFlow(
       CreateLoginFlow event, Emitter<LoginState> emit) async {
     try {
-      emit(state.copyWith(isLoading: true, errorMessage: null));
-      final flowId = await repository.createLoginFlow();
-      emit(state.copyWith(flowId: flowId, isLoading: false));
+      emit(state.copyWith(isLoading: true, message: null));
+      final loginFlow = await repository.createLoginFlow(aal: event.aal);
+      if (event.aal == 'aal2') {
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
+      }
+      emit(state.copyWith(loginFlow: loginFlow, isLoading: false));
     } on CustomException catch (e) {
       if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, errorMessage: e.message));
+        emit(state.copyWith(isLoading: false, message: e.message));
       } else {
         emit(state.copyWith(isLoading: false));
       }
     }
   }
 
-  _onChangeEmail(ChangeEmail event, Emitter<LoginState> emit) {
-    // remove email and general error when changing email
-    emit(state.copyWith
-        .email(value: event.value, errorMessage: null)
-        .copyWith(errorMessage: null));
-  }
-
-  _onChangePassword(ChangePassword event, Emitter<LoginState> emit) {
-    // remove password and general error when changing email
-    emit(state.copyWith
-        .password(value: event.value, errorMessage: null)
-        .copyWith(errorMessage: null));
-  }
-
-  _onChangePasswordVisibility(
-      ChangePasswordVisibility event, Emitter<LoginState> emit) {
-    emit(state.copyWith(isPasswordHidden: event.value));
-  }
-
-  Future<void> _onLoginWithEmailAndPassword(
-      LoginWithEmailAndPassword event, Emitter<LoginState> emit) async {
+  Future<void> _onGetLoginFlow(
+      GetLoginFlow event, Emitter<LoginState> emit) async {
     try {
-      // remove error messages when performing login
-      emit(state
-          .copyWith(isLoading: true, errorMessage: null)
-          .copyWith
-          .email(errorMessage: null)
-          .copyWith
-          .password(errorMessage: null));
+      emit(state.copyWith(isLoading: true, message: null));
+      final loginFlow = await repository.getLoginFlow(flowId: event.flowId);
+      emit(state.copyWith(loginFlow: loginFlow, isLoading: false));
+    } on CustomException catch (e) {
+      if (e case UnknownException _) {
+        emit(state.copyWith(isLoading: false, message: e.message));
+      } else {
+        emit(state.copyWith(isLoading: false));
+      }
+    }
+  }
 
-      await repository.loginWithEmailAndPassword(
-          flowId: event.flowId, email: event.email, password: event.password);
+  _onChangeNodeValue(ChangeNodeValue event, Emitter<LoginState> emit) {
+    if (state.loginFlow != null) {
+      final newLoginState = repository.changeLoginNodeValue(
+          settings: state.loginFlow!, name: event.name, value: event.value);
+      emit(state.copyWith(loginFlow: newLoginState, message: null));
+    }
+  }
 
+  _onUpdateLoginFlow(UpdateLoginFlow event, Emitter<LoginState> emit) async {
+    try {
+      emit(state.copyWith(isLoading: true, message: null));
+      await repository.updateLoginFlow(
+          flowId: state.loginFlow!.id,
+          group: event.group,
+          name: event.name,
+          value: event.value,
+          nodes: state.loginFlow!.ui.nodes.toList());
       authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
     } on CustomException catch (e) {
-      if (e case BadRequestException _) {
-        final emailMessage = e.messages
-            ?.firstWhereOrNull((element) => element.attr == 'identifier');
-        final passwordMessage = e.messages
-            ?.firstWhereOrNull((element) => element.attr == 'password');
-        final generalMessage = e.messages
-            ?.firstWhereOrNull((element) => element.attr == 'general');
-
-        // update state to new one with errors
-        emit(state
-            .copyWith(isLoading: false, errorMessage: generalMessage?.text)
-            .copyWith
-            .email(errorMessage: emailMessage?.text)
-            .copyWith
-            .password(errorMessage: passwordMessage?.text));
+      if (e case BadRequestException<LoginFlow> _) {
+        emit(state.copyWith(loginFlow: e.flow, isLoading: false));
       } else if (e case FlowExpiredException _) {
-        // use new flow id, reset fields and show error
-        emit(state
-            .copyWith(
-                flowId: e.flowId, errorMessage: e.message, isLoading: false)
-            .copyWith
-            .email(value: '')
-            .copyWith
-            .password(value: ''));
+        add(GetLoginFlow(flowId: e.flowId));
+      } else if (e case TwoFactorAuthRequiredException _) {
+        add(CreateLoginFlow(aal: 'aal2'));
       } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, errorMessage: e.message));
+        emit(state.copyWith(isLoading: false, message: e.message));
       } else {
         emit(state.copyWith(isLoading: false));
       }

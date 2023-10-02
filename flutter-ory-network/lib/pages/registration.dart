@@ -3,11 +3,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ory_network_flutter/widgets/social_provider_box.dart';
+import 'package:ory_client/ory_client.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/registration/registration_bloc.dart';
 import '../repositories/auth.dart';
+import '../widgets/helpers.dart';
+import '../widgets/nodes/provider.dart';
 import 'login.dart';
 
 class RegistrationPage extends StatelessWidget {
@@ -39,214 +41,160 @@ class RegistrationFormState extends State<RegistrationForm> {
 
   @override
   Widget build(BuildContext context) {
-    final registrationBloc = BlocProvider.of<RegistrationBloc>(context);
-    return BlocConsumer<RegistrationBloc, RegistrationState>(
-        bloc: registrationBloc,
-        // listen to email and password changes
-        listenWhen: (previous, current) {
-          return (previous.email.value != current.email.value &&
-                  emailController.text != current.email.value) ||
-              (previous.password.value != current.password.value &&
-                  passwordController.text != current.password.value);
-        },
-        // if email or password value have changed, update text controller values
-        listener: (BuildContext context, RegistrationState state) {
-          emailController.text = state.email.value;
-          passwordController.text = state.password.value;
-        },
-        builder: (context, state) {
-          // registration flow was created
-          if (state.flowId != null) {
-            return _buildRegistrationForm(context, state);
-          } // otherwise, show loading or error
-          else {
-            return _buildRegistrationFlowNotCreated(context, state);
-          }
-        });
+    return BlocBuilder<RegistrationBloc, RegistrationState>(
+      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+      builder: (context, state) {
+        if (state.registrationFlow != null) {
+          return _buildUi(context, state);
+        } else {
+          return buildFlowNotCreated(context, state.message);
+        }
+      },
+    );
   }
 
-  _buildRegistrationFlowNotCreated(
-      BuildContext context, RegistrationState state) {
-    if (state.errorMessage != null) {
-      return Center(
-          child: Text(
-        state.errorMessage!,
-        style: const TextStyle(color: Colors.red),
-      ));
-    } else {
-      return const Center(child: CircularProgressIndicator());
-    }
-  }
+  _buildUi(BuildContext context, RegistrationState state) {
+    final nodes = state.registrationFlow!.ui.nodes;
 
-  _buildRegistrationForm(BuildContext context, RegistrationState state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: SingleChildScrollView(
-        // do not show scrolling indicator
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  //status bar height + padding
-                  top: MediaQuery.of(context).viewPadding.top + 48),
-              child: Image.asset(
-                'assets/images/ory_logo.png',
-                width: 70,
-              ),
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            const Text("Sign up",
-                style: TextStyle(
-                    fontWeight: FontWeight.w600, height: 1.5, fontSize: 18)),
-            const Text("Sign up with a social provider or with your email"),
-            const SizedBox(
-              height: 32,
-            ),
-            const Row(
-              children: [
-                SocialProviderBox(provider: SocialProvider.google),
-                SizedBox(
-                  width: 12,
-                ),
-                SocialProviderBox(provider: SocialProvider.github),
-                SizedBox(
-                  width: 12,
-                ),
-                SocialProviderBox(provider: SocialProvider.apple),
-                SizedBox(
-                  width: 12,
-                ),
-                SocialProviderBox(provider: SocialProvider.linkedin)
-              ],
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            const Divider(
-                color: Color.fromRGBO(226, 232, 240, 1), thickness: 1),
-            const SizedBox(
-              height: 32,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Email'),
-                const SizedBox(
-                  height: 4,
-                ),
-                TextFormField(
-                  enabled: !state.isLoading,
-                  controller: emailController,
-                  onChanged: (String value) => context
-                      .read<RegistrationBloc>()
-                      .add(ChangeEmail(value: value)),
-                  decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: 'Enter your email',
-                      errorText: state.email.errorMessage,
-                      errorMaxLines: 3),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Password'),
-                const SizedBox(
-                  height: 4,
-                ),
-                TextFormField(
-                  enabled: !state.isLoading,
-                  controller: passwordController,
-                  onChanged: (String value) => context
-                      .read<RegistrationBloc>()
-                      .add(ChangePassword(value: value)),
-                  obscureText: state.isPasswordHidden,
-                  decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: 'Enter a password',
-                      // change password visibility
-                      suffixIcon: GestureDetector(
-                        onTap: () => context.read<RegistrationBloc>().add(
-                            ChangePasswordVisibility(
-                                value: !state.isPasswordHidden)),
-                        child: ImageIcon(
-                          state.isPasswordHidden
-                              ? const AssetImage('assets/icons/eye.png')
-                              : const AssetImage('assets/icons/eye-off.png'),
-                          size: 16,
-                        ),
-                      ),
-                      errorText: state.password.errorMessage,
-                      errorMaxLines: 3),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            // show general error message if it exists
-            if (state.errorMessage != null)
+    // get default nodes from all nodes
+    final defaultNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.default_).toList();
+
+    // get password nodes from all nodes
+    final passwordNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.password).toList();
+
+    // get lookup secret nodes from all nodes
+    final lookupSecretNodes = nodes
+        .where((node) => node.group == UiNodeGroupEnum.lookupSecret)
+        .toList();
+
+    // get totp nodes from all nodes
+    final totpNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.totp).toList();
+
+    // get oidc nodes from all nodes
+    final oidcNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.oidc).toList();
+
+    return Stack(children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: SingleChildScrollView(
+          // do not show scrolling indicator
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 15.0),
-                child: Text(
-                  state.errorMessage!,
-                  style: const TextStyle(color: Colors.red),
+                padding: EdgeInsets.only(
+                    //status bar height + padding
+                    top: MediaQuery.of(context).viewPadding.top + 48),
+                child: Image.asset(
+                  'assets/images/ory_logo.png',
+                  width: 70,
                 ),
               ),
-            // show loading indicator when state is in a loading mode
-            if (state.isLoading)
-              const Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Center(
-                    child: SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: CircularProgressIndicator())),
+              const SizedBox(
+                height: 32,
               ),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                  // disable button when state is loading
-                  onPressed: state.isLoading
-                      ? null
-                      : () {
-                          context.read<RegistrationBloc>().add(
-                              RegisterWithEmailAndPassword(
-                                  flowId: state.flowId!,
-                                  email: state.email.value,
-                                  password: state.password.value));
-                        },
-                  child: const Text('Sign up')),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Text('Already have an account?'),
-                TextButton(
-                    // disable button when state is loading
-                    onPressed: state.isLoading
-                        ? null
-                        : () => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                                builder: (context) => const LoginPage())),
-                    child: const Text('Sign in'))
-              ],
-            )
-          ],
+              const Text('Sign up',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, height: 1.5, fontSize: 18)),
+              if (oidcNodes.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 32.0),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: oidcNodes
+                          .map((node) => SocialProviderInput(node: node))
+                          .toList()),
+                ),
+              if (defaultNodes.isNotEmpty)
+                buildGroup<RegistrationBloc>(context, UiNodeGroupEnum.default_,
+                    defaultNodes, _onInputChange, _onInputSubmit),
+              if (passwordNodes.isNotEmpty)
+                buildGroup<RegistrationBloc>(context, UiNodeGroupEnum.password,
+                    passwordNodes, _onInputChange, _onInputSubmit),
+              if (lookupSecretNodes.isNotEmpty)
+                buildGroup<RegistrationBloc>(
+                    context,
+                    UiNodeGroupEnum.lookupSecret,
+                    lookupSecretNodes,
+                    _onInputChange,
+                    _onInputSubmit),
+              if (totpNodes.isNotEmpty)
+                buildGroup<RegistrationBloc>(context, UiNodeGroupEnum.totp,
+                    totpNodes, _onInputChange, _onInputSubmit),
+              const SizedBox(
+                height: 32,
+              ),
+              if (state.registrationFlow?.ui.messages != null)
+                for (var message in state.registrationFlow!.ui.messages!)
+                  Text(
+                    message.text,
+                    style: TextStyle(color: getMessageColor(message.type)),
+                  ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text('Already have an account?'),
+                  TextButton(
+                      // disable button when state is loading
+                      onPressed: state.isLoading
+                          ? null
+                          : () => Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => const LoginPage(
+                                        aal: 'aal1',
+                                      ))),
+                      child: const Text('Sign in'))
+                ],
+              )
+            ],
+          ),
         ),
       ),
-    );
+      // build progress indicator when state is loading
+      BlocSelector<RegistrationBloc, RegistrationState, bool>(
+          bloc: (context).read<RegistrationBloc>(),
+          selector: (RegistrationState state) => state.isLoading,
+          builder: (BuildContext context, bool booleanState) {
+            if (booleanState) {
+              return const Opacity(
+                opacity: 0.8,
+                child: ModalBarrier(dismissible: false, color: Colors.white30),
+              );
+            } else {
+              return Container();
+            }
+          }),
+      BlocSelector<RegistrationBloc, RegistrationState, bool>(
+          bloc: (context).read<RegistrationBloc>(),
+          selector: (RegistrationState state) => state.isLoading,
+          builder: (BuildContext context, bool booleanState) {
+            if (booleanState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return Container();
+            }
+          })
+    ]);
+  }
+
+  _onInputChange(BuildContext context, String value, String name) {
+    context
+        .read<RegistrationBloc>()
+        .add(ChangeNodeValue(value: value, name: name));
+  }
+
+  _onInputSubmit(
+      BuildContext context, UiNodeGroupEnum group, String name, String value) {
+    context
+        .read<RegistrationBloc>()
+        .add(UpdateRegistrationFlow(group: group, name: name, value: value));
   }
 }

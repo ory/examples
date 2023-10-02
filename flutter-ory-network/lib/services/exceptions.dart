@@ -3,23 +3,20 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../entities/message.dart';
+import 'package:ory_client/ory_client.dart';
 
 part 'exceptions.freezed.dart';
 
 @freezed
-sealed class CustomException with _$CustomException {
+sealed class CustomException<T> with _$CustomException {
   const CustomException._();
-  const factory CustomException.badRequest(
-      {List<NodeMessage>? messages,
-      @Default(400) int statusCode}) = BadRequestException;
-  const factory CustomException.unauthorized({@Default(401) int statusCode}) =
-      UnauthorizedException;
+  const factory CustomException.badRequest({required T flow}) =
+      BadRequestException;
+  const factory CustomException.unauthorized() = UnauthorizedException;
   const factory CustomException.flowExpired(
-      {@Default(410) int statusCode,
-      required String flowId,
-      String? message}) = FlowExpiredException;
+      {required String flowId, String? message}) = FlowExpiredException;
+  const factory CustomException.twoFactorAuthRequired({Session? session}) =
+      TwoFactorAuthRequiredException;
   const factory CustomException.unknown(
       {@Default('An error occured. Please try again later.')
       String? message}) = UnknownException;

@@ -12,6 +12,7 @@ import 'blocs/auth/auth_bloc.dart';
 import 'pages/home.dart';
 import 'pages/login.dart';
 import 'pages/entry.dart';
+
 import 'repositories/auth.dart';
 import 'services/auth.dart';
 
@@ -89,7 +90,14 @@ class _MyAppViewState extends State<MyAppView> {
               case AuthStatus.unauthenticated:
                 _navigator.pushAndRemoveUntil<void>(
                     MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const LoginPage()),
+                        builder: (BuildContext context) =>
+                            const LoginPage(aal: 'aal1')),
+                    (Route<dynamic> route) => false);
+              case AuthStatus.aal2Requested:
+                _navigator.pushAndRemoveUntil<void>(
+                    MaterialPageRoute<void>(
+                        builder: (BuildContext context) =>
+                            const LoginPage(aal: 'aal2')),
                     (Route<dynamic> route) => false);
               case AuthStatus.uninitialized:
                 break;

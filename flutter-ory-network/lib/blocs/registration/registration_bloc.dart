@@ -4,9 +4,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:collection/collection.dart';
+import 'package:ory_client/ory_client.dart';
 
-import '../../entities/formfield.dart';
 import '../../repositories/auth.dart';
 import '../../services/exceptions.dart';
 import '../auth/auth_bloc.dart';
@@ -21,90 +20,72 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   RegistrationBloc({required this.authBloc, required this.repository})
       : super(RegistrationState()) {
     on<CreateRegistrationFlow>(_onCreateRegistrationFlow);
-    on<ChangeEmail>(_onChangeEmail);
-    on<ChangePassword>(_onChangePassword);
-    on<ChangePasswordVisibility>(_onChangePasswordVisibility);
-    on<RegisterWithEmailAndPassword>(_onRegisterWithEmailAndPassword);
+    on<GetRegistrationFlow>(_onGetRegistrationFlow);
+    on<ChangeNodeValue>(_onChangeNodeValue);
+    on<UpdateRegistrationFlow>(_onUpdateRegistrationFlow);
   }
 
   Future<void> _onCreateRegistrationFlow(
       CreateRegistrationFlow event, Emitter<RegistrationState> emit) async {
     try {
-      emit(state.copyWith(isLoading: true, errorMessage: null));
-      final flowId = await repository.createRegistrationFlow();
-      emit(state.copyWith(flowId: flowId, isLoading: false));
+      emit(state.copyWith(isLoading: true, message: null));
+      final flow = await repository.createRegistrationFlow();
+      emit(state.copyWith(registrationFlow: flow, isLoading: false));
     } on CustomException catch (e) {
       if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, errorMessage: e.message));
+        emit(state.copyWith(isLoading: false, message: e.message));
       } else {
         emit(state.copyWith(isLoading: false));
       }
     }
   }
 
-  _onChangeEmail(ChangeEmail event, Emitter<RegistrationState> emit) {
-    // remove email and general error when changing email
-    emit(state.copyWith
-        .email(value: event.value, errorMessage: null)
-        .copyWith(errorMessage: null));
-  }
-
-  _onChangePassword(ChangePassword event, Emitter<RegistrationState> emit) {
-    // remove password and general error when changing email
-    emit(state.copyWith
-        .password(value: event.value, errorMessage: null)
-        .copyWith(errorMessage: null));
-  }
-
-  _onChangePasswordVisibility(
-      ChangePasswordVisibility event, Emitter<RegistrationState> emit) {
-    emit(state.copyWith(isPasswordHidden: event.value));
-  }
-
-  Future<void> _onRegisterWithEmailAndPassword(
-      RegisterWithEmailAndPassword event,
-      Emitter<RegistrationState> emit) async {
+  Future<void> _onGetRegistrationFlow(
+      GetRegistrationFlow event, Emitter<RegistrationState> emit) async {
     try {
-      // remove error messages when performing registration
-      emit(state
-          .copyWith(isLoading: true, errorMessage: null)
-          .copyWith
-          .email(errorMessage: null)
-          .copyWith
-          .password(errorMessage: null));
-
-      await repository.registerWithEmailAndPassword(
-          flowId: event.flowId, email: event.email, password: event.password);
-
-      authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
+      emit(state.copyWith(isLoading: true, message: null));
+      final flow = await repository.getRegistrationFlow(flowId: event.flowId);
+      emit(state.copyWith(registrationFlow: flow, isLoading: false));
     } on CustomException catch (e) {
-      if (e case BadRequestException _) {
-        // get credential errors
-        final emailMessage = e.messages
-            ?.firstWhereOrNull((element) => element.attr == 'traits.email');
-        final passwordMessage = e.messages
-            ?.firstWhereOrNull((element) => element.attr == 'password');
-        final generalMessage = e.messages
-            ?.firstWhereOrNull((element) => element.attr == 'general');
+      if (e case UnknownException _) {
+        emit(state.copyWith(isLoading: false, message: e.message));
+      } else {
+        emit(state.copyWith(isLoading: false));
+      }
+    }
+  }
 
-        // update state to new one with errors
-        emit(state
-            .copyWith(isLoading: false, errorMessage: generalMessage?.text)
-            .copyWith
-            .email(errorMessage: emailMessage?.text)
-            .copyWith
-            .password(errorMessage: passwordMessage?.text));
+  _onChangeNodeValue(ChangeNodeValue event, Emitter<RegistrationState> emit) {
+    if (state.registrationFlow != null) {
+      final newRegistrationState = repository.changeRegistrationNodeValue(
+          settings: state.registrationFlow!,
+          name: event.name,
+          value: event.value);
+      emit(state.copyWith(
+          registrationFlow: newRegistrationState, message: null));
+    }
+  }
+
+  Future<void> _onUpdateRegistrationFlow(
+      UpdateRegistrationFlow event, Emitter<RegistrationState> emit) async {
+    try {
+      if (state.registrationFlow != null) {
+        emit(state.copyWith(isLoading: true, message: null));
+        await repository.updateRegistrationFlow(
+            flowId: state.registrationFlow!.id,
+            group: event.group,
+            name: event.name,
+            value: event.value,
+            nodes: state.registrationFlow!.ui.nodes.toList());
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
+      }
+    } on CustomException catch (e) {
+      if (e case BadRequestException<RegistrationFlow> _) {
+        emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
       } else if (e case FlowExpiredException _) {
-        // use new flow id, reset fields and show error
-        emit(state
-            .copyWith(
-                flowId: e.flowId, errorMessage: e.message, isLoading: false)
-            .copyWith
-            .email(value: '')
-            .copyWith
-            .password(value: ''));
+        add(GetRegistrationFlow(flowId: e.flowId));
       } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, errorMessage: e.message));
+        emit(state.copyWith(isLoading: false, message: e.message));
       } else {
         emit(state.copyWith(isLoading: false));
       }
