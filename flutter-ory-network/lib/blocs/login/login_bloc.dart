@@ -84,7 +84,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else if (e case FlowExpiredException _) {
         add(GetLoginFlow(flowId: e.flowId));
       } else if (e case TwoFactorAuthRequiredException _) {
-        add(CreateLoginFlow(aal: 'aal2'));
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
       } else if (e case UnknownException _) {
         emit(state.copyWith(isLoading: false, message: e.message));
       } else {

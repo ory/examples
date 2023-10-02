@@ -93,9 +93,21 @@ class LoginForm extends StatelessWidget {
               const SizedBox(
                 height: 32,
               ),
-              const Text('Sign in',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600, height: 1.5, fontSize: 18)),
+              // show header depending on auth state
+              BlocSelector<AuthBloc, AuthState, bool>(
+                bloc: (context).read<AuthBloc>(),
+                selector: (AuthState state) =>
+                    state.status == AuthStatus.aal2Requested,
+                builder: (BuildContext context, bool boolState) {
+                  return Text(
+                      boolState ? 'Two-Factor Authentication' : 'Sign in',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          height: 1.5,
+                          fontSize: 18));
+                },
+              ),
+
               if (oidcNodes.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(top: 32.0),
