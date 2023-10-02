@@ -19,7 +19,9 @@ class SocialProviderInput extends StatelessWidget {
         icon: Image.asset(
             'assets/images/flows-auth-buttons-social-$provider.png'),
         label: Text(node.meta.label?.text ?? ''),
-        onPressed: () {},
+        onPressed: () {
+          //TODO
+        },
       ),
     );
   }

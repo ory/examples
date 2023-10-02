@@ -1,3 +1,6 @@
+// Copyright © 2023 Ory Corp
+// SPDX-License-Identifier: Apache-2.0
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
@@ -123,20 +126,18 @@ class LoginForm extends StatelessWidget {
                     message.text,
                     style: TextStyle(color: getMessageColor(message.type)),
                   ),
-              // build progress indicator when state is loading
+              // show logout button if aal2 requested, otherwise sign up
               BlocSelector<AuthBloc, AuthState, bool>(
                   bloc: (context).read<AuthBloc>(),
                   selector: (AuthState state) =>
                       state.status == AuthStatus.aal2Requested,
                   builder: (BuildContext context, bool booleanState) {
-                    print(booleanState);
                     if (booleanState) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Text('Something\'s not working?'),
                           TextButton(
-                              // disable button when state is loading
                               onPressed: () =>
                                   (context).read<AuthBloc>().add(LogOut()),
                               child: const Text('Logout'))
@@ -148,13 +149,10 @@ class LoginForm extends StatelessWidget {
                         children: [
                           const Text('No account?'),
                           TextButton(
-                              // disable button when state is loading
-                              onPressed: state.isLoading
-                                  ? null
-                                  : () => Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const RegistrationPage())),
+                              onPressed: () => Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegistrationPage())),
                               child: const Text('Sign up'))
                         ],
                       );

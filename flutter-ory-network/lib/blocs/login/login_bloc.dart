@@ -79,6 +79,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } on CustomException catch (e) {
       if (e case BadRequestException<LoginFlow> _) {
         emit(state.copyWith(loginFlow: e.flow, isLoading: false));
+      } else if (e case UnauthorizedException _) {
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
       } else if (e case FlowExpiredException _) {
         add(GetLoginFlow(flowId: e.flowId));
       } else if (e case TwoFactorAuthRequiredException _) {

@@ -17,8 +17,6 @@ final class ChangeAuthStatus extends AuthEvent {
   List<Object> get props => [status];
 }
 
-//get current session information
 final class GetCurrentSessionInformation extends AuthEvent {}
 
-//log out
 final class LogOut extends AuthEvent {}

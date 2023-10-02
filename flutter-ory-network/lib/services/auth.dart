@@ -94,7 +94,8 @@ class AuthService {
         case UiNodeGroupEnum.lookupSecret:
           oneOf = OneOf.fromValue1(
               value: UpdateLoginFlowWithLookupSecretMethod((b) => b
-                ..method = group.name
+                // use pre-defined string as enum value doesn't include an underscore
+                ..method = 'lookup_secret'
                 ..lookupSecret = value['lookup_secret']));
         case UiNodeGroupEnum.totp:
           oneOf = OneOf.fromValue1(
@@ -118,8 +119,8 @@ class AuthService {
         if (response.data!.session.identity != null) {
           return response.data!;
         } else {
-          throw CustomException.twoFactorAuthRequired(
-              session: response.data!.session);
+          // identity is null, aal2 is required
+          throw const CustomException.twoFactorAuthRequired();
         }
       } else {
         throw const CustomException.unknown();
@@ -137,7 +138,7 @@ class AuthService {
           throw const CustomException.unknown();
         }
       } else if (e.response?.statusCode == 410) {
-        // settings flow expired, use new flow id and add error message
+        // settings flow expired, use new flow id
         throw CustomException.flowExpired(
             flowId: e.response?.data['use_flow_id']);
       } else {
@@ -158,12 +159,7 @@ class AuthService {
         throw const CustomException.unknown();
       }
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        await storage.deleteToken();
-        throw const CustomException.unauthorized();
-      } else {
-        throw _handleUnknownException(e.response?.data);
-      }
+      throw _handleUnknownException(e.response?.data);
     }
   }
 
@@ -179,12 +175,7 @@ class AuthService {
         throw const CustomException.unknown();
       }
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        await storage.deleteToken();
-        throw const CustomException.unauthorized();
-      } else {
-        throw _handleUnknownException(e.response?.data);
-      }
+      throw _handleUnknownException(e.response?.data);
     }
   }
 
@@ -223,10 +214,7 @@ class AuthService {
         throw const CustomException.unknown();
       }
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        await storage.deleteToken();
-        throw const CustomException.unauthorized();
-      } else if (e.response?.statusCode == 400) {
+      if (e.response?.statusCode == 400) {
         final registrationFlow = standardSerializers.deserializeWith(
             RegistrationFlow.serializer, e.response?.data);
         if (registrationFlow != null) {

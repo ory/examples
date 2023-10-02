@@ -71,7 +71,6 @@ class AuthRepository {
     final body = _createRequestBody(
         group: group, name: name, value: value, nodes: nodes);
     // submit login
-    print(body);
     final login = await service.updateLoginFlow(
         flowId: flowId, group: group, value: body);
     return login;
@@ -117,29 +116,6 @@ class AuthRepository {
     } else {
       return {name: value};
     }
-  }
-
-  LoginFlow resetButtonValues({required LoginFlow loginFlow}) {
-    final submitInputNodes = loginFlow.ui.nodes.where((p0) {
-      if (p0.attributes.oneOf.isType(UiNodeInputAttributes)) {
-        final attributes = p0.attributes.oneOf.value as UiNodeInputAttributes;
-        final type = attributes.type;
-        if ((type == UiNodeInputAttributesTypeEnum.button ||
-                type == UiNodeInputAttributesTypeEnum.submit) &&
-            attributes.value?.asString == 'true') {
-          return true;
-        }
-      }
-      return false;
-    });
-    for (var node in submitInputNodes) {
-      final attributes = node.attributes.oneOf.value as UiNodeInputAttributes;
-      // reset button value to false
-      // to prevent submitting values that were not selected
-      loginFlow = changeLoginNodeValue(
-          settings: loginFlow, name: attributes.name, value: 'false');
-    }
-    return loginFlow;
   }
 
   RegistrationFlow changeRegistrationNodeValue(

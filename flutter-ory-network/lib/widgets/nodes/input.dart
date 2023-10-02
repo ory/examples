@@ -1,3 +1,6 @@
+// Copyright © 2023 Ory Corp
+// SPDX-License-Identifier: Apache-2.0
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +26,6 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
   @override
   void initState() {
     super.initState();
-    // assign node value to text controller on init
     final attributes =
         widget.node.attributes.oneOf.value as UiNodeInputAttributes;
     // if this is a password field, hide the text
@@ -33,6 +35,7 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
       });
     }
     final fieldValue = attributes.value;
+    // assign node value to text controller on init
     textEditingController.text = fieldValue != null ? fieldValue.asString : '';
   }
 
@@ -62,7 +65,6 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.node.attributes.oneOf.value);
     final attributes =
         widget.node.attributes.oneOf.value as UiNodeInputAttributes;
 

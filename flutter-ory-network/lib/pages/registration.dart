@@ -141,14 +141,11 @@ class RegistrationFormState extends State<RegistrationForm> {
                 children: [
                   const Text('Already have an account?'),
                   TextButton(
-                      // disable button when state is loading
-                      onPressed: state.isLoading
-                          ? null
-                          : () => Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                                  builder: (context) => const LoginPage(
-                                        aal: 'aal1',
-                                      ))),
+                      onPressed: () => Navigator.of(context)
+                          .pushReplacement(MaterialPageRoute(
+                              builder: (context) => const LoginPage(
+                                    aal: 'aal1',
+                                  ))),
                       child: const Text('Sign in'))
                 ],
               )

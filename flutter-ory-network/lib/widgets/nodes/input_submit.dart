@@ -1,3 +1,6 @@
+// Copyright © 2023 Ory Corp
+// SPDX-License-Identifier: Apache-2.0
+
 import 'package:flutter/material.dart';
 import 'package:ory_client/ory_client.dart';
 
@@ -27,7 +30,7 @@ class InputSubmitNode extends StatelessWidget {
                 final attributes =
                     node.attributes.oneOf.value as UiNodeInputAttributes;
                 final type = attributes.type;
-                // if attribute type is a button, set its value to true on submit
+                // if attribute type is a button with value 'false', set its value to true on submit
                 if (type == UiNodeInputAttributesTypeEnum.button ||
                     type == UiNodeInputAttributesTypeEnum.submit &&
                         attributes.value?.value == 'false') {
