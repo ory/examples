@@ -1,12 +1,16 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
+import 'dart:convert';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:deep_collection/deep_collection.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:one_of/one_of.dart';
 import 'package:ory_client/ory_client.dart';
 import 'package:collection/collection.dart';
+import 'package:ory_network_flutter/services/exceptions.dart';
 
 import '../services/auth.dart';
 
@@ -14,8 +18,9 @@ enum AuthStatus { uninitialized, authenticated, unauthenticated, aal2Requested }
 
 class AuthRepository {
   final AuthService service;
+  final GoogleSignIn googleSignIn;
 
-  AuthRepository({required this.service});
+  AuthRepository({required this.googleSignIn, required this.service});
 
   Future<Session> getCurrentSessionInformation() async {
     final session = await service.getCurrentSessionInformation();
@@ -46,19 +51,30 @@ class AuthRepository {
     await service.logout();
   }
 
-  Future<SuccessfulNativeRegistration?> updateRegistrationFlow(
+  Future<Session?> updateRegistrationFlow(
       {required String flowId,
       required UiNodeGroupEnum group,
       required String name,
       required String value,
       required List<UiNode> nodes}) async {
     // create request body
-    final body = _createRequestBody(
+    var body = _createRequestBody(
         group: group, name: name, value: value, nodes: nodes);
-    // submit registration
-    final registration = await service.updateRegistrationFlow(
+    // user used social sign in
+    if (group == UiNodeGroupEnum.oidc) {
+      if (value.contains('google')) {
+        final idToken = await _loginWithGoogle();
+        // get nonce value from jwt
+        final jwtParts = idToken.split('.');
+        final jwt = getMapFromJWT(jwtParts[1]);
+        // add id token and nonce to body
+        body.addAll({'id_token': idToken, 'nonce': jwt['nonce']});
+      }
+    }
+    // submit registration and retrieve session
+    final session = await service.updateRegistrationFlow(
         flowId: flowId, group: group, value: body);
-    return registration;
+    return session;
   }
 
   Future<SuccessfulNativeLogin?> updateLoginFlow(
@@ -68,12 +84,44 @@ class AuthRepository {
       required String value,
       required List<UiNode> nodes}) async {
     // create request body
-    final body = _createRequestBody(
+    var body = _createRequestBody(
         group: group, name: name, value: value, nodes: nodes);
+    // user used social sign in
+    if (group == UiNodeGroupEnum.oidc) {
+      if (value.contains('google')) {
+        final idToken = await _loginWithGoogle();
+        // get nonce value from id token
+        final jwtParts = idToken.split('.');
+        final jwt = getMapFromJWT(jwtParts[1]);
+        // add id token and nonce to body
+        body.addAll({'id_token': idToken, 'nonce': jwt['nonce']});
+      }
+    }
     // submit login
     final login = await service.updateLoginFlow(
         flowId: flowId, group: group, value: body);
     return login;
+  }
+
+  Map getMapFromJWT(String splittedToken) {
+    String normalizedSource = base64Url.normalize(splittedToken);
+    return jsonDecode(utf8.decode(base64Url.decode(normalizedSource)));
+  }
+
+  Future<String> _loginWithGoogle() async {
+    try {
+      final GoogleSignInAccount? account = await googleSignIn.signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await account?.authentication;
+      if (googleAuth?.idToken != null) {
+        return googleAuth!.idToken!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } catch (e) {
+      throw const CustomException.unknown();
+    }
   }
 
   Map _createRequestBody(

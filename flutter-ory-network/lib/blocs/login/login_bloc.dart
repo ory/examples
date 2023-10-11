@@ -18,7 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthBloc authBloc;
   final AuthRepository repository;
   LoginBloc({required this.authBloc, required this.repository})
-      : super(LoginState()) {
+      : super(const LoginState()) {
     on<CreateLoginFlow>(_onCreateLoginFlow);
     on<GetLoginFlow>(_onGetLoginFlow);
     on<ChangeNodeValue>(_onChangeNodeValue);

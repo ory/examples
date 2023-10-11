@@ -6,7 +6,9 @@ import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ory_network_flutter/widgets/ory_theme.dart';
+import 'dart:io' show Platform;
 
 import 'blocs/auth/auth_bloc.dart';
 import 'pages/home.dart';
@@ -36,7 +38,16 @@ Future<void> main() async {
   final dio = DioForNative(options);
 
   final authService = AuthService(dio);
-  final authRepository = AuthRepository(service: authService);
+
+  final googleSignIn = GoogleSignIn(
+      clientId: Platform.isAndroid ? null : dotenv.get('IOS_CLIENT_ID'),
+      scopes: [
+        'email',
+        'profile',
+        'openid',
+      ]);
+  final authRepository =
+      AuthRepository(googleSignIn: googleSignIn, service: authService);
   runApp(RepositoryProvider.value(
       value: authRepository,
       child: BlocProvider(

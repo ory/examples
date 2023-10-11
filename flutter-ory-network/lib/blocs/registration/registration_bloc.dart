@@ -18,7 +18,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final AuthBloc authBloc;
   final AuthRepository repository;
   RegistrationBloc({required this.authBloc, required this.repository})
-      : super(RegistrationState()) {
+      : super(const RegistrationState()) {
     on<CreateRegistrationFlow>(_onCreateRegistrationFlow);
     on<GetRegistrationFlow>(_onGetRegistrationFlow);
     on<ChangeNodeValue>(_onChangeNodeValue);
