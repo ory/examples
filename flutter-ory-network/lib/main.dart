@@ -40,7 +40,9 @@ Future<void> main() async {
   final authService = AuthService(dio);
 
   final googleSignIn = GoogleSignIn(
-      clientId: Platform.isAndroid ? null : dotenv.get('IOS_CLIENT_ID'),
+      clientId: Platform.isAndroid
+          ? dotenv.get('WEB_CLIENT_ID')
+          : dotenv.get('IOS_CLIENT_ID'),
       scopes: [
         'email',
         'profile',

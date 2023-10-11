@@ -257,7 +257,7 @@ class AuthService {
         throw _handleUnknownException(e.response?.data);
       }
     } catch (e) {
-      throw CustomException.unknown();
+      throw const CustomException.unknown();
     }
   }
 
