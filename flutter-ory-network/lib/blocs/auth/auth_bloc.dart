@@ -37,20 +37,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           isLoading: false,
           status: AuthStatus.authenticated,
           session: session));
-    } on CustomException catch (e) {
-      if (e case UnauthorizedException _) {
-        emit(state.copyWith(
-            status: AuthStatus.unauthenticated,
-            session: null,
-            isLoading: false));
-      } else if (e case TwoFactorAuthRequiredException _) {
-        emit(state.copyWith(
-            isLoading: false, session: null, status: AuthStatus.aal2Requested));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, errorMessage: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnauthorizedException catch (_) {
+      emit(state.copyWith(
+          status: AuthStatus.unauthenticated, session: null, isLoading: false));
+    } on TwoFactorAuthRequiredException catch (_) {
+      emit(state.copyWith(
+          isLoading: false, session: null, status: AuthStatus.aal2Requested));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, errorMessage: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -62,17 +58,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(state.copyWith(
           isLoading: false, status: AuthStatus.unauthenticated, session: null));
-    } on CustomException catch (e) {
-      if (e case UnauthorizedException _) {
-        emit(state.copyWith(
-            isLoading: false,
-            status: AuthStatus.unauthenticated,
-            session: null));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, errorMessage: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnauthorizedException catch (_) {
+      emit(state.copyWith(
+          status: AuthStatus.unauthenticated, session: null, isLoading: false));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, errorMessage: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 }
