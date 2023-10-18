@@ -31,9 +31,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(isLoading: true, message: null));
       final loginFlow = await repository.createLoginFlow(
           aal: event.aal, refresh: event.refresh);
-      if (event.aal == 'aal2') {
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
-      }
       emit(state.copyWith(loginFlow: loginFlow, isLoading: false));
     } on UnknownException catch (e) {
       emit(state.copyWith(isLoading: false, message: e.message));

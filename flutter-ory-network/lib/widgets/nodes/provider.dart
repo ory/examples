@@ -13,15 +13,28 @@ class SocialProviderInput extends StatelessWidget {
     final provider = node.attributes.oneOf.isType(UiNodeInputAttributes)
         ? (node.attributes.oneOf.value as UiNodeInputAttributes).value?.asString
         : null;
+    final providerName = _getProviderName(provider);
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton.icon(
-        icon: Image.asset('assets/images/$provider.png'),
+        icon: Image.asset('assets/images/$providerName.png'),
         label: Text(node.meta.label?.text ?? ''),
         onPressed: () {
           //TODO
         },
       ),
     );
+  }
+
+  _getProviderName(String? value) {
+    if (value == null) {
+      return '';
+    } else if (value.contains('google')) {
+      return 'google';
+    } else if (value.contains('apple')) {
+      return 'apple';
+    } else {
+      return '';
+    }
   }
 }

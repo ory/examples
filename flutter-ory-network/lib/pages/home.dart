@@ -107,24 +107,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(top: 15.0),
-              child:
-                  Text('You are signed in using an ORY Kratos Session Token:'),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Container(
-                padding: const EdgeInsets.all(35),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey[600]),
-                child: Text(session.id,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500, color: Colors.white)),
-              ),
-            ),
-            const Padding(
                 padding: EdgeInsets.only(top: 15.0),
                 child: Text(
                     'This app mackes REST requests to ORY Kratos Public API to validate and decode the ORY Kratos Session payload:')),

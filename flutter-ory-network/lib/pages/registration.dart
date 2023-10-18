@@ -9,7 +9,6 @@ import '../blocs/auth/auth_bloc.dart';
 import '../blocs/registration/registration_bloc.dart';
 import '../repositories/auth.dart';
 import '../widgets/helpers.dart';
-import '../widgets/nodes/provider.dart';
 import 'login.dart';
 
 class RegistrationPage extends StatelessWidget {
@@ -73,10 +72,6 @@ class RegistrationFormState extends State<RegistrationForm> {
     final totpNodes =
         nodes.where((node) => node.group == UiNodeGroupEnum.totp).toList();
 
-    // get oidc nodes from all nodes
-    final oidcNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.oidc).toList();
-
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -102,15 +97,6 @@ class RegistrationFormState extends State<RegistrationForm> {
               const Text('Sign up',
                   style: TextStyle(
                       fontWeight: FontWeight.w600, height: 1.5, fontSize: 18)),
-              if (oidcNodes.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 32.0),
-                  child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: oidcNodes
-                          .map((node) => SocialProviderInput(node: node))
-                          .toList()),
-                ),
               if (defaultNodes.isNotEmpty)
                 buildGroup<RegistrationBloc>(context, UiNodeGroupEnum.default_,
                     defaultNodes, _onInputChange, _onInputSubmit),
