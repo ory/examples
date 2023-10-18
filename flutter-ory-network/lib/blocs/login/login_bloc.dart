@@ -72,20 +72,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       authBloc.add(
           ChangeAuthStatus(status: AuthStatus.authenticated, session: session));
       emit(state.copyWith(isLoading: false));
-    } on CustomException catch (e) {
-      if (e case BadRequestException<LoginFlow> _) {
-        emit(state.copyWith(loginFlow: e.flow, isLoading: false));
-      } else if (e case UnauthorizedException _) {
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
-      } else if (e case FlowExpiredException _) {
-        add(GetLoginFlow(flowId: e.flowId));
-      } else if (e case TwoFactorAuthRequiredException _) {
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on BadRequestException<LoginFlow> catch (e) {
+      emit(state.copyWith(loginFlow: e.flow, isLoading: false));
+    } on UnauthorizedException catch (_) {
+      authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+    } on FlowExpiredException catch (e) {
+      add(GetLoginFlow(flowId: e.flowId));
+    } on TwoFactorAuthRequiredException catch (_) {
+      authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 }

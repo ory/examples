@@ -22,7 +22,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SettingsRepository repository;
   late SettingsEvent? _previousEvent;
   SettingsBloc({required this.authBloc, required this.repository})
-      : super(SettingsState()) {
+      : super(const SettingsState()) {
     on<CreateSettingsFlow>(_onCreateSettingsFlow);
     on<GetSettingsFlow>(_onGetSettingsFlow);
     on<ChangeSettingsNodeValue>(_onChangeNodeValue, transformer: sequential());
@@ -32,8 +32,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   @override
   void onEvent(SettingsEvent event) {
-    _previousEvent = event;
     super.onEvent(event);
+    _previousEvent = event;
   }
 
   void retry() {
@@ -71,21 +71,19 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
             nodes: state.settingsFlow!.ui.nodes.toList());
         emit(state.copyWith(isLoading: false, settingsFlow: settings));
       }
-    } on CustomException catch (e) {
-      if (e case UnauthorizedException _) {
-        // change auth status as the user is not authenticated
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
-      } else if (e case FlowExpiredException _) {
-        // create new settings flow
-        add(GetSettingsFlow(flowId: e.flowId));
-      } else if (e case SessionRefreshRequiredException _) {
-        // set session required flag to navigate to login page
-        emit(state.copyWith(isSessionRefreshRequired: true, isLoading: false));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnauthorizedException catch (_) {
+      // change auth status as the user is not authenticated
+      authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+    } on FlowExpiredException catch (e) {
+      // get new settings flow
+      add(GetSettingsFlow(flowId: e.flowId));
+    } on SessionRefreshRequiredException catch (_) {
+      // set session refresh required flag to navigate to login page
+      emit(state.copyWith(isSessionRefreshRequired: true, isLoading: false));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -97,15 +95,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       final settingsFlow = await repository.createSettingsFlow();
 
       emit(state.copyWith(isLoading: false, settingsFlow: settingsFlow));
-    } on CustomException catch (e) {
-      if (e case UnauthorizedException _) {
-        // change auth status as the user is not authenticated
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnauthorizedException catch (_) {
+      // change auth status as the user is not authenticated
+      authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -116,15 +112,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       final settingsFlow =
           await repository.getSettingsFlow(flowId: event.flowId);
       emit(state.copyWith(isLoading: false, settingsFlow: settingsFlow));
-    } on CustomException catch (e) {
-      if (e case UnauthorizedException _) {
-        // change auth status as the user is not authenticated
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnauthorizedException catch (_) {
+      // change auth status as the user is not authenticated
+      authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 }
