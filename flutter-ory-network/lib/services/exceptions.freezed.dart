@@ -108,20 +108,20 @@ class _$CustomExceptionCopyWithImpl<T, $Res, $Val extends CustomException<T>>
 }
 
 /// @nodoc
-abstract class _$$BadRequestExceptionCopyWith<T, $Res> {
-  factory _$$BadRequestExceptionCopyWith(_$BadRequestException<T> value,
-          $Res Function(_$BadRequestException<T>) then) =
-      __$$BadRequestExceptionCopyWithImpl<T, $Res>;
+abstract class _$$BadRequestExceptionImplCopyWith<T, $Res> {
+  factory _$$BadRequestExceptionImplCopyWith(_$BadRequestExceptionImpl<T> value,
+          $Res Function(_$BadRequestExceptionImpl<T>) then) =
+      __$$BadRequestExceptionImplCopyWithImpl<T, $Res>;
   @useResult
   $Res call({T flow});
 }
 
 /// @nodoc
-class __$$BadRequestExceptionCopyWithImpl<T, $Res>
-    extends _$CustomExceptionCopyWithImpl<T, $Res, _$BadRequestException<T>>
-    implements _$$BadRequestExceptionCopyWith<T, $Res> {
-  __$$BadRequestExceptionCopyWithImpl(_$BadRequestException<T> _value,
-      $Res Function(_$BadRequestException<T>) _then)
+class __$$BadRequestExceptionImplCopyWithImpl<T, $Res>
+    extends _$CustomExceptionCopyWithImpl<T, $Res, _$BadRequestExceptionImpl<T>>
+    implements _$$BadRequestExceptionImplCopyWith<T, $Res> {
+  __$$BadRequestExceptionImplCopyWithImpl(_$BadRequestExceptionImpl<T> _value,
+      $Res Function(_$BadRequestExceptionImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -129,7 +129,7 @@ class __$$BadRequestExceptionCopyWithImpl<T, $Res>
   $Res call({
     Object? flow = freezed,
   }) {
-    return _then(_$BadRequestException<T>(
+    return _then(_$BadRequestExceptionImpl<T>(
       flow: freezed == flow
           ? _value.flow
           : flow // ignore: cast_nullable_to_non_nullable
@@ -140,9 +140,9 @@ class __$$BadRequestExceptionCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$BadRequestException<T> extends BadRequestException<T>
+class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
     with DiagnosticableTreeMixin {
-  const _$BadRequestException({required this.flow}) : super._();
+  const _$BadRequestExceptionImpl({required this.flow}) : super._();
 
   @override
   final T flow;
@@ -164,7 +164,7 @@ class _$BadRequestException<T> extends BadRequestException<T>
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BadRequestException<T> &&
+            other is _$BadRequestExceptionImpl<T> &&
             const DeepCollectionEquality().equals(other.flow, flow));
   }
 
@@ -175,9 +175,9 @@ class _$BadRequestException<T> extends BadRequestException<T>
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$BadRequestExceptionCopyWith<T, _$BadRequestException<T>> get copyWith =>
-      __$$BadRequestExceptionCopyWithImpl<T, _$BadRequestException<T>>(
-          this, _$identity);
+  _$$BadRequestExceptionImplCopyWith<T, _$BadRequestExceptionImpl<T>>
+      get copyWith => __$$BadRequestExceptionImplCopyWithImpl<T,
+          _$BadRequestExceptionImpl<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -274,36 +274,39 @@ class _$BadRequestException<T> extends BadRequestException<T>
 
 abstract class BadRequestException<T> extends CustomException<T> {
   const factory BadRequestException({required final T flow}) =
-      _$BadRequestException<T>;
+      _$BadRequestExceptionImpl<T>;
   const BadRequestException._() : super._();
 
   T get flow;
   @JsonKey(ignore: true)
-  _$$BadRequestExceptionCopyWith<T, _$BadRequestException<T>> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$BadRequestExceptionImplCopyWith<T, _$BadRequestExceptionImpl<T>>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UnauthorizedExceptionCopyWith<T, $Res> {
-  factory _$$UnauthorizedExceptionCopyWith(_$UnauthorizedException<T> value,
-          $Res Function(_$UnauthorizedException<T>) then) =
-      __$$UnauthorizedExceptionCopyWithImpl<T, $Res>;
+abstract class _$$UnauthorizedExceptionImplCopyWith<T, $Res> {
+  factory _$$UnauthorizedExceptionImplCopyWith(
+          _$UnauthorizedExceptionImpl<T> value,
+          $Res Function(_$UnauthorizedExceptionImpl<T>) then) =
+      __$$UnauthorizedExceptionImplCopyWithImpl<T, $Res>;
 }
 
 /// @nodoc
-class __$$UnauthorizedExceptionCopyWithImpl<T, $Res>
-    extends _$CustomExceptionCopyWithImpl<T, $Res, _$UnauthorizedException<T>>
-    implements _$$UnauthorizedExceptionCopyWith<T, $Res> {
-  __$$UnauthorizedExceptionCopyWithImpl(_$UnauthorizedException<T> _value,
-      $Res Function(_$UnauthorizedException<T>) _then)
+class __$$UnauthorizedExceptionImplCopyWithImpl<T, $Res>
+    extends _$CustomExceptionCopyWithImpl<T, $Res,
+        _$UnauthorizedExceptionImpl<T>>
+    implements _$$UnauthorizedExceptionImplCopyWith<T, $Res> {
+  __$$UnauthorizedExceptionImplCopyWithImpl(
+      _$UnauthorizedExceptionImpl<T> _value,
+      $Res Function(_$UnauthorizedExceptionImpl<T>) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$UnauthorizedException<T> extends UnauthorizedException<T>
+class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
     with DiagnosticableTreeMixin {
-  const _$UnauthorizedException() : super._();
+  const _$UnauthorizedExceptionImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -321,7 +324,7 @@ class _$UnauthorizedException<T> extends UnauthorizedException<T>
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UnauthorizedException<T>);
+            other is _$UnauthorizedExceptionImpl<T>);
   }
 
   @override
@@ -421,25 +424,27 @@ class _$UnauthorizedException<T> extends UnauthorizedException<T>
 }
 
 abstract class UnauthorizedException<T> extends CustomException<T> {
-  const factory UnauthorizedException() = _$UnauthorizedException<T>;
+  const factory UnauthorizedException() = _$UnauthorizedExceptionImpl<T>;
   const UnauthorizedException._() : super._();
 }
 
 /// @nodoc
-abstract class _$$FlowExpiredExceptionCopyWith<T, $Res> {
-  factory _$$FlowExpiredExceptionCopyWith(_$FlowExpiredException<T> value,
-          $Res Function(_$FlowExpiredException<T>) then) =
-      __$$FlowExpiredExceptionCopyWithImpl<T, $Res>;
+abstract class _$$FlowExpiredExceptionImplCopyWith<T, $Res> {
+  factory _$$FlowExpiredExceptionImplCopyWith(
+          _$FlowExpiredExceptionImpl<T> value,
+          $Res Function(_$FlowExpiredExceptionImpl<T>) then) =
+      __$$FlowExpiredExceptionImplCopyWithImpl<T, $Res>;
   @useResult
   $Res call({String flowId, String? message});
 }
 
 /// @nodoc
-class __$$FlowExpiredExceptionCopyWithImpl<T, $Res>
-    extends _$CustomExceptionCopyWithImpl<T, $Res, _$FlowExpiredException<T>>
-    implements _$$FlowExpiredExceptionCopyWith<T, $Res> {
-  __$$FlowExpiredExceptionCopyWithImpl(_$FlowExpiredException<T> _value,
-      $Res Function(_$FlowExpiredException<T>) _then)
+class __$$FlowExpiredExceptionImplCopyWithImpl<T, $Res>
+    extends _$CustomExceptionCopyWithImpl<T, $Res,
+        _$FlowExpiredExceptionImpl<T>>
+    implements _$$FlowExpiredExceptionImplCopyWith<T, $Res> {
+  __$$FlowExpiredExceptionImplCopyWithImpl(_$FlowExpiredExceptionImpl<T> _value,
+      $Res Function(_$FlowExpiredExceptionImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -448,7 +453,7 @@ class __$$FlowExpiredExceptionCopyWithImpl<T, $Res>
     Object? flowId = null,
     Object? message = freezed,
   }) {
-    return _then(_$FlowExpiredException<T>(
+    return _then(_$FlowExpiredExceptionImpl<T>(
       flowId: null == flowId
           ? _value.flowId
           : flowId // ignore: cast_nullable_to_non_nullable
@@ -463,9 +468,9 @@ class __$$FlowExpiredExceptionCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$FlowExpiredException<T> extends FlowExpiredException<T>
+class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
     with DiagnosticableTreeMixin {
-  const _$FlowExpiredException({required this.flowId, this.message})
+  const _$FlowExpiredExceptionImpl({required this.flowId, this.message})
       : super._();
 
   @override
@@ -491,7 +496,7 @@ class _$FlowExpiredException<T> extends FlowExpiredException<T>
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FlowExpiredException<T> &&
+            other is _$FlowExpiredExceptionImpl<T> &&
             (identical(other.flowId, flowId) || other.flowId == flowId) &&
             (identical(other.message, message) || other.message == message));
   }
@@ -502,9 +507,9 @@ class _$FlowExpiredException<T> extends FlowExpiredException<T>
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$FlowExpiredExceptionCopyWith<T, _$FlowExpiredException<T>> get copyWith =>
-      __$$FlowExpiredExceptionCopyWithImpl<T, _$FlowExpiredException<T>>(
-          this, _$identity);
+  _$$FlowExpiredExceptionImplCopyWith<T, _$FlowExpiredExceptionImpl<T>>
+      get copyWith => __$$FlowExpiredExceptionImplCopyWithImpl<T,
+          _$FlowExpiredExceptionImpl<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -602,34 +607,34 @@ class _$FlowExpiredException<T> extends FlowExpiredException<T>
 abstract class FlowExpiredException<T> extends CustomException<T> {
   const factory FlowExpiredException(
       {required final String flowId,
-      final String? message}) = _$FlowExpiredException<T>;
+      final String? message}) = _$FlowExpiredExceptionImpl<T>;
   const FlowExpiredException._() : super._();
 
   String get flowId;
   String? get message;
   @JsonKey(ignore: true)
-  _$$FlowExpiredExceptionCopyWith<T, _$FlowExpiredException<T>> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$FlowExpiredExceptionImplCopyWith<T, _$FlowExpiredExceptionImpl<T>>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$TwoFactorAuthRequiredExceptionCopyWith<T, $Res> {
-  factory _$$TwoFactorAuthRequiredExceptionCopyWith(
-          _$TwoFactorAuthRequiredException<T> value,
-          $Res Function(_$TwoFactorAuthRequiredException<T>) then) =
-      __$$TwoFactorAuthRequiredExceptionCopyWithImpl<T, $Res>;
+abstract class _$$TwoFactorAuthRequiredExceptionImplCopyWith<T, $Res> {
+  factory _$$TwoFactorAuthRequiredExceptionImplCopyWith(
+          _$TwoFactorAuthRequiredExceptionImpl<T> value,
+          $Res Function(_$TwoFactorAuthRequiredExceptionImpl<T>) then) =
+      __$$TwoFactorAuthRequiredExceptionImplCopyWithImpl<T, $Res>;
   @useResult
   $Res call({Session? session});
 }
 
 /// @nodoc
-class __$$TwoFactorAuthRequiredExceptionCopyWithImpl<T, $Res>
+class __$$TwoFactorAuthRequiredExceptionImplCopyWithImpl<T, $Res>
     extends _$CustomExceptionCopyWithImpl<T, $Res,
-        _$TwoFactorAuthRequiredException<T>>
-    implements _$$TwoFactorAuthRequiredExceptionCopyWith<T, $Res> {
-  __$$TwoFactorAuthRequiredExceptionCopyWithImpl(
-      _$TwoFactorAuthRequiredException<T> _value,
-      $Res Function(_$TwoFactorAuthRequiredException<T>) _then)
+        _$TwoFactorAuthRequiredExceptionImpl<T>>
+    implements _$$TwoFactorAuthRequiredExceptionImplCopyWith<T, $Res> {
+  __$$TwoFactorAuthRequiredExceptionImplCopyWithImpl(
+      _$TwoFactorAuthRequiredExceptionImpl<T> _value,
+      $Res Function(_$TwoFactorAuthRequiredExceptionImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -637,7 +642,7 @@ class __$$TwoFactorAuthRequiredExceptionCopyWithImpl<T, $Res>
   $Res call({
     Object? session = freezed,
   }) {
-    return _then(_$TwoFactorAuthRequiredException<T>(
+    return _then(_$TwoFactorAuthRequiredExceptionImpl<T>(
       session: freezed == session
           ? _value.session
           : session // ignore: cast_nullable_to_non_nullable
@@ -648,9 +653,9 @@ class __$$TwoFactorAuthRequiredExceptionCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$TwoFactorAuthRequiredException<T>
+class _$TwoFactorAuthRequiredExceptionImpl<T>
     extends TwoFactorAuthRequiredException<T> with DiagnosticableTreeMixin {
-  const _$TwoFactorAuthRequiredException({this.session}) : super._();
+  const _$TwoFactorAuthRequiredExceptionImpl({this.session}) : super._();
 
   @override
   final Session? session;
@@ -673,7 +678,7 @@ class _$TwoFactorAuthRequiredException<T>
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TwoFactorAuthRequiredException<T> &&
+            other is _$TwoFactorAuthRequiredExceptionImpl<T> &&
             (identical(other.session, session) || other.session == session));
   }
 
@@ -683,10 +688,10 @@ class _$TwoFactorAuthRequiredException<T>
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TwoFactorAuthRequiredExceptionCopyWith<T,
-          _$TwoFactorAuthRequiredException<T>>
-      get copyWith => __$$TwoFactorAuthRequiredExceptionCopyWithImpl<T,
-          _$TwoFactorAuthRequiredException<T>>(this, _$identity);
+  _$$TwoFactorAuthRequiredExceptionImplCopyWith<T,
+          _$TwoFactorAuthRequiredExceptionImpl<T>>
+      get copyWith => __$$TwoFactorAuthRequiredExceptionImplCopyWithImpl<T,
+          _$TwoFactorAuthRequiredExceptionImpl<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -783,34 +788,34 @@ class _$TwoFactorAuthRequiredException<T>
 
 abstract class TwoFactorAuthRequiredException<T> extends CustomException<T> {
   const factory TwoFactorAuthRequiredException({final Session? session}) =
-      _$TwoFactorAuthRequiredException<T>;
+      _$TwoFactorAuthRequiredExceptionImpl<T>;
   const TwoFactorAuthRequiredException._() : super._();
 
   Session? get session;
   @JsonKey(ignore: true)
-  _$$TwoFactorAuthRequiredExceptionCopyWith<T,
-          _$TwoFactorAuthRequiredException<T>>
+  _$$TwoFactorAuthRequiredExceptionImplCopyWith<T,
+          _$TwoFactorAuthRequiredExceptionImpl<T>>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LocationChangeRequiredExceptionCopyWith<T, $Res> {
-  factory _$$LocationChangeRequiredExceptionCopyWith(
-          _$LocationChangeRequiredException<T> value,
-          $Res Function(_$LocationChangeRequiredException<T>) then) =
-      __$$LocationChangeRequiredExceptionCopyWithImpl<T, $Res>;
+abstract class _$$LocationChangeRequiredExceptionImplCopyWith<T, $Res> {
+  factory _$$LocationChangeRequiredExceptionImplCopyWith(
+          _$LocationChangeRequiredExceptionImpl<T> value,
+          $Res Function(_$LocationChangeRequiredExceptionImpl<T>) then) =
+      __$$LocationChangeRequiredExceptionImplCopyWithImpl<T, $Res>;
   @useResult
   $Res call({String url});
 }
 
 /// @nodoc
-class __$$LocationChangeRequiredExceptionCopyWithImpl<T, $Res>
+class __$$LocationChangeRequiredExceptionImplCopyWithImpl<T, $Res>
     extends _$CustomExceptionCopyWithImpl<T, $Res,
-        _$LocationChangeRequiredException<T>>
-    implements _$$LocationChangeRequiredExceptionCopyWith<T, $Res> {
-  __$$LocationChangeRequiredExceptionCopyWithImpl(
-      _$LocationChangeRequiredException<T> _value,
-      $Res Function(_$LocationChangeRequiredException<T>) _then)
+        _$LocationChangeRequiredExceptionImpl<T>>
+    implements _$$LocationChangeRequiredExceptionImplCopyWith<T, $Res> {
+  __$$LocationChangeRequiredExceptionImplCopyWithImpl(
+      _$LocationChangeRequiredExceptionImpl<T> _value,
+      $Res Function(_$LocationChangeRequiredExceptionImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -818,7 +823,7 @@ class __$$LocationChangeRequiredExceptionCopyWithImpl<T, $Res>
   $Res call({
     Object? url = null,
   }) {
-    return _then(_$LocationChangeRequiredException<T>(
+    return _then(_$LocationChangeRequiredExceptionImpl<T>(
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -829,9 +834,9 @@ class __$$LocationChangeRequiredExceptionCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$LocationChangeRequiredException<T>
+class _$LocationChangeRequiredExceptionImpl<T>
     extends LocationChangeRequiredException<T> with DiagnosticableTreeMixin {
-  const _$LocationChangeRequiredException({required this.url}) : super._();
+  const _$LocationChangeRequiredExceptionImpl({required this.url}) : super._();
 
   @override
   final String url;
@@ -854,7 +859,7 @@ class _$LocationChangeRequiredException<T>
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LocationChangeRequiredException<T> &&
+            other is _$LocationChangeRequiredExceptionImpl<T> &&
             (identical(other.url, url) || other.url == url));
   }
 
@@ -864,10 +869,10 @@ class _$LocationChangeRequiredException<T>
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LocationChangeRequiredExceptionCopyWith<T,
-          _$LocationChangeRequiredException<T>>
-      get copyWith => __$$LocationChangeRequiredExceptionCopyWithImpl<T,
-          _$LocationChangeRequiredException<T>>(this, _$identity);
+  _$$LocationChangeRequiredExceptionImplCopyWith<T,
+          _$LocationChangeRequiredExceptionImpl<T>>
+      get copyWith => __$$LocationChangeRequiredExceptionImplCopyWithImpl<T,
+          _$LocationChangeRequiredExceptionImpl<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -964,31 +969,31 @@ class _$LocationChangeRequiredException<T>
 
 abstract class LocationChangeRequiredException<T> extends CustomException<T> {
   const factory LocationChangeRequiredException({required final String url}) =
-      _$LocationChangeRequiredException<T>;
+      _$LocationChangeRequiredExceptionImpl<T>;
   const LocationChangeRequiredException._() : super._();
 
   String get url;
   @JsonKey(ignore: true)
-  _$$LocationChangeRequiredExceptionCopyWith<T,
-          _$LocationChangeRequiredException<T>>
+  _$$LocationChangeRequiredExceptionImplCopyWith<T,
+          _$LocationChangeRequiredExceptionImpl<T>>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UnknownExceptionCopyWith<T, $Res> {
-  factory _$$UnknownExceptionCopyWith(_$UnknownException<T> value,
-          $Res Function(_$UnknownException<T>) then) =
-      __$$UnknownExceptionCopyWithImpl<T, $Res>;
+abstract class _$$UnknownExceptionImplCopyWith<T, $Res> {
+  factory _$$UnknownExceptionImplCopyWith(_$UnknownExceptionImpl<T> value,
+          $Res Function(_$UnknownExceptionImpl<T>) then) =
+      __$$UnknownExceptionImplCopyWithImpl<T, $Res>;
   @useResult
   $Res call({String? message});
 }
 
 /// @nodoc
-class __$$UnknownExceptionCopyWithImpl<T, $Res>
-    extends _$CustomExceptionCopyWithImpl<T, $Res, _$UnknownException<T>>
-    implements _$$UnknownExceptionCopyWith<T, $Res> {
-  __$$UnknownExceptionCopyWithImpl(
-      _$UnknownException<T> _value, $Res Function(_$UnknownException<T>) _then)
+class __$$UnknownExceptionImplCopyWithImpl<T, $Res>
+    extends _$CustomExceptionCopyWithImpl<T, $Res, _$UnknownExceptionImpl<T>>
+    implements _$$UnknownExceptionImplCopyWith<T, $Res> {
+  __$$UnknownExceptionImplCopyWithImpl(_$UnknownExceptionImpl<T> _value,
+      $Res Function(_$UnknownExceptionImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -996,7 +1001,7 @@ class __$$UnknownExceptionCopyWithImpl<T, $Res>
   $Res call({
     Object? message = freezed,
   }) {
-    return _then(_$UnknownException<T>(
+    return _then(_$UnknownExceptionImpl<T>(
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -1007,9 +1012,9 @@ class __$$UnknownExceptionCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$UnknownException<T> extends UnknownException<T>
+class _$UnknownExceptionImpl<T> extends UnknownException<T>
     with DiagnosticableTreeMixin {
-  const _$UnknownException(
+  const _$UnknownExceptionImpl(
       {this.message = 'An error occured. Please try again later.'})
       : super._();
 
@@ -1034,7 +1039,7 @@ class _$UnknownException<T> extends UnknownException<T>
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UnknownException<T> &&
+            other is _$UnknownExceptionImpl<T> &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -1044,8 +1049,8 @@ class _$UnknownException<T> extends UnknownException<T>
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UnknownExceptionCopyWith<T, _$UnknownException<T>> get copyWith =>
-      __$$UnknownExceptionCopyWithImpl<T, _$UnknownException<T>>(
+  _$$UnknownExceptionImplCopyWith<T, _$UnknownExceptionImpl<T>> get copyWith =>
+      __$$UnknownExceptionImplCopyWithImpl<T, _$UnknownExceptionImpl<T>>(
           this, _$identity);
 
   @override
@@ -1143,11 +1148,11 @@ class _$UnknownException<T> extends UnknownException<T>
 
 abstract class UnknownException<T> extends CustomException<T> {
   const factory UnknownException({final String? message}) =
-      _$UnknownException<T>;
+      _$UnknownExceptionImpl<T>;
   const UnknownException._() : super._();
 
   String? get message;
   @JsonKey(ignore: true)
-  _$$UnknownExceptionCopyWith<T, _$UnknownException<T>> get copyWith =>
+  _$$UnknownExceptionImplCopyWith<T, _$UnknownExceptionImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

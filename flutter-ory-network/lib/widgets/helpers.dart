@@ -73,7 +73,6 @@ buildInputNode<T extends Bloc>(
     void Function(BuildContext, UiNodeGroupEnum, String, String)
         onInputSubmit) {
   final inputNode = node.attributes.oneOf.value as UiNodeInputAttributes;
-
   switch (inputNode.type) {
     case UiNodeInputAttributesTypeEnum.submit:
       return InputSubmitNode(

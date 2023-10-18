@@ -52,17 +52,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final session = await repository.getCurrentSessionInformation();
 
-      emit(AuthState.authenticated(isLoading: false, session: session));
-    } on CustomException catch (e) {
-      if (e case UnauthorizedException _) {
-        emit(const AuthState.unauthenticated());
-      } else if (e case TwoFactorAuthRequiredException _) {
-        emit(const AuthState.aal2Requested());
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, errorMessage: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+      emit(AuthState.authenticated(session: session));
+    } on UnauthorizedException catch (_) {
+      emit(const AuthState.unauthenticated());
+    } on TwoFactorAuthRequiredException catch (_) {
+      emit(const AuthState.aal2Requested());
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, errorMessage: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -73,14 +71,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await repository.logout();
 
       emit(const AuthState.unauthenticated());
-    } on CustomException catch (e) {
-      if (e case UnauthorizedException _) {
-        emit(const AuthState.unauthenticated());
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, errorMessage: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnauthorizedException catch (_) {
+      emit(const AuthState.unauthenticated());
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, errorMessage: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 }

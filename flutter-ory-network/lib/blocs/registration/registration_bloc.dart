@@ -106,19 +106,17 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             nodes: state.registrationFlow!.ui.nodes.toList());
         authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
       }
+    } on BadRequestException<RegistrationFlow> catch (e) {
+      emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
     } on LocationChangeRequiredException catch (e) {
       emit(state.copyWith(isLoading: false));
       add(RegisterWithWebAuth(url: e.url));
-    } on CustomException catch (e) {
-      if (e case BadRequestException<RegistrationFlow> _) {
-        emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
-      } else if (e case FlowExpiredException _) {
-        add(GetRegistrationFlow(flowId: e.flowId));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on FlowExpiredException catch (e) {
+      add(GetRegistrationFlow(flowId: e.flowId));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 }

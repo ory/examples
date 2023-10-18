@@ -152,22 +152,22 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
 }
 
 /// @nodoc
-abstract class _$$AuthUninitializedCopyWith<$Res>
+abstract class _$$AuthUninitializedImplCopyWith<$Res>
     implements $AuthStateCopyWith<$Res> {
-  factory _$$AuthUninitializedCopyWith(
-          _$AuthUninitialized value, $Res Function(_$AuthUninitialized) then) =
-      __$$AuthUninitializedCopyWithImpl<$Res>;
+  factory _$$AuthUninitializedImplCopyWith(_$AuthUninitializedImpl value,
+          $Res Function(_$AuthUninitializedImpl) then) =
+      __$$AuthUninitializedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({AuthStatus status, bool isLoading, String? errorMessage});
 }
 
 /// @nodoc
-class __$$AuthUninitializedCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthUninitialized>
-    implements _$$AuthUninitializedCopyWith<$Res> {
-  __$$AuthUninitializedCopyWithImpl(
-      _$AuthUninitialized _value, $Res Function(_$AuthUninitialized) _then)
+class __$$AuthUninitializedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthUninitializedImpl>
+    implements _$$AuthUninitializedImplCopyWith<$Res> {
+  __$$AuthUninitializedImplCopyWithImpl(_$AuthUninitializedImpl _value,
+      $Res Function(_$AuthUninitializedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -177,7 +177,7 @@ class __$$AuthUninitializedCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$AuthUninitialized(
+    return _then(_$AuthUninitializedImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -196,8 +196,8 @@ class __$$AuthUninitializedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthUninitialized implements AuthUninitialized {
-  const _$AuthUninitialized(
+class _$AuthUninitializedImpl implements AuthUninitialized {
+  const _$AuthUninitializedImpl(
       {this.status = AuthStatus.uninitialized,
       this.isLoading = false,
       this.errorMessage});
@@ -220,7 +220,7 @@ class _$AuthUninitialized implements AuthUninitialized {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthUninitialized &&
+            other is _$AuthUninitializedImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -234,8 +234,9 @@ class _$AuthUninitialized implements AuthUninitialized {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AuthUninitializedCopyWith<_$AuthUninitialized> get copyWith =>
-      __$$AuthUninitializedCopyWithImpl<_$AuthUninitialized>(this, _$identity);
+  _$$AuthUninitializedImplCopyWith<_$AuthUninitializedImpl> get copyWith =>
+      __$$AuthUninitializedImplCopyWithImpl<_$AuthUninitializedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -347,7 +348,7 @@ abstract class AuthUninitialized implements AuthState {
   const factory AuthUninitialized(
       {final AuthStatus status,
       final bool isLoading,
-      final String? errorMessage}) = _$AuthUninitialized;
+      final String? errorMessage}) = _$AuthUninitializedImpl;
 
   @override
   AuthStatus get status;
@@ -357,27 +358,27 @@ abstract class AuthUninitialized implements AuthState {
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)
-  _$$AuthUninitializedCopyWith<_$AuthUninitialized> get copyWith =>
+  _$$AuthUninitializedImplCopyWith<_$AuthUninitializedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AuthUnauthenticatedCopyWith<$Res>
+abstract class _$$AuthUnauthenticatedImplCopyWith<$Res>
     implements $AuthStateCopyWith<$Res> {
-  factory _$$AuthUnauthenticatedCopyWith(_$AuthUnauthenticated value,
-          $Res Function(_$AuthUnauthenticated) then) =
-      __$$AuthUnauthenticatedCopyWithImpl<$Res>;
+  factory _$$AuthUnauthenticatedImplCopyWith(_$AuthUnauthenticatedImpl value,
+          $Res Function(_$AuthUnauthenticatedImpl) then) =
+      __$$AuthUnauthenticatedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({AuthStatus status, bool isLoading, String? errorMessage});
 }
 
 /// @nodoc
-class __$$AuthUnauthenticatedCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthUnauthenticated>
-    implements _$$AuthUnauthenticatedCopyWith<$Res> {
-  __$$AuthUnauthenticatedCopyWithImpl(
-      _$AuthUnauthenticated _value, $Res Function(_$AuthUnauthenticated) _then)
+class __$$AuthUnauthenticatedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthUnauthenticatedImpl>
+    implements _$$AuthUnauthenticatedImplCopyWith<$Res> {
+  __$$AuthUnauthenticatedImplCopyWithImpl(_$AuthUnauthenticatedImpl _value,
+      $Res Function(_$AuthUnauthenticatedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -387,7 +388,7 @@ class __$$AuthUnauthenticatedCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$AuthUnauthenticated(
+    return _then(_$AuthUnauthenticatedImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -406,8 +407,8 @@ class __$$AuthUnauthenticatedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthUnauthenticated implements AuthUnauthenticated {
-  const _$AuthUnauthenticated(
+class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
+  const _$AuthUnauthenticatedImpl(
       {this.status = AuthStatus.unauthenticated,
       this.isLoading = false,
       this.errorMessage});
@@ -430,7 +431,7 @@ class _$AuthUnauthenticated implements AuthUnauthenticated {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthUnauthenticated &&
+            other is _$AuthUnauthenticatedImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -444,8 +445,8 @@ class _$AuthUnauthenticated implements AuthUnauthenticated {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AuthUnauthenticatedCopyWith<_$AuthUnauthenticated> get copyWith =>
-      __$$AuthUnauthenticatedCopyWithImpl<_$AuthUnauthenticated>(
+  _$$AuthUnauthenticatedImplCopyWith<_$AuthUnauthenticatedImpl> get copyWith =>
+      __$$AuthUnauthenticatedImplCopyWithImpl<_$AuthUnauthenticatedImpl>(
           this, _$identity);
 
   @override
@@ -558,7 +559,7 @@ abstract class AuthUnauthenticated implements AuthState {
   const factory AuthUnauthenticated(
       {final AuthStatus status,
       final bool isLoading,
-      final String? errorMessage}) = _$AuthUnauthenticated;
+      final String? errorMessage}) = _$AuthUnauthenticatedImpl;
 
   @override
   AuthStatus get status;
@@ -568,16 +569,16 @@ abstract class AuthUnauthenticated implements AuthState {
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)
-  _$$AuthUnauthenticatedCopyWith<_$AuthUnauthenticated> get copyWith =>
+  _$$AuthUnauthenticatedImplCopyWith<_$AuthUnauthenticatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AuthAuthenticatedCopyWith<$Res>
+abstract class _$$AuthAuthenticatedImplCopyWith<$Res>
     implements $AuthStateCopyWith<$Res> {
-  factory _$$AuthAuthenticatedCopyWith(
-          _$AuthAuthenticated value, $Res Function(_$AuthAuthenticated) then) =
-      __$$AuthAuthenticatedCopyWithImpl<$Res>;
+  factory _$$AuthAuthenticatedImplCopyWith(_$AuthAuthenticatedImpl value,
+          $Res Function(_$AuthAuthenticatedImpl) then) =
+      __$$AuthAuthenticatedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -588,11 +589,11 @@ abstract class _$$AuthAuthenticatedCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$AuthAuthenticatedCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthAuthenticated>
-    implements _$$AuthAuthenticatedCopyWith<$Res> {
-  __$$AuthAuthenticatedCopyWithImpl(
-      _$AuthAuthenticated _value, $Res Function(_$AuthAuthenticated) _then)
+class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthAuthenticatedImpl>
+    implements _$$AuthAuthenticatedImplCopyWith<$Res> {
+  __$$AuthAuthenticatedImplCopyWithImpl(_$AuthAuthenticatedImpl _value,
+      $Res Function(_$AuthAuthenticatedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -603,7 +604,7 @@ class __$$AuthAuthenticatedCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$AuthAuthenticated(
+    return _then(_$AuthAuthenticatedImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -626,8 +627,8 @@ class __$$AuthAuthenticatedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthAuthenticated implements AuthAuthenticated {
-  const _$AuthAuthenticated(
+class _$AuthAuthenticatedImpl implements AuthAuthenticated {
+  const _$AuthAuthenticatedImpl(
       {this.status = AuthStatus.authenticated,
       required this.session,
       this.isLoading = false,
@@ -653,7 +654,7 @@ class _$AuthAuthenticated implements AuthAuthenticated {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthAuthenticated &&
+            other is _$AuthAuthenticatedImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.session, session) || other.session == session) &&
             (identical(other.isLoading, isLoading) ||
@@ -669,8 +670,9 @@ class _$AuthAuthenticated implements AuthAuthenticated {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AuthAuthenticatedCopyWith<_$AuthAuthenticated> get copyWith =>
-      __$$AuthAuthenticatedCopyWithImpl<_$AuthAuthenticated>(this, _$identity);
+  _$$AuthAuthenticatedImplCopyWith<_$AuthAuthenticatedImpl> get copyWith =>
+      __$$AuthAuthenticatedImplCopyWithImpl<_$AuthAuthenticatedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -783,7 +785,7 @@ abstract class AuthAuthenticated implements AuthState {
       {final AuthStatus status,
       required final Session session,
       final bool isLoading,
-      final String? errorMessage}) = _$AuthAuthenticated;
+      final String? errorMessage}) = _$AuthAuthenticatedImpl;
 
   @override
   AuthStatus get status;
@@ -794,27 +796,27 @@ abstract class AuthAuthenticated implements AuthState {
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)
-  _$$AuthAuthenticatedCopyWith<_$AuthAuthenticated> get copyWith =>
+  _$$AuthAuthenticatedImplCopyWith<_$AuthAuthenticatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$Aal2RequestedCopyWith<$Res>
+abstract class _$$Aal2RequestedImplCopyWith<$Res>
     implements $AuthStateCopyWith<$Res> {
-  factory _$$Aal2RequestedCopyWith(
-          _$Aal2Requested value, $Res Function(_$Aal2Requested) then) =
-      __$$Aal2RequestedCopyWithImpl<$Res>;
+  factory _$$Aal2RequestedImplCopyWith(
+          _$Aal2RequestedImpl value, $Res Function(_$Aal2RequestedImpl) then) =
+      __$$Aal2RequestedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({AuthStatus status, bool isLoading, String? errorMessage});
 }
 
 /// @nodoc
-class __$$Aal2RequestedCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$Aal2Requested>
-    implements _$$Aal2RequestedCopyWith<$Res> {
-  __$$Aal2RequestedCopyWithImpl(
-      _$Aal2Requested _value, $Res Function(_$Aal2Requested) _then)
+class __$$Aal2RequestedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$Aal2RequestedImpl>
+    implements _$$Aal2RequestedImplCopyWith<$Res> {
+  __$$Aal2RequestedImplCopyWithImpl(
+      _$Aal2RequestedImpl _value, $Res Function(_$Aal2RequestedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -824,7 +826,7 @@ class __$$Aal2RequestedCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$Aal2Requested(
+    return _then(_$Aal2RequestedImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -843,8 +845,8 @@ class __$$Aal2RequestedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Aal2Requested implements Aal2Requested {
-  const _$Aal2Requested(
+class _$Aal2RequestedImpl implements Aal2Requested {
+  const _$Aal2RequestedImpl(
       {this.status = AuthStatus.aal2Requested,
       this.isLoading = false,
       this.errorMessage});
@@ -867,7 +869,7 @@ class _$Aal2Requested implements Aal2Requested {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Aal2Requested &&
+            other is _$Aal2RequestedImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -881,8 +883,8 @@ class _$Aal2Requested implements Aal2Requested {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$Aal2RequestedCopyWith<_$Aal2Requested> get copyWith =>
-      __$$Aal2RequestedCopyWithImpl<_$Aal2Requested>(this, _$identity);
+  _$$Aal2RequestedImplCopyWith<_$Aal2RequestedImpl> get copyWith =>
+      __$$Aal2RequestedImplCopyWithImpl<_$Aal2RequestedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -994,7 +996,7 @@ abstract class Aal2Requested implements AuthState {
   const factory Aal2Requested(
       {final AuthStatus status,
       final bool isLoading,
-      final String? errorMessage}) = _$Aal2Requested;
+      final String? errorMessage}) = _$Aal2RequestedImpl;
 
   @override
   AuthStatus get status;
@@ -1004,16 +1006,17 @@ abstract class Aal2Requested implements AuthState {
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)
-  _$$Aal2RequestedCopyWith<_$Aal2Requested> get copyWith =>
+  _$$Aal2RequestedImplCopyWith<_$Aal2RequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$LocationChangeRequiredCopyWith<$Res>
+abstract class _$$LocationChangeRequiredImplCopyWith<$Res>
     implements $AuthStateCopyWith<$Res> {
-  factory _$$LocationChangeRequiredCopyWith(_$LocationChangeRequired value,
-          $Res Function(_$LocationChangeRequired) then) =
-      __$$LocationChangeRequiredCopyWithImpl<$Res>;
+  factory _$$LocationChangeRequiredImplCopyWith(
+          _$LocationChangeRequiredImpl value,
+          $Res Function(_$LocationChangeRequiredImpl) then) =
+      __$$LocationChangeRequiredImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1021,11 +1024,12 @@ abstract class _$$LocationChangeRequiredCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$LocationChangeRequiredCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$LocationChangeRequired>
-    implements _$$LocationChangeRequiredCopyWith<$Res> {
-  __$$LocationChangeRequiredCopyWithImpl(_$LocationChangeRequired _value,
-      $Res Function(_$LocationChangeRequired) _then)
+class __$$LocationChangeRequiredImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$LocationChangeRequiredImpl>
+    implements _$$LocationChangeRequiredImplCopyWith<$Res> {
+  __$$LocationChangeRequiredImplCopyWithImpl(
+      _$LocationChangeRequiredImpl _value,
+      $Res Function(_$LocationChangeRequiredImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1036,7 +1040,7 @@ class __$$LocationChangeRequiredCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$LocationChangeRequired(
+    return _then(_$LocationChangeRequiredImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -1059,8 +1063,8 @@ class __$$LocationChangeRequiredCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LocationChangeRequired implements LocationChangeRequired {
-  const _$LocationChangeRequired(
+class _$LocationChangeRequiredImpl implements LocationChangeRequired {
+  const _$LocationChangeRequiredImpl(
       {this.status = AuthStatus.locationChangeRequired,
       required this.url,
       this.isLoading = false,
@@ -1086,7 +1090,7 @@ class _$LocationChangeRequired implements LocationChangeRequired {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LocationChangeRequired &&
+            other is _$LocationChangeRequiredImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.isLoading, isLoading) ||
@@ -1102,9 +1106,9 @@ class _$LocationChangeRequired implements LocationChangeRequired {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LocationChangeRequiredCopyWith<_$LocationChangeRequired> get copyWith =>
-      __$$LocationChangeRequiredCopyWithImpl<_$LocationChangeRequired>(
-          this, _$identity);
+  _$$LocationChangeRequiredImplCopyWith<_$LocationChangeRequiredImpl>
+      get copyWith => __$$LocationChangeRequiredImplCopyWithImpl<
+          _$LocationChangeRequiredImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1217,7 +1221,7 @@ abstract class LocationChangeRequired implements AuthState {
       {final AuthStatus status,
       required final String url,
       final bool isLoading,
-      final String? errorMessage}) = _$LocationChangeRequired;
+      final String? errorMessage}) = _$LocationChangeRequiredImpl;
 
   @override
   AuthStatus get status;
@@ -1228,6 +1232,6 @@ abstract class LocationChangeRequired implements AuthState {
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)
-  _$$LocationChangeRequiredCopyWith<_$LocationChangeRequired> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$LocationChangeRequiredImplCopyWith<_$LocationChangeRequiredImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

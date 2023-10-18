@@ -146,7 +146,6 @@ class LoginForm extends StatelessWidget {
               if (totpNodes.isNotEmpty)
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.totp, totpNodes,
                     _onInputChange, _onInputSubmit),
-
               const SizedBox(
                 height: 32,
               ),

@@ -11,7 +11,6 @@ import '../blocs/auth/auth_bloc.dart';
 import '../blocs/registration/registration_bloc.dart';
 import '../repositories/auth.dart';
 import '../widgets/helpers.dart';
-
 import 'login.dart';
 
 class RegistrationPage extends StatelessWidget {

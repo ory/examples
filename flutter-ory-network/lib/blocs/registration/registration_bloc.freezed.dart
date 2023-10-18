@@ -73,11 +73,11 @@ class _$RegistrationStateCopyWithImpl<$Res, $Val extends RegistrationState>
 }
 
 /// @nodoc
-abstract class _$$_RegistrationStateCopyWith<$Res>
+abstract class _$$RegistrationStateImplCopyWith<$Res>
     implements $RegistrationStateCopyWith<$Res> {
-  factory _$$_RegistrationStateCopyWith(_$_RegistrationState value,
-          $Res Function(_$_RegistrationState) then) =
-      __$$_RegistrationStateCopyWithImpl<$Res>;
+  factory _$$RegistrationStateImplCopyWith(_$RegistrationStateImpl value,
+          $Res Function(_$RegistrationStateImpl) then) =
+      __$$RegistrationStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -85,11 +85,11 @@ abstract class _$$_RegistrationStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RegistrationStateCopyWithImpl<$Res>
-    extends _$RegistrationStateCopyWithImpl<$Res, _$_RegistrationState>
-    implements _$$_RegistrationStateCopyWith<$Res> {
-  __$$_RegistrationStateCopyWithImpl(
-      _$_RegistrationState _value, $Res Function(_$_RegistrationState) _then)
+class __$$RegistrationStateImplCopyWithImpl<$Res>
+    extends _$RegistrationStateCopyWithImpl<$Res, _$RegistrationStateImpl>
+    implements _$$RegistrationStateImplCopyWith<$Res> {
+  __$$RegistrationStateImplCopyWithImpl(_$RegistrationStateImpl _value,
+      $Res Function(_$RegistrationStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +99,7 @@ class __$$_RegistrationStateCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? message = freezed,
   }) {
-    return _then(_$_RegistrationState(
+    return _then(_$RegistrationStateImpl(
       registrationFlow: freezed == registrationFlow
           ? _value.registrationFlow
           : registrationFlow // ignore: cast_nullable_to_non_nullable
@@ -118,8 +118,8 @@ class __$$_RegistrationStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RegistrationState implements _RegistrationState {
-  const _$_RegistrationState(
+class _$RegistrationStateImpl implements _RegistrationState {
+  const _$RegistrationStateImpl(
       {this.registrationFlow, this.isLoading = false, this.message});
 
   @override
@@ -139,7 +139,7 @@ class _$_RegistrationState implements _RegistrationState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RegistrationState &&
+            other is _$RegistrationStateImpl &&
             (identical(other.registrationFlow, registrationFlow) ||
                 other.registrationFlow == registrationFlow) &&
             (identical(other.isLoading, isLoading) ||
@@ -154,8 +154,8 @@ class _$_RegistrationState implements _RegistrationState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RegistrationStateCopyWith<_$_RegistrationState> get copyWith =>
-      __$$_RegistrationStateCopyWithImpl<_$_RegistrationState>(
+  _$$RegistrationStateImplCopyWith<_$RegistrationStateImpl> get copyWith =>
+      __$$RegistrationStateImplCopyWithImpl<_$RegistrationStateImpl>(
           this, _$identity);
 }
 
@@ -163,7 +163,7 @@ abstract class _RegistrationState implements RegistrationState {
   const factory _RegistrationState(
       {final RegistrationFlow? registrationFlow,
       final bool isLoading,
-      final String? message}) = _$_RegistrationState;
+      final String? message}) = _$RegistrationStateImpl;
 
   @override
   RegistrationFlow? get registrationFlow;
@@ -173,6 +173,6 @@ abstract class _RegistrationState implements RegistrationState {
   String? get message;
   @override
   @JsonKey(ignore: true)
-  _$$_RegistrationStateCopyWith<_$_RegistrationState> get copyWith =>
+  _$$RegistrationStateImplCopyWith<_$RegistrationStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
