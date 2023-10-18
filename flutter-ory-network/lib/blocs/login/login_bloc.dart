@@ -18,7 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthBloc authBloc;
   final AuthRepository repository;
   LoginBloc({required this.authBloc, required this.repository})
-      : super(LoginState()) {
+      : super(const LoginState()) {
     on<CreateLoginFlow>(_onCreateLoginFlow);
     on<GetLoginFlow>(_onGetLoginFlow);
     on<ChangeNodeValue>(_onChangeNodeValue);
@@ -35,12 +35,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
       }
       emit(state.copyWith(loginFlow: loginFlow, isLoading: false));
-    } on CustomException catch (e) {
-      if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -50,12 +48,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(isLoading: true, message: null));
       final loginFlow = await repository.getLoginFlow(flowId: event.flowId);
       emit(state.copyWith(loginFlow: loginFlow, isLoading: false));
-    } on CustomException catch (e) {
-      if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
