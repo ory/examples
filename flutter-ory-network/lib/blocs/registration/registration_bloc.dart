@@ -31,12 +31,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       emit(state.copyWith(isLoading: true, message: null));
       final flow = await repository.createRegistrationFlow();
       emit(state.copyWith(registrationFlow: flow, isLoading: false));
-    } on CustomException catch (e) {
-      if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -46,12 +44,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       emit(state.copyWith(isLoading: true, message: null));
       final flow = await repository.getRegistrationFlow(flowId: event.flowId);
       emit(state.copyWith(registrationFlow: flow, isLoading: false));
-    } on CustomException catch (e) {
-      if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -79,16 +75,14 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             nodes: state.registrationFlow!.ui.nodes.toList());
         authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
       }
-    } on CustomException catch (e) {
-      if (e case BadRequestException<RegistrationFlow> _) {
-        emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
-      } else if (e case FlowExpiredException _) {
-        add(GetRegistrationFlow(flowId: e.flowId));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on BadRequestException<RegistrationFlow> catch (e) {
+      emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
+    } on FlowExpiredException catch (e) {
+      add(GetRegistrationFlow(flowId: e.flowId));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 }

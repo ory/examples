@@ -22,7 +22,7 @@ ORY_BASE_URL=https://{your-project-slug}.projects.oryapis.com
 
 ### Run locally
 
-1. Install dependancies from `pubspec.yaml`
+1. Install dependencies from `pubspec.yaml`
 
 ```console
 flutter pub get

@@ -31,8 +31,8 @@ Future<void> main() async {
       'Accept': 'application/json',
     },
     validateStatus: (status) {
-      // here we prevent the request from throwing an error when the status code is less than 500 (internal server error)
-      return status! < 500;
+      // prevent the request from throwing null exception
+      return status != null && status < 500 ? true : false;
     },
   );
   final dio = DioForNative(options);

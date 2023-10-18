@@ -178,8 +178,8 @@ class RegistrationFormState extends State<RegistrationForm> {
       BlocSelector<RegistrationBloc, RegistrationState, bool>(
           bloc: (context).read<RegistrationBloc>(),
           selector: (RegistrationState state) => state.isLoading,
-          builder: (BuildContext context, bool booleanState) {
-            if (booleanState) {
+          builder: (BuildContext context, bool isLoading) {
+            if (isLoading) {
               return const Opacity(
                 opacity: 0.8,
                 child: ModalBarrier(dismissible: false, color: Colors.white30),
@@ -191,8 +191,8 @@ class RegistrationFormState extends State<RegistrationForm> {
       BlocSelector<RegistrationBloc, RegistrationState, bool>(
           bloc: (context).read<RegistrationBloc>(),
           selector: (RegistrationState state) => state.isLoading,
-          builder: (BuildContext context, bool booleanState) {
-            if (booleanState) {
+          builder: (BuildContext context, bool isLoading) {
+            if (isLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
