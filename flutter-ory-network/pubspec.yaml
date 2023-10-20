@@ -48,6 +48,9 @@ dependencies:
   collection: ^1.17.2
   built_collection: ^5.1.1
   google_sign_in: ^6.1.5
+  sign_in_with_apple: ^5.0.0
+  crypto: ^3.0.3
+  flutter_web_auth: ^0.5.0
 
 dev_dependencies:
   flutter_test:

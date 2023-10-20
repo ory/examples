@@ -1,4 +1,4 @@
-package com.example.ory_network_flutter
+package com.ory.flutter_ory_network
 
 import io.flutter.embedding.android.FlutterActivity
 
