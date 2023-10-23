@@ -86,20 +86,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           initCode: state.registrationFlow?.sessionTokenExchangeCode,
           returnToCode: event.returnToCode);
       authBloc.add(AddSession(session: session));
-    } on CustomException catch (e) {
-      if (e case BadRequestException<RegistrationFlow> _) {
-        emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
-      } else if (e case UnauthorizedException _) {
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
-      } else if (e case FlowExpiredException _) {
-        add(GetRegistrationFlow(flowId: e.flowId));
-      } else if (e case TwoFactorAuthRequiredException _) {
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
-      } else if (e case UnknownException _) {
-        emit(state.copyWith(isLoading: false, message: e.message));
-      } else {
-        emit(state.copyWith(isLoading: false));
-      }
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 

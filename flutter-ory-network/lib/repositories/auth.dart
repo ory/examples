@@ -66,6 +66,7 @@ class AuthRepository {
     try {
       final result =
           await FlutterWebAuth.authenticate(url: url, callbackUrlScheme: 'ory');
+      // get return to code
       final code = Uri.parse(result).queryParameters['code'];
       if (code != null) {
         return code;

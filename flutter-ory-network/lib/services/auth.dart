@@ -215,31 +215,7 @@ class AuthService {
         throw const CustomException.unknown();
       }
     } on DioException catch (e) {
-      if (e.response?.statusCode == 401) {
-        await storage.deleteToken();
-        throw const CustomException.unauthorized();
-      } else if (e.response?.statusCode == 400) {
-        final loginFlow = standardSerializers.deserializeWith(
-            LoginFlow.serializer, e.response?.data);
-        if (loginFlow != null) {
-          throw CustomException<LoginFlow>.badRequest(flow: loginFlow);
-        } else {
-          throw const CustomException.unknown();
-        }
-      } else if (e.response?.statusCode == 410) {
-        // settings flow expired, use new flow id
-        throw CustomException.flowExpired(
-            flowId: e.response?.data['use_flow_id']);
-      } else if (e.response?.statusCode == 422) {
-        final error = e.response?.data['error'];
-        if (error['id'] == 'browser_location_change_required') {
-          throw CustomException.locationChangeRequired(
-              url: e.response?.data['redirect_browser_to']);
-        }
-        throw const CustomException.unknown();
-      } else {
-        throw _handleUnknownException(e.response?.data);
-      }
+      throw _handleUnknownException(e.response?.data);
     }
   }
 
