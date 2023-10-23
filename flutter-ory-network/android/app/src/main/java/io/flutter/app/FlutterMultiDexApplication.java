@@ -1,3 +1,6 @@
+// Copyright © 2023 Ory Corp
+// SPDX-License-Identifier: Apache-2.0
+
 // Generated file.
 //
 // If you wish to remove Flutter's multidex support, delete this entire file.

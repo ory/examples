@@ -21,6 +21,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       : super(const LoginState()) {
     on<CreateLoginFlow>(_onCreateLoginFlow);
     on<GetLoginFlow>(_onGetLoginFlow);
+    on<ExchangeCodesForSessionToken>(_onExchangesCodeForSessionToken);
+    on<LoginWithWebAuth>(_onLoginWithWebAuth);
     on<ChangeNodeValue>(_onChangeNodeValue);
     on<UpdateLoginFlow>(_onUpdateLoginFlow);
   }
@@ -53,6 +55,45 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+  Future<void> _onLoginWithWebAuth(
+      LoginWithWebAuth event, Emitter<LoginState> emit) async {
+    try {
+      final code = await repository.getWebAuthCode(url: event.url);
+      add(ExchangeCodesForSessionToken(returnToCode: code));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  _onExchangesCodeForSessionToken(
+      ExchangeCodesForSessionToken event, Emitter<LoginState> emit) async {
+    try {
+      emit(state.copyWith(isLoading: true, message: null));
+
+      final session = await repository.exchangeCodesForSessionToken(
+          flowId: state.loginFlow?.id,
+          initCode: state.loginFlow?.sessionTokenExchangeCode!,
+          returnToCode: event.returnToCode);
+      authBloc.add(AddSession(session: session));
+    } on CustomException catch (e) {
+      if (e case BadRequestException<LoginFlow> _) {
+        emit(state.copyWith(loginFlow: e.flow, isLoading: false));
+      } else if (e case UnauthorizedException _) {
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+      } else if (e case FlowExpiredException _) {
+        add(GetLoginFlow(flowId: e.flowId));
+      } else if (e case TwoFactorAuthRequiredException _) {
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
+      } else if (e case UnknownException _) {
+        emit(state.copyWith(isLoading: false, message: e.message));
+      } else {
+        emit(state.copyWith(isLoading: false));
+      }
+    }
+  }
+
   _onChangeNodeValue(ChangeNodeValue event, Emitter<LoginState> emit) {
     if (state.loginFlow != null) {
       final newLoginState = repository.changeLoginNodeValue(
@@ -64,25 +105,30 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   _onUpdateLoginFlow(UpdateLoginFlow event, Emitter<LoginState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, message: null));
-      await repository.updateLoginFlow(
+      final session = await repository.updateLoginFlow(
           flowId: state.loginFlow!.id,
           group: event.group,
           name: event.name,
           value: event.value,
           nodes: state.loginFlow!.ui.nodes.toList());
-      authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
-    } on BadRequestException<LoginFlow> catch (e) {
-      emit(state.copyWith(loginFlow: e.flow, isLoading: false));
-    } on UnauthorizedException catch (_) {
-      authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
-    } on FlowExpiredException catch (e) {
-      add(GetLoginFlow(flowId: e.flowId));
-    } on TwoFactorAuthRequiredException catch (_) {
-      authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
-    } on UnknownException catch (e) {
-      emit(state.copyWith(isLoading: false, message: e.message));
-    } catch (_) {
+      authBloc.add(AddSession(session: session));
+    } on LocationChangeRequiredException catch (e) {
       emit(state.copyWith(isLoading: false));
+      add(LoginWithWebAuth(url: e.url));
+    } on CustomException catch (e) {
+      if (e case BadRequestException<LoginFlow> _) {
+        emit(state.copyWith(loginFlow: e.flow, isLoading: false));
+      } else if (e case UnauthorizedException _) {
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+      } else if (e case FlowExpiredException _) {
+        add(GetLoginFlow(flowId: e.flowId));
+      } else if (e case TwoFactorAuthRequiredException _) {
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
+      } else if (e case UnknownException _) {
+        emit(state.copyWith(isLoading: false, message: e.message));
+      } else {
+        emit(state.copyWith(isLoading: false));
+      }
     }
   }
 }

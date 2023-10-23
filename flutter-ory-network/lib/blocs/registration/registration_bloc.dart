@@ -21,6 +21,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       : super(const RegistrationState()) {
     on<CreateRegistrationFlow>(_onCreateRegistrationFlow);
     on<GetRegistrationFlow>(_onGetRegistrationFlow);
+    on<RegisterWithWebAuth>(_onRegisterWithWebAuth);
+    on<ExchangeCodesForSessionToken>(_onExchangeCodesForSessionToken);
     on<ChangeNodeValue>(_onChangeNodeValue);
     on<UpdateRegistrationFlow>(_onUpdateRegistrationFlow);
   }
@@ -62,6 +64,45 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     }
   }
 
+  Future<void> _onRegisterWithWebAuth(
+      RegisterWithWebAuth event, Emitter<RegistrationState> emit) async {
+    try {
+      final code = await repository.getWebAuthCode(url: event.url);
+      add(ExchangeCodesForSessionToken(returnToCode: code));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  _onExchangeCodesForSessionToken(ExchangeCodesForSessionToken event,
+      Emitter<RegistrationState> emit) async {
+    try {
+      emit(state.copyWith(isLoading: true, message: null));
+
+      final session = await repository.exchangeCodesForSessionToken(
+          flowId: state.registrationFlow?.id,
+          initCode: state.registrationFlow?.sessionTokenExchangeCode,
+          returnToCode: event.returnToCode);
+      authBloc.add(AddSession(session: session));
+    } on CustomException catch (e) {
+      if (e case BadRequestException<RegistrationFlow> _) {
+        emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
+      } else if (e case UnauthorizedException _) {
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+      } else if (e case FlowExpiredException _) {
+        add(GetRegistrationFlow(flowId: e.flowId));
+      } else if (e case TwoFactorAuthRequiredException _) {
+        authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
+      } else if (e case UnknownException _) {
+        emit(state.copyWith(isLoading: false, message: e.message));
+      } else {
+        emit(state.copyWith(isLoading: false));
+      }
+    }
+  }
+
   Future<void> _onUpdateRegistrationFlow(
       UpdateRegistrationFlow event, Emitter<RegistrationState> emit) async {
     try {
@@ -75,14 +116,19 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             nodes: state.registrationFlow!.ui.nodes.toList());
         authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
       }
-    } on BadRequestException<RegistrationFlow> catch (e) {
-      emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
-    } on FlowExpiredException catch (e) {
-      add(GetRegistrationFlow(flowId: e.flowId));
-    } on UnknownException catch (e) {
-      emit(state.copyWith(isLoading: false, message: e.message));
-    } catch (_) {
+    } on LocationChangeRequiredException catch (e) {
       emit(state.copyWith(isLoading: false));
+      add(RegisterWithWebAuth(url: e.url));
+    } on CustomException catch (e) {
+      if (e case BadRequestException<RegistrationFlow> _) {
+        emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
+      } else if (e case FlowExpiredException _) {
+        add(GetRegistrationFlow(flowId: e.flowId));
+      } else if (e case UnknownException _) {
+        emit(state.copyWith(isLoading: false, message: e.message));
+      } else {
+        emit(state.copyWith(isLoading: false));
+      }
     }
   }
 }

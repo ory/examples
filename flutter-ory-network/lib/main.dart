@@ -94,27 +94,24 @@ class _MyAppViewState extends State<MyAppView> {
           // navigate to pages only when auth status has changed
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
-            switch (state.status) {
-              case AuthStatus.authenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                    MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const HomePage()),
-                    (Route<dynamic> route) => false);
-              case AuthStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                    MaterialPageRoute<void>(
-                        builder: (BuildContext context) =>
-                            const LoginPage(aal: 'aal1')),
-                    (Route<dynamic> route) => false);
-              case AuthStatus.aal2Requested:
-                _navigator.pushAndRemoveUntil<void>(
-                    MaterialPageRoute<void>(
-                        builder: (BuildContext context) =>
-                            const LoginPage(aal: 'aal2')),
-                    (Route<dynamic> route) => false);
-              case AuthStatus.uninitialized:
-                break;
-            }
+            state.mapOrNull(unauthenticated: (_) {
+              _navigator.pushAndRemoveUntil<void>(
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) =>
+                          const LoginPage(aal: 'aal1')),
+                  (Route<dynamic> route) => false);
+            }, authenticated: (_) {
+              _navigator.pushAndRemoveUntil<void>(
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const HomePage()),
+                  (Route<dynamic> route) => false);
+            }, aal2Requested: (_) {
+              _navigator.pushAndRemoveUntil<void>(
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) =>
+                          const LoginPage(aal: 'aal2')),
+                  (Route<dynamic> route) => false);
+            });
           },
           child: child,
         );

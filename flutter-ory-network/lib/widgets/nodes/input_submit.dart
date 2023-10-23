@@ -26,14 +26,11 @@ class InputSubmitNode extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: node.group == UiNodeGroupEnum.oidc
-          ? SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                icon: Image.asset(
-                    'assets/images/flows-auth-buttons-social-$provider.png'),
-                label: Text(node.meta.label?.text ?? ''),
-                onPressed: () => onPressed(context),
-              ),
+          ? OutlinedButton.icon(
+              icon: Image.asset(
+                  'assets/images/flows-auth-buttons-social-$provider.png'),
+              label: Text(node.meta.label?.text ?? ''),
+              onPressed: () => onPressed(context),
             )
           : FilledButton(
               // validate input fields that belong to this buttons group

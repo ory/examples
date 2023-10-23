@@ -93,12 +93,9 @@ class RegistrationFormState extends State<RegistrationForm> {
         if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
           final attributes =
               node.attributes.oneOf.value as UiNodeInputAttributes;
-          final isAndroid = Platform.isAndroid;
-          if (attributes.value != null &&
-              attributes.value!.asString
-                  .contains(isAndroid ? 'android' : 'ios')) {
-            return true;
-          }
+          return Platform.isAndroid
+              ? !attributes.value!.asString.contains('ios')
+              : attributes.value!.asString.contains('ios');
         }
       }
       return false;
