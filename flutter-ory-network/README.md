@@ -29,6 +29,7 @@ WEB_CLIENT_ID={web-client-id}.apps.googleusercontent.com
 ```
 
 If you use Google Sign In on iOS, add following variable to .env file
+
 ```env
 
 IOS_CLIENT_ID={ios-client-id}.apps.googleusercontent.com
