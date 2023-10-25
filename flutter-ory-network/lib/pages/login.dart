@@ -177,8 +177,8 @@ class LoginForm extends StatelessWidget {
                   bloc: (context).read<AuthBloc>(),
                   selector: (AuthState state) =>
                       state.status == AuthStatus.aal2Requested,
-                  builder: (BuildContext context, bool booleanState) {
-                    if (booleanState) {
+                  builder: (BuildContext context, bool isAal2Requested) {
+                    if (isAal2Requested) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -212,8 +212,8 @@ class LoginForm extends StatelessWidget {
       BlocSelector<LoginBloc, LoginState, bool>(
           bloc: (context).read<LoginBloc>(),
           selector: (LoginState state) => state.isLoading,
-          builder: (BuildContext context, bool booleanState) {
-            if (booleanState) {
+          builder: (BuildContext context, bool isLoading) {
+            if (isLoading) {
               return const Opacity(
                 opacity: 0.8,
                 child: ModalBarrier(dismissible: false, color: Colors.white30),
@@ -225,8 +225,8 @@ class LoginForm extends StatelessWidget {
       BlocSelector<LoginBloc, LoginState, bool>(
           bloc: (context).read<LoginBloc>(),
           selector: (LoginState state) => state.isLoading,
-          builder: (BuildContext context, bool booleanState) {
-            if (booleanState) {
+          builder: (BuildContext context, bool isLoading) {
+            if (isLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
