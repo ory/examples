@@ -21,19 +21,25 @@ ORY_BASE_URL=https://{your-project-slug}.projects.oryapis.com
 ```
 
 ### Google Sign In
+
 If you use Google Sign In on Android, add following variable to .env file
+
 ```env
 WEB_CLIENT_ID={web-client-id}.apps.googleusercontent.com
 ```
+
 If you use Google Sign In on iOS, add following variable to .env file
 ```env
+
 IOS_CLIENT_ID={ios-client-id}.apps.googleusercontent.com
 ```
+
 Additionally, add reversed Client ID com.googleusercontent.apps.{ios-client.id}
 as iOS URL scheme to Info.plist.\
 For more information, see [Google Integration Docs](https://www.ory.sh/docs/kratos/social-signin/google).
 
 ### Apple Sign In
+
 To configure Apple Sign In on IOS, see
 [Apple Integration Docs](https://www.ory.sh/docs/kratos/social-signin/apple).\
 To configure Apple Sign In on Android, see [Social sign-in for native and mobile apps ](https://www.ory.sh/docs/kratos/social-signin/native-apps).
