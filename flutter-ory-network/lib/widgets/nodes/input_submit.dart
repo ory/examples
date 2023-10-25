@@ -47,10 +47,6 @@ class InputSubmitNode extends StatelessWidget {
       return 'google';
     } else if (value.contains('apple')) {
       return 'apple';
-    } else if (value.contains('linkedin')) {
-      return 'linkedin';
-    } else if (value.contains('github')) {
-      return 'github';
     } else {
       return '';
     }
