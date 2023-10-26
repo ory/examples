@@ -20,4 +20,20 @@ final class ChangeAuthStatus extends AuthEvent {
 
 final class GetCurrentSessionInformation extends AuthEvent {}
 
+final class RequireLocationChange extends AuthEvent {
+  final String url;
+
+  RequireLocationChange({required this.url});
+  @override
+  List<Object> get props => [url];
+}
+
+final class AddSession extends AuthEvent {
+  final Session session;
+
+  AddSession({required this.session});
+  @override
+  List<Object> get props => [session];
+}
+
 final class LogOut extends AuthEvent {}

@@ -16,10 +16,21 @@ part 'auth_bloc.freezed.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository repository;
   AuthBloc({required this.repository})
-      : super(const AuthState(status: AuthStatus.uninitialized)) {
+      : super(const AuthState.uninitialized()) {
     on<GetCurrentSessionInformation>(_onGetCurrentSessionInformation);
+    on<RequireLocationChange>(_onRequireLocationChange);
+    on<AddSession>(_onAddSession);
     on<ChangeAuthStatus>(_onChangeAuthStatus);
     on<LogOut>(_onLogOut);
+  }
+
+  _onRequireLocationChange(
+      RequireLocationChange event, Emitter<AuthState> emit) {
+    emit(AuthState.locationChangeRequired(url: event.url));
+  }
+
+  _onAddSession(AddSession event, Emitter<AuthState> emit) {
+    emit(AuthState.authenticated(session: event.session));
   }
 
   _onChangeAuthStatus(ChangeAuthStatus event, Emitter<AuthState> emit) {
@@ -34,16 +45,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final session = await repository.getCurrentSessionInformation();
 
-      emit(state.copyWith(
-          isLoading: false,
-          status: AuthStatus.authenticated,
-          session: session));
+      emit(AuthState.authenticated(session: session));
     } on UnauthorizedException catch (_) {
-      emit(state.copyWith(
-          status: AuthStatus.unauthenticated, session: null, isLoading: false));
+      emit(const AuthState.unauthenticated());
     } on TwoFactorAuthRequiredException catch (_) {
-      emit(state.copyWith(
-          isLoading: false, session: null, status: AuthStatus.aal2Requested));
+      emit(const AuthState.aal2Requested());
     } on UnknownException catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.message));
     } catch (_) {
@@ -57,11 +63,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       await repository.logout();
 
-      emit(state.copyWith(
-          isLoading: false, status: AuthStatus.unauthenticated, session: null));
+      emit(const AuthState.unauthenticated());
     } on UnauthorizedException catch (_) {
-      emit(state.copyWith(
-          status: AuthStatus.unauthenticated, session: null, isLoading: false));
+      emit(const AuthState.unauthenticated());
     } on UnknownException catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.message));
     } catch (_) {

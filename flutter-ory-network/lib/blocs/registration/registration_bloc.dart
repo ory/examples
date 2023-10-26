@@ -21,6 +21,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       : super(const RegistrationState()) {
     on<CreateRegistrationFlow>(_onCreateRegistrationFlow);
     on<GetRegistrationFlow>(_onGetRegistrationFlow);
+    on<RegisterWithWebAuth>(_onRegisterWithWebAuth);
+    on<ExchangeCodesForSessionToken>(_onExchangeCodesForSessionToken);
     on<ChangeNodeValue>(_onChangeNodeValue);
     on<UpdateRegistrationFlow>(_onUpdateRegistrationFlow);
   }
@@ -62,6 +64,35 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     }
   }
 
+  Future<void> _onRegisterWithWebAuth(
+      RegisterWithWebAuth event, Emitter<RegistrationState> emit) async {
+    try {
+      final code = await repository.getWebAuthCode(url: event.url);
+      add(ExchangeCodesForSessionToken(returnToCode: code));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  _onExchangeCodesForSessionToken(ExchangeCodesForSessionToken event,
+      Emitter<RegistrationState> emit) async {
+    try {
+      emit(state.copyWith(isLoading: true, message: null));
+
+      final session = await repository.exchangeCodesForSessionToken(
+          flowId: state.registrationFlow?.id,
+          initCode: state.registrationFlow?.sessionTokenExchangeCode,
+          returnToCode: event.returnToCode);
+      authBloc.add(AddSession(session: session));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
   Future<void> _onUpdateRegistrationFlow(
       UpdateRegistrationFlow event, Emitter<RegistrationState> emit) async {
     try {
@@ -78,6 +109,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       }
     } on BadRequestException<RegistrationFlow> catch (e) {
       emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
+    } on LocationChangeRequiredException catch (e) {
+      emit(state.copyWith(isLoading: false));
+      add(RegisterWithWebAuth(url: e.url));
     } on FlowExpiredException catch (e) {
       add(GetRegistrationFlow(flowId: e.flowId));
     } on UnknownException catch (e) {

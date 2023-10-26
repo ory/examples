@@ -1,10 +1,11 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
-import 'package:ory_network_flutter/widgets/nodes/provider.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 import '../blocs/login/login_bloc.dart';
@@ -84,8 +85,20 @@ class LoginForm extends StatelessWidget {
     final nodes = state.loginFlow!.ui.nodes;
 
     // get default nodes from all nodes
-    final defaultNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.default_).toList();
+    final defaultNodes = nodes.where((node) {
+      if (node.group == UiNodeGroupEnum.default_) {
+        if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
+          final attributes =
+              node.attributes.oneOf.value as UiNodeInputAttributes;
+          if (attributes.type == UiNodeInputAttributesTypeEnum.hidden) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+      return false;
+    }).toList();
 
     // get password nodes from all nodes
     final passwordNodes =
@@ -101,8 +114,18 @@ class LoginForm extends StatelessWidget {
         nodes.where((node) => node.group == UiNodeGroupEnum.totp).toList();
 
     // get oidc nodes from all nodes
-    final oidcNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.oidc).toList();
+    final oidcNodes = nodes.where((node) {
+      if (node.group == UiNodeGroupEnum.oidc) {
+        if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
+          final attributes =
+              node.attributes.oneOf.value as UiNodeInputAttributes;
+          return Platform.isAndroid
+              ? !attributes.value!.asString.contains('ios')
+              : attributes.value!.asString.contains('ios');
+        }
+      }
+      return false;
+    }).toList();
 
     return Stack(children: [
       Padding(
@@ -143,14 +166,8 @@ class LoginForm extends StatelessWidget {
               ),
 
               if (oidcNodes.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 32.0, bottom: 32),
-                  child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: oidcNodes
-                          .map((node) => SocialProviderInput(node: node))
-                          .toList()),
-                ),
+                buildGroup<LoginBloc>(context, UiNodeGroupEnum.oidc, oidcNodes,
+                    _onInputChange, _onInputSubmit),
               if (defaultNodes.isNotEmpty)
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.default_,
                     defaultNodes, _onInputChange, _onInputSubmit),

@@ -92,9 +92,6 @@ buildInputNode<T extends Bloc>(
           formKey: formKey,
           onChange: onInputChange,
           onSubmit: onInputSubmit);
-    case UiNodeInputAttributesTypeEnum.hidden:
-      return const SizedBox.shrink();
-
     default:
       return InputNode<T>(node: node, onChange: onInputChange);
   }

@@ -68,10 +68,11 @@ class _HomePageState extends State<HomePage> {
         body: BlocBuilder(
           bloc: context.read<AuthBloc>(),
           builder: (BuildContext context, AuthState state) {
-            if (state.session != null) {
-              return _buildSessionInformation(context, state.session!);
-            } else {
-              return _buildSessionNotFetched(context, state);
+            switch (state) {
+              case AuthAuthenticated(session: var session):
+                return _buildSessionInformation(context, session);
+              default:
+                return _buildSessionNotFetched(context, state);
             }
           },
         ));
