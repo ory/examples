@@ -57,9 +57,9 @@ class InputSubmitNode extends StatelessWidget {
       final attributes = node.attributes.oneOf.value as UiNodeInputAttributes;
       final type = attributes.type;
       // if attribute type is a button with value 'false', set its value to true on submit
-      if (type == UiNodeInputAttributesTypeEnum.button ||
-          type == UiNodeInputAttributesTypeEnum.submit &&
-              attributes.value?.value == 'false') {
+      if ((type == UiNodeInputAttributesTypeEnum.button ||
+              type == UiNodeInputAttributesTypeEnum.submit) &&
+          attributes.value?.asString == 'false') {
         final nodeName = attributes.name;
 
         onChange(context, 'true', nodeName);

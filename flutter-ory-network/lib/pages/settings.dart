@@ -148,8 +148,20 @@ class SettingsForm extends StatelessWidget {
     final nodes = state.settingsFlow!.ui.nodes;
 
     // get default nodes from all nodes
-    final defaultNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.default_).toList();
+    final defaultNodes = nodes.where((node) {
+      if (node.group == UiNodeGroupEnum.default_) {
+        if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
+          final attributes =
+              node.attributes.oneOf.value as UiNodeInputAttributes;
+          if (attributes.type == UiNodeInputAttributesTypeEnum.hidden) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+      return false;
+    }).toList();
 
     // get profile nodes from all nodes
     final profileNodes =

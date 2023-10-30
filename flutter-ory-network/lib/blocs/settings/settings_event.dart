@@ -15,6 +15,8 @@ final class GetSettingsFlow extends SettingsEvent {
   final String flowId;
 
   GetSettingsFlow({required this.flowId});
+  @override
+  List<Object> get props => [flowId];
 }
 
 class ChangeSettingsNodeValue extends SettingsEvent {

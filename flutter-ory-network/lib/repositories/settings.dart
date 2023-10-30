@@ -29,8 +29,10 @@ class SettingsRepository {
       if (p0.attributes.oneOf.isType(UiNodeInputAttributes)) {
         final attributes = p0.attributes.oneOf.value as UiNodeInputAttributes;
         final type = attributes.type;
-        if (type == UiNodeInputAttributesTypeEnum.button ||
-            type == UiNodeInputAttributesTypeEnum.submit) {
+
+        if ((type == UiNodeInputAttributesTypeEnum.button ||
+                type == UiNodeInputAttributesTypeEnum.submit) &&
+            attributes.value?.asString == 'true') {
           return true;
         }
       }
@@ -77,10 +79,10 @@ class SettingsRepository {
     return resetButtonValues(settingsFlow: updatedSettings);
   }
 
-  SettingsFlow changeNodeValue<T>(
+  SettingsFlow changeNodeValue(
       {required SettingsFlow settings,
       required String name,
-      required T value}) {
+      required String value}) {
     // get edited node
     final node = settings.ui.nodes.firstWhereOrNull((element) {
       if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
