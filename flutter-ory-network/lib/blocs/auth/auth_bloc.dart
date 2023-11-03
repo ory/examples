@@ -34,8 +34,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _onChangeAuthStatus(ChangeAuthStatus event, Emitter<AuthState> emit) {
-    emit(state.copyWith(
-        status: event.status, session: event.session, isLoading: false));
+    switch (event.status) {
+      case AuthStatus.unauthenticated:
+        emit(const AuthState.unauthenticated());
+      case AuthStatus.aal2Requested:
+        emit(const AuthState.aal2Requested());
+      default:
+        emit(state);
+    }
   }
 
   Future<void> _onGetCurrentSessionInformation(

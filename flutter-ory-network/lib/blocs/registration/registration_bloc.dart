@@ -104,8 +104,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
             name: event.name,
             value: event.value,
             nodes: state.registrationFlow!.ui.nodes.toList());
-        authBloc.add(ChangeAuthStatus(
-            status: AuthStatus.authenticated, session: session));
+        authBloc.add(AddSession(session: session));
       }
     } on BadRequestException<RegistrationFlow> catch (e) {
       emit(state.copyWith(registrationFlow: e.flow, isLoading: false));

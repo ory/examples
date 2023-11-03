@@ -48,6 +48,7 @@ class AuthService {
       final token = await _storage.getToken();
       final response = await _ory.createNativeLoginFlow(
           aal: aal,
+          refresh: refresh,
           xSessionToken: token,
           returnSessionTokenExchangeCode: true,
           returnTo: 'ory://flutter-ory-network');

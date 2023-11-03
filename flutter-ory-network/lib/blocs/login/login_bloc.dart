@@ -21,6 +21,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       : super(const LoginState()) {
     on<CreateLoginFlow>(_onCreateLoginFlow);
     on<GetLoginFlow>(_onGetLoginFlow);
+    on<ExchangeCodesForSessionToken>(_onExchangesCodeForSessionToken);
+    on<LoginWithWebAuth>(_onLoginWithWebAuth);
     on<ChangeNodeValue>(_onChangeNodeValue);
     on<UpdateLoginFlow>(_onUpdateLoginFlow);
   }
@@ -52,6 +54,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+  Future<void> _onLoginWithWebAuth(
+      LoginWithWebAuth event, Emitter<LoginState> emit) async {
+    try {
+      final code = await repository.getWebAuthCode(url: event.url);
+      add(ExchangeCodesForSessionToken(returnToCode: code));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  _onExchangesCodeForSessionToken(
+      ExchangeCodesForSessionToken event, Emitter<LoginState> emit) async {
+    try {
+      emit(state.copyWith(isLoading: true, message: null));
+
+      final session = await repository.exchangeCodesForSessionToken(
+          flowId: state.loginFlow?.id,
+          initCode: state.loginFlow?.sessionTokenExchangeCode!,
+          returnToCode: event.returnToCode);
+      authBloc.add(AddSession(session: session));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
   _onChangeNodeValue(ChangeNodeValue event, Emitter<LoginState> emit) {
     if (state.loginFlow != null) {
       final newLoginState = repository.changeLoginNodeValue(
@@ -69,11 +100,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           name: event.name,
           value: event.value,
           nodes: state.loginFlow!.ui.nodes.toList());
-      authBloc.add(
-          ChangeAuthStatus(status: AuthStatus.authenticated, session: session));
+      authBloc.add(AddSession(session: session));
       emit(state.copyWith(isLoading: false));
     } on BadRequestException<LoginFlow> catch (e) {
       emit(state.copyWith(loginFlow: e.flow, isLoading: false));
+    } on LocationChangeRequiredException catch (e) {
+      emit(state.copyWith(isLoading: false));
+      add(LoginWithWebAuth(url: e.url));
     } on UnauthorizedException catch (_) {
       authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
     } on FlowExpiredException catch (e) {
