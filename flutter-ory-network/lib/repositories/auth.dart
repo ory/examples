@@ -182,7 +182,7 @@ class AuthRepository {
 
   Future<String> _logInWithAppleOnIOS() async {
     try {
-      //Check if Apple SignIn isn available for the device or not
+      //Check if Apple SignIn is available for the device or not
       if (await SignInWithApple.isAvailable()) {
         // create nonce
         final rawNonce = generateNonce();
