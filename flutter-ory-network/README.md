@@ -35,7 +35,7 @@ If you use Google Sign In on iOS, add following variable to .env file
 IOS_CLIENT_ID={ios-client-id}.apps.googleusercontent.com
 ```
 
-Additionally, add iOS URL scheme to Info.plist. It can be found in additional 
+Additionally, add iOS URL scheme to Info.plist. It can be found in additional
 information of your iOS Client ID.
 
 ```xml
@@ -53,7 +53,7 @@ information of your iOS Client ID.
 	</array>
 ```
 
-For more information, see 
+For more information, see
 [Google Integration Docs](https://www.ory.sh/docs/kratos/social-signin/google).
 
 ### Apple Sign In
