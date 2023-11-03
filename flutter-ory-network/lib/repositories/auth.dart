@@ -220,10 +220,10 @@ class AuthRepository {
       final inputNodes = nodes.where((p0) {
         if (p0.attributes.oneOf.isType(UiNodeInputAttributes)) {
           final attributes = p0.attributes.oneOf.value as UiNodeInputAttributes;
-          // if group is password, find identifier
+          // if group is password, find traits
           if (group == UiNodeGroupEnum.password &&
               p0.group == UiNodeGroupEnum.default_ &&
-              attributes.name == 'identifier') {
+              attributes.type != UiNodeInputAttributesTypeEnum.hidden) {
             return true;
           }
           return p0.group == group &&
