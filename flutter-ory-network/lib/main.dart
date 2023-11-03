@@ -39,6 +39,9 @@ Future<void> main() async {
 
   final authService = AuthService(dio);
 
+// We use Web Client ID for Android devices as omitting Client ID
+// leads to id Token being null. For more information,
+// see https://github.com/flutter/flutter/issues/33393#issuecomment-964728679
   final googleSignIn = GoogleSignIn(
       clientId: Platform.isAndroid
           ? dotenv.get('WEB_CLIENT_ID')
