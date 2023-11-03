@@ -19,6 +19,22 @@ final class GetRegistrationFlow extends RegistrationEvent {
   List<Object> get props => [flowId];
 }
 
+class ExchangeCodesForSessionToken extends RegistrationEvent {
+  final String returnToCode;
+
+  ExchangeCodesForSessionToken({required this.returnToCode});
+  @override
+  List<Object> get props => [returnToCode];
+}
+
+class RegisterWithWebAuth extends RegistrationEvent {
+  final String url;
+
+  RegisterWithWebAuth({required this.url});
+  @override
+  List<Object> get props => [url];
+}
+
 class ChangeNodeValue extends RegistrationEvent {
   final String value;
   final String name;

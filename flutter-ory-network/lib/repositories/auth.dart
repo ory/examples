@@ -1,21 +1,37 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
+import 'dart:convert';
+import 'dart:io' show Platform;
+
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
+import 'package:crypto/crypto.dart';
 import 'package:deep_collection/deep_collection.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:one_of/one_of.dart';
 import 'package:ory_client/ory_client.dart';
 import 'package:collection/collection.dart';
+import 'package:ory_network_flutter/services/exceptions.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../services/auth.dart';
 
-enum AuthStatus { uninitialized, authenticated, unauthenticated, aal2Requested }
+enum AuthStatus {
+  uninitialized,
+  authenticated,
+  unauthenticated,
+  aal2Requested,
+  locationChangeRequired
+}
 
 class AuthRepository {
   final AuthService service;
+  final GoogleSignIn googleSignIn;
 
-  AuthRepository({required this.service});
+  AuthRepository({required this.googleSignIn, required this.service});
 
   Future<Session> getCurrentSessionInformation() async {
     final session = await service.getCurrentSessionInformation();
@@ -46,34 +62,151 @@ class AuthRepository {
     await service.logout();
   }
 
-  Future<SuccessfulNativeRegistration?> updateRegistrationFlow(
-      {required String flowId,
-      required UiNodeGroupEnum group,
-      required String name,
-      required String value,
-      required List<UiNode> nodes}) async {
-    // create request body
-    final body = _createRequestBody(
-        group: group, name: name, value: value, nodes: nodes);
-    // submit registration
-    final registration = await service.updateRegistrationFlow(
-        flowId: flowId, group: group, value: body);
-    return registration;
+  Future<String> getWebAuthCode({required String url}) async {
+    try {
+      final result =
+          await FlutterWebAuth.authenticate(url: url, callbackUrlScheme: 'ory');
+      // get return to code
+      final code = Uri.parse(result).queryParameters['code'];
+      if (code != null) {
+        return code;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on PlatformException catch (_) {
+      throw const CustomException.unknown();
+    }
   }
 
-  Future<SuccessfulNativeLogin?> updateLoginFlow(
+  Future<Session> exchangeCodesForSessionToken(
+      {String? flowId, String? initCode, String? returnToCode}) async {
+    if (flowId != null && initCode != null && returnToCode != null) {
+      final session = service.exchangeCodesForSessionToken(
+          flowId: flowId, initCode: initCode, returnToCode: returnToCode);
+      return session;
+    } else {
+      throw const CustomException.unknown();
+    }
+  }
+
+  Future<Session?> updateRegistrationFlow(
       {required String flowId,
       required UiNodeGroupEnum group,
       required String name,
       required String value,
       required List<UiNode> nodes}) async {
     // create request body
-    final body = _createRequestBody(
+    var body = _createRequestBody(
         group: group, name: name, value: value, nodes: nodes);
+    // user used social sign in
+    if (group == UiNodeGroupEnum.oidc) {
+      if (value.contains('google')) {
+        final idToken = await _loginWithGoogle();
+        // update body with id token and nonce
+        _addIdTokenAndNonceToBody(idToken, body);
+      }
+      if (value.contains('apple')) {
+        final idToken =
+            Platform.isAndroid ? await null : await _logInWithAppleOnIOS();
+        // update body with id token and nonce
+        if (idToken != null) {
+          _addIdTokenAndNonceToBody(idToken, body);
+        }
+      }
+    }
+    // submit registration and retrieve session
+    final session = await service.updateRegistrationFlow(
+        flowId: flowId, group: group, value: body);
+    return session;
+  }
+
+  Future<Session> updateLoginFlow(
+      {required String flowId,
+      required UiNodeGroupEnum group,
+      required String name,
+      required String value,
+      required List<UiNode> nodes}) async {
+    // create request body
+    var body = _createRequestBody(
+        group: group, name: name, value: value, nodes: nodes);
+    // user used social sign in
+    if (group == UiNodeGroupEnum.oidc) {
+      if (value.contains('google')) {
+        final idToken = await _loginWithGoogle();
+        // update body with id token and nonce
+        _addIdTokenAndNonceToBody(idToken, body);
+      }
+      if (value.contains('apple')) {
+        final idToken =
+            Platform.isAndroid ? null : await _logInWithAppleOnIOS();
+        // update body with id token and nonce
+        if (idToken != null) {
+          _addIdTokenAndNonceToBody(idToken, body);
+        }
+      }
+    }
     // submit login
     final login = await service.updateLoginFlow(
         flowId: flowId, group: group, value: body);
-    return login;
+    return login.session;
+  }
+
+  Map _getMapFromJWT(String splittedToken) {
+    String normalizedSource = base64Url.normalize(splittedToken);
+    return jsonDecode(utf8.decode(base64Url.decode(normalizedSource)));
+  }
+
+  _addIdTokenAndNonceToBody(String idToken, Map body) {
+    // get nonce value from id token
+    final jwtParts = idToken.split('.');
+    final jwt = _getMapFromJWT(jwtParts[1]);
+    // add id token and nonce to body
+    body.addAll({'id_token': idToken, 'nonce': jwt['nonce']});
+  }
+
+  Future<String> _loginWithGoogle() async {
+    try {
+      final GoogleSignInAccount? account = await googleSignIn.signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await account?.authentication;
+      if (googleAuth?.idToken != null) {
+        return googleAuth!.idToken!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } catch (e) {
+      throw const CustomException.unknown();
+    }
+  }
+
+  Future<String> _logInWithAppleOnIOS() async {
+    try {
+      //Check if Apple SignIn is available for the device or not
+      if (await SignInWithApple.isAvailable()) {
+        // create nonce
+        final rawNonce = generateNonce();
+        final nonceInBytes = utf8.encode(rawNonce);
+        final nonce = sha256.convert(nonceInBytes);
+        // login
+        final AuthorizationCredentialAppleID credential =
+            await SignInWithApple.getAppleIDCredential(
+          scopes: [AppleIDAuthorizationScopes.email],
+          nonce: nonce.toString(),
+        );
+
+        if (credential.identityToken != null) {
+          return credential.identityToken!;
+        } else {
+          throw const CustomException.unknown();
+        }
+      } else {
+        throw const CustomException.unknown(
+            message: 'Sign in with Apple is not available on your device');
+      }
+    } catch (e) {
+      throw const CustomException.unknown();
+    }
   }
 
   Map _createRequestBody(

@@ -6,7 +6,9 @@ import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ory_network_flutter/widgets/ory_theme.dart';
+import 'dart:io' show Platform;
 
 import 'blocs/auth/auth_bloc.dart';
 import 'pages/home.dart';
@@ -36,7 +38,21 @@ Future<void> main() async {
   final dio = DioForNative(options);
 
   final authService = AuthService(dio);
-  final authRepository = AuthRepository(service: authService);
+
+// We use Web Client ID for Android devices as omitting Client ID
+// leads to id Token being null. For more information,
+// see https://github.com/flutter/flutter/issues/33393#issuecomment-964728679
+  final googleSignIn = GoogleSignIn(
+      clientId: Platform.isAndroid
+          ? dotenv.get('WEB_CLIENT_ID')
+          : dotenv.get('IOS_CLIENT_ID'),
+      scopes: [
+        'email',
+        'profile',
+        'openid',
+      ]);
+  final authRepository =
+      AuthRepository(googleSignIn: googleSignIn, service: authService);
   runApp(RepositoryProvider.value(
       value: authRepository,
       child: BlocProvider(
@@ -81,27 +97,24 @@ class _MyAppViewState extends State<MyAppView> {
           // navigate to pages only when auth status has changed
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
-            switch (state.status) {
-              case AuthStatus.authenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                    MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const HomePage()),
-                    (Route<dynamic> route) => false);
-              case AuthStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                    MaterialPageRoute<void>(
-                        builder: (BuildContext context) =>
-                            const LoginPage(aal: 'aal1')),
-                    (Route<dynamic> route) => false);
-              case AuthStatus.aal2Requested:
-                _navigator.pushAndRemoveUntil<void>(
-                    MaterialPageRoute<void>(
-                        builder: (BuildContext context) =>
-                            const LoginPage(aal: 'aal2')),
-                    (Route<dynamic> route) => false);
-              case AuthStatus.uninitialized:
-                break;
-            }
+            state.mapOrNull(unauthenticated: (_) {
+              _navigator.pushAndRemoveUntil<void>(
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) =>
+                          const LoginPage(aal: 'aal1')),
+                  (Route<dynamic> route) => false);
+            }, authenticated: (_) {
+              _navigator.pushAndRemoveUntil<void>(
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) => const HomePage()),
+                  (Route<dynamic> route) => false);
+            }, aal2Requested: (_) {
+              _navigator.pushAndRemoveUntil<void>(
+                  MaterialPageRoute<void>(
+                      builder: (BuildContext context) =>
+                          const LoginPage(aal: 'aal2')),
+                  (Route<dynamic> route) => false);
+            });
           },
           child: child,
         );

@@ -17,6 +17,8 @@ sealed class CustomException<T> with _$CustomException {
       {required String flowId, String? message}) = FlowExpiredException;
   const factory CustomException.twoFactorAuthRequired({Session? session}) =
       TwoFactorAuthRequiredException;
+  const factory CustomException.locationChangeRequired({required String url}) =
+      LocationChangeRequiredException;
   const factory CustomException.unknown(
       {@Default('An error occured. Please try again later.')
       String? message}) = UnknownException;

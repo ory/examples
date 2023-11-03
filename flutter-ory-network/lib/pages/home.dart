@@ -36,7 +36,6 @@ class _HomePageState extends State<HomePage> {
             width: 40,
           ),
           elevation: 0,
-          //shape: Border(bottom: BorderSide(color: Colors.green, width: 1)),
           actions: [
             // if auth is loading, show progress indicator, otherwise a logout icon
             isLoading
@@ -61,10 +60,11 @@ class _HomePageState extends State<HomePage> {
         body: BlocBuilder(
           bloc: context.read<AuthBloc>(),
           builder: (BuildContext context, AuthState state) {
-            if (state.session != null) {
-              return _buildSessionInformation(context, state.session!);
-            } else {
-              return _buildSessionNotFetched(context, state);
+            switch (state) {
+              case AuthAuthenticated(session: var session):
+                return _buildSessionInformation(context, session);
+              default:
+                return _buildSessionNotFetched(context, state);
             }
           },
         ));
@@ -95,24 +95,6 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.grey[600]),
                 child: Text(session.identity!.traits.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500, color: Colors.white)),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 15.0),
-              child:
-                  Text("You are signed in using an ORY Kratos Session Token:"),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Container(
-                padding: const EdgeInsets.all(35),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey[600]),
-                child: Text(session.id,
                     style: const TextStyle(
                         fontWeight: FontWeight.w500, color: Colors.white)),
               ),

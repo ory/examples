@@ -40,30 +40,27 @@ buildGroup<T extends Bloc>(
     void Function(BuildContext, UiNodeGroupEnum, String, String)
         onInputSubmit) {
   final formKey = GlobalKey<FormState>();
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 0),
-    child: Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: ((BuildContext context, index) {
-                final attributes = nodes[index].attributes.oneOf;
-                if (attributes.isType(UiNodeInputAttributes)) {
-                  return buildInputNode<T>(context, formKey, nodes[index],
-                      onInputChange, onInputSubmit);
-                } else if (attributes.isType(UiNodeTextAttributes)) {
-                  return TextNode(node: nodes[index]);
-                } else {
-                  return Container();
-                }
-              }),
-              itemCount: nodes.length),
-        ],
-      ),
+  return Form(
+    key: formKey,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: ((BuildContext context, index) {
+              final attributes = nodes[index].attributes.oneOf;
+              if (attributes.isType(UiNodeInputAttributes)) {
+                return buildInputNode<T>(context, formKey, nodes[index],
+                    onInputChange, onInputSubmit);
+              } else if (attributes.isType(UiNodeTextAttributes)) {
+                return TextNode(node: nodes[index]);
+              } else {
+                return Container();
+              }
+            }),
+            itemCount: nodes.length),
+      ],
     ),
   );
 }
@@ -89,9 +86,6 @@ buildInputNode<T extends Bloc>(
           formKey: formKey,
           onChange: onInputChange,
           onSubmit: onInputSubmit);
-    case UiNodeInputAttributesTypeEnum.hidden:
-      return const SizedBox.shrink();
-
     default:
       return InputNode<T>(node: node, onChange: onInputChange);
   }

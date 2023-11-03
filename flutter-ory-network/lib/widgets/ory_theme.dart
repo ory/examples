@@ -71,6 +71,16 @@ class OryTheme {
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4.0)))));
 
+  static final OutlinedButtonThemeData outlinedButtonThemeData =
+      OutlinedButtonThemeData(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.symmetric(vertical: 12, horizontal: 16)),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0)))));
+
   static final ThemeData defaultTheme = ThemeData(
     primarySwatch: primaryColorSwatch,
     fontFamily: GoogleFonts.getFont('Inter').fontFamily,
@@ -78,6 +88,7 @@ class OryTheme {
     appBarTheme:
         const AppBarTheme(iconTheme: IconThemeData(color: primaryColor)),
     filledButtonTheme: filledButtonThemeData,
+    outlinedButtonTheme: outlinedButtonThemeData,
     inputDecorationTheme: textFieldTheme,
   );
 }

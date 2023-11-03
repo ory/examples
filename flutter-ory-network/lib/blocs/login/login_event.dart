@@ -26,6 +26,22 @@ class ChangeNodeValue extends LoginEvent {
   List<Object> get props => [value, name];
 }
 
+class ExchangeCodesForSessionToken extends LoginEvent {
+  final String returnToCode;
+
+  ExchangeCodesForSessionToken({required this.returnToCode});
+  @override
+  List<Object> get props => [returnToCode];
+}
+
+class LoginWithWebAuth extends LoginEvent {
+  final String url;
+
+  LoginWithWebAuth({required this.url});
+  @override
+  List<Object> get props => [url];
+}
+
 class GetLoginFlow extends LoginEvent {
   final String flowId;
 

@@ -19,38 +19,53 @@ class InputSubmitNode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            // validate input fields that belong to this buttons group
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                final attributes =
-                    node.attributes.oneOf.value as UiNodeInputAttributes;
-                final type = attributes.type;
-                // if attribute type is a button with value 'false', set its value to true on submit
-                if (type == UiNodeInputAttributesTypeEnum.button ||
-                    type == UiNodeInputAttributesTypeEnum.submit &&
-                        attributes.value?.value == 'false') {
-                  final nodeName = attributes.name;
-
-                  onChange(context, 'true', nodeName);
-                }
-                onSubmit(
-                    context,
-                    node.group,
-                    attributes.name,
-                    attributes.value!.isString
-                        ? attributes.value!.asString
-                        : '');
-              }
-            },
-            child: Text(node.meta.label?.text ?? ''),
-          ),
-        ),
-      ],
+    final value = node.attributes.oneOf.isType(UiNodeInputAttributes)
+        ? (node.attributes.oneOf.value as UiNodeInputAttributes).value?.asString
+        : null;
+    final provider = _getProviderName(value);
+    return SizedBox(
+      width: double.infinity,
+      child: node.group == UiNodeGroupEnum.oidc
+          ? OutlinedButton.icon(
+              icon: Image.asset(
+                  'assets/images/flows-auth-buttons-social-$provider.png'),
+              label: Text(node.meta.label?.text ?? ''),
+              onPressed: () => onPressed(context),
+            )
+          : FilledButton(
+              // validate input fields that belong to this buttons group
+              onPressed: () => onPressed(context),
+              child: Text(node.meta.label?.text ?? ''),
+            ),
     );
+  }
+
+  _getProviderName(String? value) {
+    if (value == null) {
+      return '';
+    } else if (value.contains('google')) {
+      return 'google';
+    } else if (value.contains('apple')) {
+      return 'apple';
+    } else {
+      return '';
+    }
+  }
+
+  onPressed(BuildContext context) {
+    if (formKey.currentState!.validate()) {
+      final attributes = node.attributes.oneOf.value as UiNodeInputAttributes;
+      final type = attributes.type;
+      // if attribute type is a button with value 'false', set its value to true on submit
+      if (type == UiNodeInputAttributesTypeEnum.button ||
+          type == UiNodeInputAttributesTypeEnum.submit &&
+              attributes.value?.value == 'false') {
+        final nodeName = attributes.name;
+
+        onChange(context, 'true', nodeName);
+      }
+      onSubmit(context, node.group, attributes.name,
+          attributes.value!.isString ? attributes.value!.asString : '');
+    }
   }
 }
