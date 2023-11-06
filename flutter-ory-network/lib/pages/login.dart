@@ -67,6 +67,22 @@ class LoginForm extends StatelessWidget {
       return false;
     }).toList();
 
+    // get code nodes from all nodes
+    final codeNodes = nodes.where((node) {
+      if (node.group == UiNodeGroupEnum.code) {
+        if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
+          final attributes =
+              node.attributes.oneOf.value as UiNodeInputAttributes;
+          if (attributes.type == UiNodeInputAttributesTypeEnum.hidden) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+      return false;
+    }).toList();
+
     // get password nodes from all nodes
     final passwordNodes =
         nodes.where((node) => node.group == UiNodeGroupEnum.password).toList();
@@ -137,6 +153,9 @@ class LoginForm extends StatelessWidget {
               if (defaultNodes.isNotEmpty)
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.default_,
                     defaultNodes, _onInputChange, _onInputSubmit),
+              if (codeNodes.isNotEmpty)
+                buildGroup<LoginBloc>(context, UiNodeGroupEnum.code, codeNodes,
+                    _onInputChange, _onInputSubmit),
               if (passwordNodes.isNotEmpty)
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.password,
                     passwordNodes, _onInputChange, _onInputSubmit),

@@ -214,41 +214,51 @@ class AuthRepository {
       required String name,
       required String value,
       required List<UiNode> nodes}) {
+    // find default nodes (e.g identifier)
+    var inputNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.default_).toList();
+    // create maps from attribute names and their values
+    var nestedMaps = inputNodes.map((e) {
+      final attributes = e.attributes.oneOf.value as UiNodeInputAttributes;
+
+      return generateNestedMap(
+          attributes.name, attributes.value?.asString ?? '');
+    }).toList();
+
     // if name of submitted node is method, find all nodes that belong to the group
     if (name == 'method') {
       // get input nodes of the same group
-      final inputNodes = nodes.where((p0) {
+      final methodNodes = nodes.where((p0) {
         if (p0.attributes.oneOf.isType(UiNodeInputAttributes)) {
           final attributes = p0.attributes.oneOf.value as UiNodeInputAttributes;
-          // if group is password, find traits
-          if (group == UiNodeGroupEnum.password &&
-              p0.group == UiNodeGroupEnum.default_ &&
-              attributes.type != UiNodeInputAttributesTypeEnum.hidden) {
-            return true;
-          }
+
           return p0.group == group &&
               attributes.type != UiNodeInputAttributesTypeEnum.button &&
               attributes.type != UiNodeInputAttributesTypeEnum.submit;
         } else {
           return false;
         }
-      });
+      }).toList();
+      inputNodes = inputNodes + methodNodes;
       // create maps from attribute names and their values
-      final nestedMaps = inputNodes.map((e) {
+      final methodMaps = methodNodes.map((e) {
         final attributes = e.attributes.oneOf.value as UiNodeInputAttributes;
 
         return generateNestedMap(
             attributes.name, attributes.value?.asString ?? '');
       }).toList();
-
-      // merge nested maps into one
-      final mergedMap =
-          nestedMaps.reduce((value, element) => value.deepMerge(element));
-
-      return mergedMap;
+      // add method maps to default maps
+      nestedMaps.addAll(methodMaps);
     } else {
-      return {name: value};
+      // add single map to default maps
+      nestedMaps.add({name: value});
     }
+
+    // merge nested maps into one
+    final mergedMap =
+        nestedMaps.reduce((value, element) => value.deepMerge(element));
+
+    return mergedMap;
   }
 
   RegistrationFlow changeRegistrationNodeValue(

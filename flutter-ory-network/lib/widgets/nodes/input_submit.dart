@@ -53,8 +53,11 @@ class InputSubmitNode extends StatelessWidget {
   }
 
   onPressed(BuildContext context) {
-    if (formKey.currentState!.validate()) {
-      final attributes = node.attributes.oneOf.value as UiNodeInputAttributes;
+    final attributes = node.attributes.oneOf.value as UiNodeInputAttributes;
+
+    // if attribute is method, validate the form
+    if ((attributes.name == 'method' && formKey.currentState!.validate()) ||
+        attributes.name != 'method') {
       final type = attributes.type;
       // if attribute type is a button with value 'false', set its value to true on submit
       if (type == UiNodeInputAttributesTypeEnum.button ||
