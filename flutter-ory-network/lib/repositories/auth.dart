@@ -89,7 +89,7 @@ class AuthRepository {
     }
   }
 
-  Future<Session?> updateRegistrationFlow(
+  Future<Session> updateRegistrationFlow(
       {required String flowId,
       required UiNodeGroupEnum group,
       required String name,

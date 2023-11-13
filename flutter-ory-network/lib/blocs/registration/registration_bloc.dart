@@ -98,13 +98,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     try {
       if (state.registrationFlow != null) {
         emit(state.copyWith(isLoading: true, message: null));
-        await repository.updateRegistrationFlow(
+        final session = await repository.updateRegistrationFlow(
             flowId: state.registrationFlow!.id,
             group: event.group,
             name: event.name,
             value: event.value,
             nodes: state.registrationFlow!.ui.nodes.toList());
-        authBloc.add(ChangeAuthStatus(status: AuthStatus.authenticated));
+        authBloc.add(AddSession(session: session));
       }
     } on BadRequestException<RegistrationFlow> catch (e) {
       emit(state.copyWith(registrationFlow: e.flow, isLoading: false));
