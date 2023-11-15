@@ -96,11 +96,14 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
         }
 
         // assign new value of node to text controller
-        textEditingController.text =
-            (node?.attributes.oneOf.value as UiNodeInputAttributes)
-                    .value
-                    ?.asString ??
-                '';
+        if (node != null &&
+            node.attributes.oneOf.isType(UiNodeInputAttributes)) {
+          textEditingController.text =
+              (node.attributes.oneOf.value as UiNodeInputAttributes)
+                      .value
+                      ?.asString ??
+                  '';
+        }
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),
