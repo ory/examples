@@ -42,7 +42,7 @@ class AuthService {
     }
   }
 
-  /// Create login flow
+  /// Create login flow with [aal]
   Future<LoginFlow> createLoginFlow({required String aal}) async {
     try {
       final token = await storage.getToken();

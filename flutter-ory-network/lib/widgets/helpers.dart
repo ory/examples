@@ -75,8 +75,8 @@ buildInputNode<T extends Bloc>(
     void Function(BuildContext, String, String) onInputChange,
     void Function(BuildContext, UiNodeGroupEnum, String, String)
         onInputSubmit) {
-  final inputNode = node.attributes.oneOf.value as UiNodeInputAttributes;
-  switch (inputNode.type) {
+  final attributes = asInputAttributes(node);
+  switch (attributes.type) {
     case UiNodeInputAttributesTypeEnum.submit:
       return InputSubmitNode(
           node: node,
@@ -98,17 +98,15 @@ List<UiNode> getNodesOfGroup(UiNodeGroupEnum group, BuiltList<UiNode> nodes) {
   return nodes.where((node) {
     if (node.group == group) {
       if (group == UiNodeGroupEnum.oidc) {
-        if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
-          final attributes =
-              node.attributes.oneOf.value as UiNodeInputAttributes;
+        if (isInputNode(node)) {
+          final attributes = asInputAttributes(node);
           return Platform.isAndroid
-              ? !attributes.value!.asString.contains('ios')
-              : attributes.value!.asString.contains('ios');
+              ? !getInputNodeValue(attributes).contains('ios')
+              : getInputNodeValue(attributes).contains('ios');
         }
       } else {
-        if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
-          final attributes =
-              node.attributes.oneOf.value as UiNodeInputAttributes;
+        if (isInputNode(node)) {
+          final attributes = asInputAttributes(node);
           if (attributes.type == UiNodeInputAttributesTypeEnum.hidden) {
             return false;
           } else {
@@ -119,4 +117,21 @@ List<UiNode> getNodesOfGroup(UiNodeGroupEnum group, BuiltList<UiNode> nodes) {
     }
     return false;
   }).toList();
+}
+
+bool isInputNode(UiNode node) {
+  return node.attributes.oneOf.isType(UiNodeInputAttributes);
+}
+
+String getInputNodeValue(UiNodeInputAttributes attributes) {
+  return attributes.value?.asString ?? '';
+}
+
+UiNodeInputAttributes asInputAttributes(UiNode node) {
+  if (isInputNode(node)) {
+    return node.attributes.oneOf.value as UiNodeInputAttributes;
+  } else {
+    throw ArgumentError(
+        'attributes of this node are not of type UiNodeInputAttributes');
+  }
 }

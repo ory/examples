@@ -15,6 +15,7 @@ import 'package:one_of/one_of.dart';
 import 'package:ory_client/ory_client.dart';
 import 'package:collection/collection.dart';
 import 'package:ory_network_flutter/services/exceptions.dart';
+import 'package:ory_network_flutter/widgets/helpers.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../services/auth.dart';
@@ -218,21 +219,21 @@ class AuthRepository {
     var inputNodes =
         nodes.where((node) => node.group == UiNodeGroupEnum.default_).toList();
     // create maps from attribute names and their values
-    var nestedMaps = inputNodes.map((e) {
-      final attributes = e.attributes.oneOf.value as UiNodeInputAttributes;
+    var nestedMaps = inputNodes.map((node) {
+      final attributes = asInputAttributes(node);
+      final nodeValue = getInputNodeValue(attributes);
 
-      return generateNestedMap(
-          attributes.name, attributes.value?.asString ?? '');
+      return generateNestedMap(attributes.name, nodeValue);
     }).toList();
 
     // if name of submitted node is method, find all nodes that belong to the group
     if (name == 'method') {
       // get input nodes of the same group
-      final methodNodes = nodes.where((p0) {
-        if (p0.attributes.oneOf.isType(UiNodeInputAttributes)) {
-          final attributes = p0.attributes.oneOf.value as UiNodeInputAttributes;
+      final methodNodes = nodes.where((node) {
+        if (isInputNode(node)) {
+          final attributes = asInputAttributes(node);
 
-          return p0.group == group &&
+          return node.group == group &&
               attributes.type != UiNodeInputAttributesTypeEnum.button &&
               attributes.type != UiNodeInputAttributesTypeEnum.submit;
         } else {
@@ -241,11 +242,11 @@ class AuthRepository {
       }).toList();
       inputNodes = inputNodes + methodNodes;
       // create maps from attribute names and their values
-      final methodMaps = methodNodes.map((e) {
-        final attributes = e.attributes.oneOf.value as UiNodeInputAttributes;
+      final methodMaps = methodNodes.map((node) {
+        final attributes = asInputAttributes(node);
+        final nodeValue = getInputNodeValue(attributes);
 
-        return generateNestedMap(
-            attributes.name, attributes.value?.asString ?? '');
+        return generateNestedMap(attributes.name, nodeValue);
       }).toList();
       // add method maps to default maps
       nestedMaps.addAll(methodMaps);
@@ -293,9 +294,8 @@ class AuthRepository {
       required String value}) {
     // get edited node
     final node = nodes.firstWhereOrNull((element) {
-      if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
-        return (element.attributes.oneOf.value as UiNodeInputAttributes).name ==
-            name;
+      if (isInputNode(element)) {
+        return asInputAttributes(element).name == name;
       } else {
         return false;
       }

@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:ory_client/ory_client.dart';
+import 'package:ory_network_flutter/widgets/helpers.dart';
 
 class InputSubmitNode extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -19,9 +20,8 @@ class InputSubmitNode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final value = node.attributes.oneOf.isType(UiNodeInputAttributes)
-        ? (node.attributes.oneOf.value as UiNodeInputAttributes).value?.asString
-        : null;
+    final attributes = asInputAttributes(node);
+    final value = getInputNodeValue(attributes);
     final provider = _getProviderName(value);
     return SizedBox(
       width: double.infinity,
@@ -40,20 +40,18 @@ class InputSubmitNode extends StatelessWidget {
     );
   }
 
-  _getProviderName(String? value) {
-    if (value == null) {
-      return '';
-    } else if (value.contains('google')) {
+  _getProviderName(String value) {
+    if (value.contains('google')) {
       return 'google';
     } else if (value.contains('apple')) {
       return 'apple';
     } else {
-      return '';
+      return value;
     }
   }
 
   onPressed(BuildContext context) {
-    final attributes = node.attributes.oneOf.value as UiNodeInputAttributes;
+    final attributes = asInputAttributes(node);
 
     // if attribute is method, validate the form
     if ((attributes.name == 'method' && formKey.currentState!.validate()) ||
