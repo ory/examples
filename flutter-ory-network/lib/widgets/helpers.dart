@@ -12,6 +12,7 @@ import 'nodes/input.dart';
 import 'nodes/input_submit.dart';
 import 'nodes/text.dart';
 
+/// Returns color of a message depending on its [type]
 getMessageColor(UiTextTypeEnum type) {
   switch (type) {
     case UiTextTypeEnum.success:
@@ -23,6 +24,7 @@ getMessageColor(UiTextTypeEnum type) {
   }
 }
 
+/// Returns error widget with corresponding [message]
 buildFlowNotCreated(BuildContext context, String? message) {
   if (message != null) {
     return Center(
@@ -35,6 +37,9 @@ buildFlowNotCreated(BuildContext context, String? message) {
   }
 }
 
+/// Returns a form for a specific [group] containing multiple [nodes].
+/// Node changes and submits are handled by
+/// [onInputChange] and [onInputSubmit], respectively
 buildGroup<T extends Bloc>(
     BuildContext context,
     UiNodeGroupEnum group,
@@ -68,6 +73,9 @@ buildGroup<T extends Bloc>(
   );
 }
 
+/// Returns input node for [node] from a form associated with [formKey].
+/// Node changes and submits are handled by
+/// [onInputChange] and [onInputSubmit], respectively.
 buildInputNode<T extends Bloc>(
     BuildContext context,
     GlobalKey<FormState> formKey,
@@ -94,6 +102,7 @@ buildInputNode<T extends Bloc>(
   }
 }
 
+/// Returns nodes with a type of [group] from all available [nodes]
 List<UiNode> getNodesOfGroup(UiNodeGroupEnum group, BuiltList<UiNode> nodes) {
   return nodes.where((node) {
     if (node.group == group) {
@@ -119,14 +128,19 @@ List<UiNode> getNodesOfGroup(UiNodeGroupEnum group, BuiltList<UiNode> nodes) {
   }).toList();
 }
 
+/// Returns true if [node] is of type UiNodeInputAttributes.
+/// Otherwise, returns false
 bool isInputNode(UiNode node) {
   return node.attributes.oneOf.isType(UiNodeInputAttributes);
 }
 
+/// Returns string value of [attributes]
 String getInputNodeValue(UiNodeInputAttributes attributes) {
   return attributes.value?.asString ?? '';
 }
 
+/// Returns input attributes of a [node].
+/// Attributes must be of type UiNodeInputAttributes
 UiNodeInputAttributes asInputAttributes(UiNode node) {
   if (isInputNode(node)) {
     return node.attributes.oneOf.value as UiNodeInputAttributes;
