@@ -59,7 +59,7 @@ the following ports:
 ## Configuring Kong
 
 ```bash
-bash config.kong.sh
+bash kong.config.sh
 ```
 
 That command creates an `/greet` endpoint on `secure-api` service and creates a
