@@ -1,7 +1,10 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ory_client/ory_client.dart';
 
@@ -9,6 +12,7 @@ import 'nodes/input.dart';
 import 'nodes/input_submit.dart';
 import 'nodes/text.dart';
 
+/// Returns color of a message depending on its [type]
 getMessageColor(UiTextTypeEnum type) {
   switch (type) {
     case UiTextTypeEnum.success:
@@ -20,6 +24,7 @@ getMessageColor(UiTextTypeEnum type) {
   }
 }
 
+/// Returns error widget with corresponding [message]
 buildFlowNotCreated(BuildContext context, String? message) {
   if (message != null) {
     return Center(
@@ -32,6 +37,9 @@ buildFlowNotCreated(BuildContext context, String? message) {
   }
 }
 
+/// Returns a form for a specific [group] containing multiple [nodes].
+/// Node changes and submits are handled by
+/// [onInputChange] and [onInputSubmit], respectively
 buildGroup<T extends Bloc>(
     BuildContext context,
     UiNodeGroupEnum group,
@@ -65,6 +73,9 @@ buildGroup<T extends Bloc>(
   );
 }
 
+/// Returns input node for [node] from a form associated with [formKey].
+/// Node changes and submits are handled by
+/// [onInputChange] and [onInputSubmit], respectively.
 buildInputNode<T extends Bloc>(
     BuildContext context,
     GlobalKey<FormState> formKey,
@@ -72,8 +83,8 @@ buildInputNode<T extends Bloc>(
     void Function(BuildContext, String, String) onInputChange,
     void Function(BuildContext, UiNodeGroupEnum, String, String)
         onInputSubmit) {
-  final inputNode = node.attributes.oneOf.value as UiNodeInputAttributes;
-  switch (inputNode.type) {
+  final attributes = asInputAttributes(node);
+  switch (attributes.type) {
     case UiNodeInputAttributesTypeEnum.submit:
       return InputSubmitNode(
           node: node,
@@ -88,5 +99,53 @@ buildInputNode<T extends Bloc>(
           onSubmit: onInputSubmit);
     default:
       return InputNode<T>(node: node, onChange: onInputChange);
+  }
+}
+
+/// Returns nodes with a type of [group] from all available [nodes]
+List<UiNode> getNodesOfGroup(UiNodeGroupEnum group, BuiltList<UiNode> nodes) {
+  return nodes.where((node) {
+    if (node.group == group) {
+      if (group == UiNodeGroupEnum.oidc) {
+        if (isInputNode(node)) {
+          final attributes = asInputAttributes(node);
+          return Platform.isAndroid
+              ? !getInputNodeValue(attributes).contains('ios')
+              : getInputNodeValue(attributes).contains('ios');
+        }
+      } else {
+        if (isInputNode(node)) {
+          final attributes = asInputAttributes(node);
+          if (attributes.type == UiNodeInputAttributesTypeEnum.hidden) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }).toList();
+}
+
+/// Returns true if [node] is of type UiNodeInputAttributes.
+/// Otherwise, returns false
+bool isInputNode(UiNode node) {
+  return node.attributes.oneOf.isType(UiNodeInputAttributes);
+}
+
+/// Returns string value of [attributes]
+String getInputNodeValue(UiNodeInputAttributes attributes) {
+  return attributes.value?.asString ?? '';
+}
+
+/// Returns input attributes of a [node].
+/// Attributes must be of type UiNodeInputAttributes
+UiNodeInputAttributes asInputAttributes(UiNode node) {
+  if (isInputNode(node)) {
+    return node.attributes.oneOf.value as UiNodeInputAttributes;
+  } else {
+    throw ArgumentError(
+        'attributes of this node are not of type UiNodeInputAttributes');
   }
 }

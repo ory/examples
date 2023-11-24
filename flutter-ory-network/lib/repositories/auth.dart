@@ -15,6 +15,7 @@ import 'package:one_of/one_of.dart';
 import 'package:ory_client/ory_client.dart';
 import 'package:collection/collection.dart';
 import 'package:ory_network_flutter/services/exceptions.dart';
+import 'package:ory_network_flutter/widgets/helpers.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../services/auth.dart';
@@ -89,7 +90,7 @@ class AuthRepository {
     }
   }
 
-  Future<Session?> updateRegistrationFlow(
+  Future<Session> updateRegistrationFlow(
       {required String flowId,
       required UiNodeGroupEnum group,
       required String name,
@@ -214,41 +215,51 @@ class AuthRepository {
       required String name,
       required String value,
       required List<UiNode> nodes}) {
+    // find default nodes (e.g identifier)
+    var inputNodes =
+        nodes.where((node) => node.group == UiNodeGroupEnum.default_).toList();
+    // create maps from attribute names and their values
+    var nestedMaps = inputNodes.map((node) {
+      final attributes = asInputAttributes(node);
+      final nodeValue = getInputNodeValue(attributes);
+
+      return generateNestedMap(attributes.name, nodeValue);
+    }).toList();
+
     // if name of submitted node is method, find all nodes that belong to the group
     if (name == 'method') {
       // get input nodes of the same group
-      final inputNodes = nodes.where((p0) {
-        if (p0.attributes.oneOf.isType(UiNodeInputAttributes)) {
-          final attributes = p0.attributes.oneOf.value as UiNodeInputAttributes;
-          // if group is password, find identifier
-          if (group == UiNodeGroupEnum.password &&
-              p0.group == UiNodeGroupEnum.default_ &&
-              attributes.name == 'identifier') {
-            return true;
-          }
-          return p0.group == group &&
+      final methodNodes = nodes.where((node) {
+        if (isInputNode(node)) {
+          final attributes = asInputAttributes(node);
+
+          return node.group == group &&
               attributes.type != UiNodeInputAttributesTypeEnum.button &&
               attributes.type != UiNodeInputAttributesTypeEnum.submit;
         } else {
           return false;
         }
-      });
-      // create maps from attribute names and their values
-      final nestedMaps = inputNodes.map((e) {
-        final attributes = e.attributes.oneOf.value as UiNodeInputAttributes;
-
-        return generateNestedMap(
-            attributes.name, attributes.value?.asString ?? '');
       }).toList();
+      inputNodes = inputNodes + methodNodes;
+      // create maps from attribute names and their values
+      final methodMaps = methodNodes.map((node) {
+        final attributes = asInputAttributes(node);
+        final nodeValue = getInputNodeValue(attributes);
 
-      // merge nested maps into one
-      final mergedMap =
-          nestedMaps.reduce((value, element) => value.deepMerge(element));
-
-      return mergedMap;
+        return generateNestedMap(attributes.name, nodeValue);
+      }).toList();
+      // add method maps to default maps
+      nestedMaps.addAll(methodMaps);
     } else {
-      return {name: value};
+      // add single map to default maps
+      nestedMaps.add({name: value});
     }
+
+    // merge nested maps into one
+    final mergedMap =
+        nestedMaps.reduce((value, element) => value.deepMerge(element));
+
+    return mergedMap;
   }
 
   RegistrationFlow changeRegistrationNodeValue(
@@ -283,9 +294,8 @@ class AuthRepository {
       required String value}) {
     // get edited node
     final node = nodes.firstWhereOrNull((element) {
-      if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
-        return (element.attributes.oneOf.value as UiNodeInputAttributes).name ==
-            name;
+      if (isInputNode(element)) {
+        return asInputAttributes(element).name == name;
       } else {
         return false;
       }

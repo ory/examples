@@ -42,7 +42,7 @@ class AuthService {
     }
   }
 
-  /// Create login flow
+  /// Create login flow with [aal]
   Future<LoginFlow> createLoginFlow({required String aal}) async {
     try {
       final token = await storage.getToken();
@@ -114,6 +114,14 @@ class AuthService {
                 ..provider = value['provider']
                 ..idToken = value['id_token']
                 ..idTokenNonce = value['nonce']));
+        case UiNodeGroupEnum.code:
+          oneOf = OneOf.fromValue1(
+              value: UpdateLoginFlowWithCodeMethod((b) => b
+                ..csrfToken = ''
+                ..method = group.name
+                ..identifier = value['identifier']
+                ..code = value['resend'] != null ? null : value['code']
+                ..resend = value['resend']));
 
         // if method is not implemented, throw exception
         default:
@@ -242,6 +250,14 @@ class AuthService {
                 ..provider = value['provider']
                 ..idToken = value['id_token']
                 ..idTokenNonce = value['nonce']));
+        case UiNodeGroupEnum.code:
+          oneOf = OneOf.fromValue1(
+              value: UpdateRegistrationFlowWithCodeMethod((b) => b
+                ..csrfToken = ''
+                ..method = group.name
+                ..traits = JsonObject(value['traits'])
+                ..code = value['resend'] != null ? null : value['code']
+                ..resend = value['resend']));
 
         // if method is not implemented, throw exception
         default:
