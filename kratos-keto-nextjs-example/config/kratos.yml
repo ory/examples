@@ -1,0 +1,129 @@
+version: v0.7.1-alpha.1
+
+# dsn: memory
+
+serve:
+  public:
+    base_url: http://127.0.0.1:4433/
+    cors:
+      enabled: true
+      allowed_origins:
+        - http://127.0.0.1:3000
+        - http://127.0.0.1:5556
+      allowed_methods:
+        - GET
+        - OPTIONS
+        - PUT
+        - PATCH
+        - DELETE
+  admin:
+    base_url: http://kratos:4434/
+
+selfservice:
+  default_browser_return_url: http://127.0.0.1:3000/
+  allowed_return_urls:
+    - http://127.0.0.1:4455
+    - http://localhost:4455
+
+  methods:
+    password:
+      enabled: true
+    oidc:
+      enabled: true
+      config:
+        providers:
+          - id: github
+            provider: github
+            client_id: e978ec1d359755123164 # Add the client ID
+            client_secret: bde795a9670a06910ea0381c5d5001dff16e9d28 # Add the client secret
+            mapper_url: file:///etc/config/kratos/oidc.github.jsonnet
+            scope:
+              - user:email
+          - id: google # this is `<provider-id>` in the Authorization callback URL. DO NOT CHANGE IT ONCE SET!
+            provider: google
+            client_id: 573112123486-uecp7uft56tl687mdn85aq8o5pmcqdm4.apps.googleusercontent.com
+            client_secret: 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
+            mapper_url: file:///etc/config/kratos/oidc.google.jsonnet
+            scope:
+              - email
+              - profile
+          - id: microsoft
+            provider: microsoft
+            client_id: 6ded4528-b1b3-4f98-a1ff-72f1db73fe81 # This is the the Application (client) ID from the App Registration
+            client_secret: xmL8Q~WaQGp.XK0Meib1LSVT5RNN7IL4tvYlvbwX # This is the generated Secret value from the App Registration
+            microsoft_tenant: 37f1d6b1-7736-4544-b789-0928970b6102 # This allows you to select the tenant.
+            mapper_url: file:///etc/config/kratos/oidc.microsoft.jsonnet
+            scope:
+              - profile
+              - email
+
+  flows:
+    error:
+      ui_url: http://127.0.0.1:4455/error
+
+    settings:
+      ui_url: http://127.0.0.1:4455/settings
+      privileged_session_max_age: 15m
+      after:
+        default_browser_return_url: http://127.0.0.1:3000
+
+    recovery:
+      enabled: true
+      ui_url: http://127.0.0.1:4455/recovery
+
+    verification:
+      enabled: true
+      ui_url: http://127.0.0.1:4455/verification
+      after:
+        default_browser_return_url: http://127.0.0.1:3000
+
+    logout:
+      after:
+        default_browser_return_url: http://127.0.0.1:4455/login
+
+    login:
+      ui_url: http://127.0.0.1:4455/login
+      lifespan: 10m
+      after:
+        default_browser_return_url: http://127.0.0.1:3000
+
+    registration:
+      lifespan: 10m
+      ui_url: http://127.0.0.1:4455/registration
+      after:
+        default_browser_return_url: http://127.0.0.1:3000
+        oidc:
+          hooks:
+            - hook: session
+        password:
+          hooks:
+            - hook: session
+
+log:
+  level: debug
+  format: text
+  leak_sensitive_values: true
+
+secrets:
+  cookie:
+    - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+  cipher:
+    - 32-LONG-SECRET-NOT-SECURE-AT-ALL
+
+ciphers:
+  algorithm: xchacha20-poly1305
+
+hashers:
+  algorithm: bcrypt
+  bcrypt:
+    cost: 8
+
+identity:
+  default_schema_id: default
+  schemas:
+    - id: default
+      url: file:///etc/config/kratos/identity.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
