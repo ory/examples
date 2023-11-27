@@ -42,6 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       default:
         emit(state);
     }
+    emit(state.copyWith(status: event.status, isLoading: false));
   }
 
   Future<void> _onGetCurrentSessionInformation(

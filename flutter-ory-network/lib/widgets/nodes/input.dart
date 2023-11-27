@@ -27,8 +27,7 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
   @override
   void initState() {
     super.initState();
-    final attributes =
-        widget.node.attributes.oneOf.value as UiNodeInputAttributes;
+    final attributes = asInputAttributes(widget.node);
     // if this is a password field, hide the text
     if (attributes.name == 'password') {
       setState(() {
@@ -66,8 +65,7 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
 
   @override
   Widget build(BuildContext context) {
-    final attributes =
-        widget.node.attributes.oneOf.value as UiNodeInputAttributes;
+    final attributes = asInputAttributes(widget.node);
 
     return BlocListener(
       bloc: (context).read<T>(),
@@ -76,20 +74,16 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
         // find current node in updated state
         if (state is LoginState) {
           node = state.loginFlow?.ui.nodes.firstWhereOrNull((element) {
-            if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
-              return (element.attributes.oneOf.value as UiNodeInputAttributes)
-                      .name ==
-                  attributes.name;
+            if (isInputNode(element)) {
+              return asInputAttributes(element).name == attributes.name;
             } else {
               return false;
             }
           });
         } else if (state is RegistrationState) {
           node = state.registrationFlow?.ui.nodes.firstWhereOrNull((element) {
-            if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
-              return (element.attributes.oneOf.value as UiNodeInputAttributes)
-                      .name ==
-                  attributes.name;
+            if (isInputNode(element)) {
+              return asInputAttributes(element).name == attributes.name;
             } else {
               return false;
             }
@@ -107,11 +101,10 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
         }
 
         // assign new value of node to text controller
-        textEditingController.text =
-            (node?.attributes.oneOf.value as UiNodeInputAttributes)
-                    .value
-                    ?.asString ??
-                '';
+        if (node != null && isInputNode(node)) {
+          final attributes = asInputAttributes(node);
+          textEditingController.text = getInputNodeValue(attributes);
+        }
       },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 20.0),

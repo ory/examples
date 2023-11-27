@@ -1,8 +1,6 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
@@ -101,47 +99,23 @@ class LoginForm extends StatelessWidget {
     final nodes = state.loginFlow!.ui.nodes;
 
     // get default nodes from all nodes
-    final defaultNodes = nodes.where((node) {
-      if (node.group == UiNodeGroupEnum.default_) {
-        if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
-          final attributes =
-              node.attributes.oneOf.value as UiNodeInputAttributes;
-          if (attributes.type == UiNodeInputAttributesTypeEnum.hidden) {
-            return false;
-          } else {
-            return true;
-          }
-        }
-      }
-      return false;
-    }).toList();
+    final defaultNodes = getNodesOfGroup(UiNodeGroupEnum.default_, nodes);
+
+    // get code nodes from all nodes
+    final codeNodes = getNodesOfGroup(UiNodeGroupEnum.code, nodes);
 
     // get password nodes from all nodes
-    final passwordNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.password).toList();
+    final passwordNodes = getNodesOfGroup(UiNodeGroupEnum.password, nodes);
 
     // get lookup secret nodes from all nodes
-    final lookupSecretNodes = nodes
-        .where((node) => node.group == UiNodeGroupEnum.lookupSecret)
-        .toList();
+    final lookupSecretNodes =
+        getNodesOfGroup(UiNodeGroupEnum.lookupSecret, nodes);
 
     // get totp nodes from all nodes
-    final totpNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.totp).toList();
+    final totpNodes = getNodesOfGroup(UiNodeGroupEnum.totp, nodes);
 
     // get oidc nodes from all nodes
-    final oidcNodes = nodes.where((node) {
-      if (node.group == UiNodeGroupEnum.oidc) {
-        if (node.attributes.oneOf.isType(UiNodeInputAttributes)) {
-          final attributes =
-              node.attributes.oneOf.value as UiNodeInputAttributes;
-          return Platform.isAndroid
-              ? !attributes.value!.asString.contains('ios')
-              : attributes.value!.asString.contains('ios');
-        }
-      }
-      return false;
-    }).toList();
+    final oidcNodes = getNodesOfGroup(UiNodeGroupEnum.oidc, nodes);
 
     return Stack(children: [
       Padding(
@@ -187,6 +161,9 @@ class LoginForm extends StatelessWidget {
               if (defaultNodes.isNotEmpty)
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.default_,
                     defaultNodes, _onInputChange, _onInputSubmit),
+              if (codeNodes.isNotEmpty)
+                buildGroup<LoginBloc>(context, UiNodeGroupEnum.code, codeNodes,
+                    _onInputChange, _onInputSubmit),
               if (passwordNodes.isNotEmpty)
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.password,
                     passwordNodes, _onInputChange, _onInputSubmit),

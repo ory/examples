@@ -35,9 +35,26 @@ If you use Google Sign In on iOS, add following variable to .env file
 IOS_CLIENT_ID={ios-client-id}.apps.googleusercontent.com
 ```
 
-Additionally, add reversed Client ID com.googleusercontent.apps.{ios-client.id}
-as iOS URL scheme to Info.plist.\
-For more information, see [Google Integration Docs](https://www.ory.sh/docs/kratos/social-signin/google).
+Additionally, add iOS URL scheme to Info.plist. It can be found in additional
+information of your iOS Client ID.
+
+```xml
+<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+			<!-- TODO Replace this value with iOS URL scheme from Google Cloud Console -->
+				<string>IOS_URL_SCHEME</string>
+			</array>
+		</dict>
+	</array>
+```
+
+For more information, see
+[Google Integration Docs](https://www.ory.sh/docs/kratos/social-signin/google).
 
 ### Apple Sign In
 
