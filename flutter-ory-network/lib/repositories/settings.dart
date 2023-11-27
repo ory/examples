@@ -67,7 +67,7 @@ class SettingsRepository {
     final nestedMaps = inputNodes.map((e) {
       final attributes = e.attributes.oneOf.value as UiNodeInputAttributes;
 
-      return generateNestedMap(attributes.name, attributes.value!.asString);
+      return generateNestedMap(attributes.name, attributes.value?.asString);
     }).toList();
 
     // merge nested maps into one
@@ -112,11 +112,12 @@ class SettingsRepository {
   }
 
   /// Generate nested map from  [path] with [value]
-  Map<dynamic, dynamic> generateNestedMap(String path, String value) {
+  Map<dynamic, dynamic> generateNestedMap(String path, String? value) {
     var steps = path.split('.');
-    Object result = value;
+    Object? result = value;
     for (var step in steps.reversed) {
-      result = {step: result};
+      // if value is null, set to an empty string
+      result = {step: result ?? ''};
     }
     return result as Map<dynamic, dynamic>;
   }

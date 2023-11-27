@@ -164,25 +164,17 @@ class SettingsForm extends StatelessWidget {
     }).toList();
 
     // get profile nodes from all nodes
-    final profileNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.profile).toList();
+    final profileNodes = getNodesOfGroup(UiNodeGroupEnum.profile, nodes);
 
     // get password nodes from all nodes
-    final passwordNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.password).toList();
+    final passwordNodes = getNodesOfGroup(UiNodeGroupEnum.password, nodes);
 
     // get lookup secret nodes from all nodes
-    final lookupSecretNodes = nodes
-        .where((node) => node.group == UiNodeGroupEnum.lookupSecret)
-        .toList();
+    final lookupSecretNodes =
+        getNodesOfGroup(UiNodeGroupEnum.lookupSecret, nodes);
 
     // get totp nodes from all nodes
-    final totpNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.totp).toList();
-
-    // get oidc nodes from all nodes
-    final oidcNodes =
-        nodes.where((node) => node.group == UiNodeGroupEnum.oidc).toList();
+    final totpNodes = getNodesOfGroup(UiNodeGroupEnum.totp, nodes);
 
     return Stack(children: [
       Padding(
@@ -260,22 +252,6 @@ class SettingsForm extends StatelessWidget {
                       height: 20,
                     ),
                     buildGroup<SettingsBloc>(context, UiNodeGroupEnum.totp,
-                        totpNodes, _onInputChange, _onInputSubmit),
-                  ],
-                ),
-              if (oidcNodes.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(_buildGroupHeadingText(UiNodeGroupEnum.oidc),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            height: 1.5,
-                            fontSize: 18)),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    buildGroup<SettingsBloc>(context, UiNodeGroupEnum.oidc,
                         totpNodes, _onInputChange, _onInputSubmit),
                   ],
                 ),
