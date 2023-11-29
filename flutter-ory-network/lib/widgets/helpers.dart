@@ -127,6 +127,8 @@ List<UiNode> getNodesOfGroup(UiNodeGroupEnum group, BuiltList<UiNode> nodes) {
           } else {
             return true;
           }
+        } else {
+          return true;
         }
       }
     }

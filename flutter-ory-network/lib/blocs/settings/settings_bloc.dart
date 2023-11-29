@@ -26,7 +26,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<CreateSettingsFlow>(_onCreateSettingsFlow);
     on<GetSettingsFlow>(_onGetSettingsFlow);
     on<ChangeSettingsNodeValue>(_onChangeNodeValue, transformer: sequential());
-    on<ResetButtonValues>(_onResetButtonValues);
+    on<ResetSettings>(_onResetSettings);
     on<UpdateSettingsFlow>(_onUpdateSettingsFlow, transformer: sequential());
   }
 
@@ -51,13 +51,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     }
   }
 
-  _onResetButtonValues(ResetButtonValues event, Emitter<SettingsState> emit) {
+  _onResetSettings(ResetSettings event, Emitter<SettingsState> emit) async {
     if (state.settingsFlow != null) {
       emit(state.copyWith(isLoading: true));
-      final updatedSettings =
-          repository.resetButtonValues(settingsFlow: state.settingsFlow!);
+      final settings =
+          await repository.getSettingsFlow(flowId: state.settingsFlow!.id);
       emit(state.copyWith(
-          settingsFlow: updatedSettings,
+          settingsFlow: settings,
           isSessionRefreshRequired: false,
           isLoading: false));
     }

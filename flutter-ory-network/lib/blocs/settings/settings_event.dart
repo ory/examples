@@ -28,7 +28,7 @@ class ChangeSettingsNodeValue extends SettingsEvent {
   List<Object> get props => [value, name];
 }
 
-class ResetButtonValues extends SettingsEvent {}
+class ResetSettings extends SettingsEvent {}
 
 class UpdateSettingsFlow extends SettingsEvent {
   final UiNodeGroupEnum group;

@@ -85,9 +85,8 @@ class SettingsForm extends StatelessWidget {
                     }
                   } else {
                     // if user goes back without finishing login,
-                    // reset button values to prevent submitting values that
-                    // were selected prior to session refresh navigation
-                    settingsBloc.add(ResetButtonValues());
+                    // reset settings
+                    settingsBloc.add(ResetSettings());
                   }
                 });
               }
@@ -97,11 +96,13 @@ class SettingsForm extends StatelessWidget {
           BlocListener(
               bloc: settingsBloc,
               listenWhen: (SettingsState previous, SettingsState current) =>
-                  // listen to changes only when previous
-                  // state was loading (e.g. updating settings),
-                  // current state is not loading and session refresh is not required
-                  previous.isLoading != current.isLoading &&
+                  // listen to changes only when current
+                  // state is not loading (e.g. updating settings),
+                  // previous and current messages differ
+                  // and session refresh is not required
                   !current.isLoading &&
+                  current.settingsFlow?.ui.messages !=
+                      previous.settingsFlow?.ui.messages &&
                   !current.isSessionRefreshRequired,
               listener: (BuildContext context, SettingsState state) {
                 if (state.settingsFlow!.ui.messages != null) {

@@ -390,6 +390,10 @@ class AuthService {
       if (e.response?.statusCode == 401) {
         await _storage.deleteToken();
         throw const CustomException.unauthorized();
+      } else if (e.response?.statusCode == 410) {
+        // settings flow expired, use new flow id
+        throw CustomException.flowExpired(
+            flowId: e.response?.data['use_flow_id']);
       } else {
         throw _handleUnknownException(e.response?.data);
       }

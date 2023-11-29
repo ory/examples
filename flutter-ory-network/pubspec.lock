@@ -580,10 +580,10 @@ packages:
     dependency: "direct main"
     description:
       name: ory_client
-      sha256: c8d672ee192c77aa4231afbbf7fa6d23387e2a09ac9cf14a596dfcf5b0ecc29b
+      sha256: "6d6ec2304afd9c20489f2a8118b4cddfbdae4fc22915bd9a168a777620af5c44"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.16"
+    version: "1.4.3"
   package_config:
     dependency: transitive
     description:
