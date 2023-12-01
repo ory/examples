@@ -21,6 +21,8 @@ sealed class CustomException<T> with _$CustomException {
       TwoFactorAuthRequiredException;
   const factory CustomException.locationChangeRequired({required String url}) =
       LocationChangeRequiredException;
+  const factory CustomException.settingsRedirectRequired(
+      {String? settingsFlowId}) = settingsRedirectRequired;
   const factory CustomException.unknown(
       {@Default('An error occured. Please try again later.')
       String message}) = UnknownException;

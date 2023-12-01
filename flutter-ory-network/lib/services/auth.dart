@@ -53,7 +53,7 @@ class AuthService {
           returnSessionTokenExchangeCode: true,
           returnTo: 'ory://flutter-ory-network');
       if (response.data != null) {
-        // return flow id
+        // return flow
         return response.data!;
       } else {
         throw const CustomException.unknown();
@@ -70,7 +70,22 @@ class AuthService {
           returnSessionTokenExchangeCode: true,
           returnTo: 'ory://flutter-ory-network');
       if (response.data != null) {
-        // return flow id
+        // return flow
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      throw _handleUnknownException(e.response?.data);
+    }
+  }
+
+  /// Create recovery flow
+  Future<RecoveryFlow> createRecoveryFlow() async {
+    try {
+      final response = await _ory.createNativeRecoveryFlow();
+      if (response.data != null) {
+        // return flow
         return response.data!;
       } else {
         throw const CustomException.unknown();
@@ -327,7 +342,60 @@ class AuthService {
     }
   }
 
-  /// Log out
+  /// Update recovery flow with [flowId] and [value] as body
+  Future<RecoveryFlow> updateRecoveryFlow(
+      {required String flowId, required Map value}) async {
+    try {
+      print(value);
+      final oneOf = OneOf.fromValue1(
+          value: UpdateRecoveryFlowWithCodeMethod((b) => b
+            ..method = UpdateRecoveryFlowWithCodeMethodMethodEnum.code
+            ..email = value['email']
+            ..code = value['code']));
+
+      final response = await _ory.updateRecoveryFlow(
+          flow: flowId,
+          updateRecoveryFlowBody:
+              UpdateRecoveryFlowBody((b) => b..oneOf = oneOf));
+      if (response.data != null) {
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      // TODO: include HTTP 303 See Other
+      if (e.response?.statusCode == 400) {
+        final recoveryFlow = standardSerializers.deserializeWith(
+            RecoveryFlow.serializer, e.response?.data);
+        if (recoveryFlow != null) {
+          throw CustomException<RecoveryFlow>.badRequest(flow: recoveryFlow);
+        } else {
+          throw const CustomException.unknown();
+        }
+      } else if (e.response?.statusCode == 410) {
+        // recovery flow expired, use new flow id and add error message
+        throw CustomException.flowExpired(
+            flowId: e.response?.data['use_flow_id']);
+      } else if (e.response?.statusCode == 422) {
+        final error = e.response?.data['error'];
+        if (error['id'] == 'browser_location_change_required') {
+          final redirectUri = e.response?.data['redirect_browser_to'];
+          if ((redirectUri is String && redirectUri.contains('settings'))) {
+            final redirectUriParsed = Uri.parse(redirectUri);
+            final settingsFlowId = redirectUriParsed.queryParameters['flow'];
+            throw CustomException.settingsRedirectRequired(
+                settingsFlowId: settingsFlowId);
+          }
+        }
+        throw const CustomException.unknown();
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
+    } catch (e) {
+      throw const CustomException.unknown();
+    }
+  }
+
   Future<void> logout() async {
     try {
       final token = await _storage.getToken();

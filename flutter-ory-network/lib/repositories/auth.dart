@@ -50,6 +50,11 @@ class AuthRepository {
     return flow;
   }
 
+  Future<RecoveryFlow> createRecoveryFlow() async {
+    final flow = await service.createRecoveryFlow();
+    return flow;
+  }
+
   Future<LoginFlow> getLoginFlow({required String flowId}) async {
     final flow = await service.getLoginFlow(flowId: flowId);
     return flow;
@@ -151,6 +156,22 @@ class AuthRepository {
     final session = await service.updateLoginFlow(
         flowId: flowId, group: group, value: body);
     return session;
+  }
+
+  Future<RecoveryFlow> updateRecoveryFlow(
+      {required String flowId,
+      required UiNodeGroupEnum group,
+      required String name,
+      required String value,
+      required List<UiNode> nodes}) async {
+    // create request body
+    var body = _createRequestBody(
+        group: group, name: name, value: value, nodes: nodes);
+
+    // submit recovery
+    final recovery =
+        await service.updateRecoveryFlow(flowId: flowId, value: body);
+    return recovery;
   }
 
   Map _getMapFromJWT(String splittedToken) {
@@ -264,28 +285,36 @@ class AuthRepository {
   }
 
   RegistrationFlow changeRegistrationNodeValue(
-      {required RegistrationFlow settings,
+      {required RegistrationFlow flow,
       required String name,
       required String value}) {
     // update node value
     final updatedNodes =
-        updateNodes(nodes: settings.ui.nodes, name: name, value: value);
-    // update settings' node
-    final newFlow =
-        settings.rebuild((p0) => p0..ui.nodes.replace(updatedNodes));
+        updateNodes(nodes: flow.ui.nodes, name: name, value: value);
+    // update registration flow
+    final newFlow = flow.rebuild((p0) => p0..ui.nodes.replace(updatedNodes));
     return newFlow;
   }
 
   LoginFlow changeLoginNodeValue(
-      {required LoginFlow settings,
+      {required LoginFlow flow, required String name, required String value}) {
+    // update node value
+    final updatedNodes =
+        updateNodes(nodes: flow.ui.nodes, name: name, value: value);
+    // update login flow
+    final newFlow = flow.rebuild((p0) => p0..ui.nodes.replace(updatedNodes));
+    return newFlow;
+  }
+
+  RecoveryFlow changeRecoveryNodeValue(
+      {required RecoveryFlow flow,
       required String name,
       required String value}) {
     // update node value
     final updatedNodes =
-        updateNodes(nodes: settings.ui.nodes, name: name, value: value);
-    // update settings' node
-    final newFlow =
-        settings.rebuild((p0) => p0..ui.nodes.replace(updatedNodes));
+        updateNodes(nodes: flow.ui.nodes, name: name, value: value);
+    // update login flow
+    final newFlow = flow.rebuild((p0) => p0..ui.nodes.replace(updatedNodes));
     return newFlow;
   }
 

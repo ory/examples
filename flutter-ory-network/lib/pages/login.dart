@@ -9,6 +9,7 @@ import '../blocs/auth/auth_bloc.dart';
 import '../blocs/login/login_bloc.dart';
 import '../repositories/auth.dart';
 import '../widgets/helpers.dart';
+import 'recovery.dart';
 import 'registration.dart';
 
 class LoginPage extends StatelessWidget {
@@ -165,8 +166,26 @@ class LoginForm extends StatelessWidget {
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.code, codeNodes,
                     _onInputChange, _onInputSubmit),
               if (passwordNodes.isNotEmpty)
-                buildGroup<LoginBloc>(context, UiNodeGroupEnum.password,
-                    passwordNodes, _onInputChange, _onInputSubmit),
+                Column(
+                  children: [
+                    buildGroup<LoginBloc>(context, UiNodeGroupEnum.password,
+                        passwordNodes, _onInputChange, _onInputSubmit),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RecoveryPage())),
+                            child: Text("Forgot password?"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               if (lookupSecretNodes.isNotEmpty)
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.lookupSecret,
                     lookupSecretNodes, _onInputChange, _onInputSubmit),

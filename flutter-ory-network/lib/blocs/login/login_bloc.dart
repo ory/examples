@@ -86,7 +86,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   _onChangeNodeValue(ChangeNodeValue event, Emitter<LoginState> emit) {
     if (state.loginFlow != null) {
       final newLoginState = repository.changeLoginNodeValue(
-          settings: state.loginFlow!, name: event.name, value: event.value);
+          flow: state.loginFlow!, name: event.name, value: event.value);
       emit(state.copyWith(loginFlow: newLoginState, message: null));
     }
   }
