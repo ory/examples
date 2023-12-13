@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
             const Padding(
                 padding: EdgeInsets.only(top: 15.0),
                 child: Text(
-                    'This app mackes REST requests to ORY Kratos Public API to validate and decode the ORY Kratos Session payload:')),
+                    'This app makes REST requests to Ory Kratos Public API to validate and decode the Ory Kratos Session payload:')),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Container(
