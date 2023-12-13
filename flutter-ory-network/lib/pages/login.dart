@@ -86,33 +86,15 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      // listenWhen: (previous, current) {
-
-      //   final recoveryRequested = previous.mapOrNull(
-      //           aal2Requested: (state) => state.recoveryRequested) ??
-      //       false;
-      //   return recoveryRequested && current.status == AuthStatus.authenticated;
-      // },
-      listener: (context, state) {
-        // if (state.conditions.contains(Condition.recoveryRequested)) {
-        //   Navigator.of(context).pushAndRemoveUntil(
-        //       MaterialPageRoute<void>(
-        //           builder: (BuildContext context) => const SettingsPage()),
-        //       (Route<dynamic> route) => false);
-        // }
+    return BlocBuilder<LoginBloc, LoginState>(
+      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+      builder: (context, state) {
+        if (state.loginFlow != null) {
+          return _buildUi(context, state);
+        } else {
+          return buildFlowNotCreated(context, state.message);
+        }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
-        buildWhen: (previous, current) =>
-            previous.isLoading != current.isLoading,
-        builder: (context, state) {
-          if (state.loginFlow != null) {
-            return _buildUi(context, state);
-          } else {
-            return buildFlowNotCreated(context, state.message);
-          }
-        },
-      ),
     );
   }
 
