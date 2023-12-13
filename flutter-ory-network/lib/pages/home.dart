@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
+import 'package:ory_network_flutter/pages/settings.dart';
 
 import '../blocs/auth/auth_bloc.dart';
 
@@ -37,6 +38,13 @@ class _HomePageState extends State<HomePage> {
           ),
           elevation: 0,
           actions: [
+            IconButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsPage())),
+              icon: Image.asset('assets/icons/settings.png'),
+            ),
             // if auth is loading, show progress indicator, otherwise a logout icon
             isLoading
                 ? const Padding(
@@ -53,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                   )
                 : IconButton(
                     onPressed: () => context.read<AuthBloc>()..add(LogOut()),
-                    icon: const Icon(Icons.logout),
+                    icon: Image.asset('assets/icons/logout.png'),
                   ),
           ],
         ),
@@ -78,13 +86,13 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Text(
-              "Welcome back,\n${session.identity!.id}!",
+              'Welcome back,\n${session.identity?.id}!',
               style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 35),
             ),
             const Padding(
               padding: EdgeInsets.only(top: 15.0),
               child: Text(
-                  "Hello, nice to have you! You signed up with this data:"),
+                  'Hello, nice to have you! You signed up with this data:'),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
@@ -102,7 +110,7 @@ class _HomePageState extends State<HomePage> {
             const Padding(
                 padding: EdgeInsets.only(top: 15.0),
                 child: Text(
-                    "This app mackes REST requests to ORY Kratos' Public API to validate and decode the ORY Kratos Session payload:")),
+                    'This app makes REST requests to Ory Kratos Public API to validate and decode the Ory Kratos Session payload:')),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: Container(
@@ -124,11 +132,14 @@ class _HomePageState extends State<HomePage> {
 
   _buildSessionNotFetched(BuildContext context, AuthState state) {
     if (state.errorMessage != null) {
-      return Center(
-          child: Text(
-        state.errorMessage!,
-        style: const TextStyle(color: Colors.red),
-      ));
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Center(
+            child: Text(
+          state.errorMessage!,
+          style: const TextStyle(color: Colors.red),
+        )),
+      );
     } else {
       return const Center(child: CircularProgressIndicator());
     }

@@ -5,19 +5,18 @@ import 'package:built_value/json_object.dart';
 import 'package:dio/dio.dart';
 import 'package:one_of/one_of.dart';
 import 'package:ory_client/ory_client.dart';
-
 import 'exceptions.dart';
 import 'storage.dart';
 
 class AuthService {
-  final storage = SecureStorage();
+  final _storage = SecureStorage();
   final FrontendApi _ory;
   AuthService(Dio dio) : _ory = OryClient(dio: dio).getFrontendApi();
 
   /// Get current session information
   Future<Session> getCurrentSessionInformation() async {
     try {
-      final token = await storage.getToken();
+      final token = await _storage.getToken();
       final response = await _ory.toSession(xSessionToken: token);
 
       if (response.data != null) {
@@ -28,7 +27,7 @@ class AuthService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        await storage.deleteToken();
+        await _storage.deleteToken();
         throw const CustomException.unauthorized();
       } else if (e.response?.statusCode == 403) {
         if (e.response?.data['error']['id'] == 'session_aal2_required') {
@@ -42,12 +41,14 @@ class AuthService {
     }
   }
 
-  /// Create login flow with [aal]
-  Future<LoginFlow> createLoginFlow({required String aal}) async {
+  /// Create login flow
+  Future<LoginFlow> createLoginFlow(
+      {required String aal, required bool refresh}) async {
     try {
-      final token = await storage.getToken();
+      final token = await _storage.getToken();
       final response = await _ory.createNativeLoginFlow(
           aal: aal,
+          refresh: refresh,
           xSessionToken: token,
           returnSessionTokenExchangeCode: true,
           returnTo: 'ory://flutter-ory-network');
@@ -80,12 +81,12 @@ class AuthService {
   }
 
   /// Update login flow with [flowId] for [group] with [value]
-  Future<SuccessfulNativeLogin> updateLoginFlow(
+  Future<Session> updateLoginFlow(
       {required String flowId,
       required UiNodeGroupEnum group,
       required Map value}) async {
     try {
-      final token = await storage.getToken();
+      final token = await _storage.getToken();
       final OneOf oneOf;
 
       // create update body depending on method
@@ -135,9 +136,9 @@ class AuthService {
 
       if (response.data?.session != null) {
         // save session token after successful login
-        await storage.persistToken(response.data!.sessionToken!);
+        await _storage.persistToken(response.data!.sessionToken!);
         if (response.data!.session.identity != null) {
-          return response.data!;
+          return response.data!.session;
         } else {
           // identity is null, aal2 is required
           throw const CustomException.twoFactorAuthRequired();
@@ -147,7 +148,7 @@ class AuthService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        await storage.deleteToken();
+        await _storage.deleteToken();
         throw const CustomException.unauthorized();
       } else if (e.response?.statusCode == 400) {
         final loginFlow = standardSerializers.deserializeWith(
@@ -186,7 +187,16 @@ class AuthService {
         throw const CustomException.unknown();
       }
     } on DioException catch (e) {
-      throw _handleUnknownException(e.response?.data);
+      if (e.response?.statusCode == 401) {
+        await _storage.deleteToken();
+        throw const CustomException.unauthorized();
+      } else if (e.response?.statusCode == 410) {
+        // settings flow expired, use new flow id and add error message
+        throw CustomException.flowExpired(
+            flowId: e.response?.data['use_flow_id']);
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
     }
   }
 
@@ -217,7 +227,7 @@ class AuthService {
 
       if (response.data?.session != null) {
         // save session token after successful login
-        await storage.persistToken(response.data!.sessionToken!);
+        await _storage.persistToken(response.data!.sessionToken!);
         return response.data!.session;
       } else {
         throw const CustomException.unknown();
@@ -271,7 +281,7 @@ class AuthService {
 
       if (response.data?.session != null) {
         // save session token after successful login
-        await storage.persistToken(response.data!.sessionToken!);
+        await _storage.persistToken(response.data!.sessionToken!);
         return response.data!.session!;
       } else {
         throw const CustomException.unknown();
@@ -284,7 +294,7 @@ class AuthService {
             SuccessfulNativeLogin.serializer, e.response?.data);
         if (successfulLogin?.session != null) {
           // save session token after successful login
-          await storage.persistToken(successfulLogin!.sessionToken!);
+          await _storage.persistToken(successfulLogin!.sessionToken!);
           return successfulLogin.session;
         } else {
           throw const CustomException.unknown();
@@ -317,21 +327,22 @@ class AuthService {
     }
   }
 
+  /// Log out
   Future<void> logout() async {
     try {
-      final token = await storage.getToken();
+      final token = await _storage.getToken();
 
       final PerformNativeLogoutBody logoutBody =
           PerformNativeLogoutBody((b) => b..sessionToken = token);
       final response =
           await _ory.performNativeLogout(performNativeLogoutBody: logoutBody);
       if (response.statusCode == 204) {
-        await storage.deleteToken();
+        await _storage.deleteToken();
         return;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        await storage.deleteToken();
+        await _storage.deleteToken();
         throw const CustomException.unauthorized();
       } else {
         throw _handleUnknownException(e.response?.data);
@@ -339,10 +350,143 @@ class AuthService {
     }
   }
 
+  /// Create settings flow
+  Future<SettingsFlow> createSettingsFlow() async {
+    try {
+      final token = await _storage.getToken();
+      final response =
+          await _ory.createNativeSettingsFlow(xSessionToken: token);
+
+      if (response.data != null) {
+        // return flow
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        await _storage.deleteToken();
+        throw const CustomException.unauthorized();
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
+    }
+  }
+
+  /// Get settings flow with [flowId]
+  Future<SettingsFlow> getSettingsFlow({required String flowId}) async {
+    try {
+      final token = await _storage.getToken();
+      final response =
+          await _ory.getSettingsFlow(id: flowId, xSessionToken: token);
+
+      if (response.data != null) {
+        // return flow
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        await _storage.deleteToken();
+        throw const CustomException.unauthorized();
+      } else if (e.response?.statusCode == 410) {
+        // settings flow expired, use new flow id
+        throw CustomException.flowExpired(
+            flowId: e.response?.data['use_flow_id']);
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
+    }
+  }
+
+  /// Update settings flow with [flowId] for [group] with [value]
+  Future<SettingsFlow> updateSettingsFlow(
+      {required String flowId,
+      required UiNodeGroupEnum group,
+      required Map value}) async {
+    try {
+      final token = await _storage.getToken();
+      final OneOf oneOf;
+
+      // create update body depending on method
+      switch (group) {
+        case UiNodeGroupEnum.password:
+          oneOf = OneOf.fromValue1(
+              value: UpdateSettingsFlowWithPasswordMethod((b) => b
+                ..method = group.name
+                ..password = value['password']));
+        case UiNodeGroupEnum.profile:
+          oneOf = OneOf.fromValue1(
+              value: UpdateSettingsFlowWithProfileMethod((b) => b
+                ..method = group.name
+                ..traits = JsonObject(value['traits'])));
+        case UiNodeGroupEnum.lookupSecret:
+          oneOf = OneOf.fromValue1(
+              value: UpdateSettingsFlowWithLookupMethod((b) => b
+                ..method = group.name
+                ..lookupSecretConfirm =
+                    getBoolValue(value['lookup_secret_confirm'])
+                ..lookupSecretDisable =
+                    getBoolValue(value['lookup_secret_disable'])
+                ..lookupSecretReveal =
+                    getBoolValue(value['lookup_secret_reveal'])
+                ..lookupSecretRegenerate =
+                    getBoolValue(value['lookup_secret_regenerate'])));
+        case UiNodeGroupEnum.totp:
+          oneOf = OneOf.fromValue1(
+              value: UpdateSettingsFlowWithTotpMethod((b) => b
+                ..method = group.name
+                ..totpCode = value['totp_code']
+                ..totpUnlink = getBoolValue(value['totp_unlink'])));
+        // if method is not implemented, throw exception
+        default:
+          throw const CustomException.unknown();
+      }
+
+      final response = await _ory.updateSettingsFlow(
+          flow: flowId,
+          xSessionToken: token,
+          updateSettingsFlowBody:
+              UpdateSettingsFlowBody((b) => b..oneOf = oneOf));
+
+      if (response.data != null) {
+        // return updated settings flow
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        await _storage.deleteToken();
+        throw const CustomException.unauthorized();
+      } else if (e.response?.statusCode == 403) {
+        throw const CustomException.sessionRefreshRequired();
+      } else if (e.response?.statusCode == 410) {
+        // settings flow expired, use new flow id and add error message
+        throw CustomException.flowExpired(
+            flowId: e.response?.data['use_flow_id']);
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
+    }
+  }
+
+  /// Get bool value of string [value]
+  bool? getBoolValue(String? value) {
+    if (value == null) {
+      return null;
+    } else {
+      return value == 'true' ? true : false;
+    }
+  }
+
   CustomException _handleUnknownException(Map? response) {
-    // use error message if response contains it, otherwise use default value
-    if (response != null && response.containsKey('error')) {
-      return CustomException.unknown(message: response['error']['message']);
+    // use human-readable reason if response contains it, otherwise use default value
+    if (response != null &&
+        response.containsKey('error') &&
+        (response['error'] as Map).containsKey('reason')) {
+      return CustomException.unknown(message: response['error']['reason']);
     } else {
       return const CustomException.unknown();
     }

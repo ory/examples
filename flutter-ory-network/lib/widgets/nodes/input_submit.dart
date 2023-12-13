@@ -40,13 +40,15 @@ class InputSubmitNode extends StatelessWidget {
     );
   }
 
-  _getProviderName(String value) {
-    if (value.contains('google')) {
+  _getProviderName(String? value) {
+    if (value == null) {
+      return '';
+    } else if (value.contains('google')) {
       return 'google';
     } else if (value.contains('apple')) {
       return 'apple';
     } else {
-      return value;
+      return '';
     }
   }
 

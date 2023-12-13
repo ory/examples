@@ -11,10 +11,11 @@ sealed class LoginEvent extends Equatable {
 
 final class CreateLoginFlow extends LoginEvent {
   final String aal;
+  final bool refresh;
 
-  CreateLoginFlow({required this.aal});
+  CreateLoginFlow({this.refresh = false, required this.aal});
   @override
-  List<Object> get props => [aal];
+  List<Object> get props => [refresh, aal];
 }
 
 class ChangeNodeValue extends LoginEvent {

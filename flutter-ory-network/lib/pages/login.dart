@@ -12,25 +12,74 @@ import '../widgets/helpers.dart';
 import 'registration.dart';
 
 class LoginPage extends StatelessWidget {
+  final bool isSessionRefresh;
   final String aal;
-  const LoginPage({super.key, required this.aal});
+
+  const LoginPage(
+      {super.key, this.isSessionRefresh = false, required this.aal});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: BlocProvider(
-          create: (context) => LoginBloc(
-              authBloc: context.read<AuthBloc>(),
-              repository: RepositoryProvider.of<AuthRepository>(context))
-            ..add(CreateLoginFlow(aal: aal)),
-          child: const LoginForm()),
+    return BlocListener<AuthBloc, AuthState>(
+      // navigate to previous page only if the user refreshed the session
+      listenWhen: (previous, current) {
+        final previousSession =
+            previous.mapOrNull(authenticated: (value) => value.session);
+        final currentSession =
+            current.mapOrNull(authenticated: (value) => value.session);
+        return previousSession != currentSession &&
+            previousSession != null &&
+            currentSession != null &&
+            isSessionRefresh;
+      },
+      listener: (context, state) {
+        Navigator.of(context).pop(true);
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: !isSessionRefresh,
+        appBar: isSessionRefresh
+            ? AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leadingWidth: 72,
+                toolbarHeight: 72,
+                // use row to avoid force resizing of leading widget
+                leading: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 32, top: 32),
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                  width: 1, color: const Color(0xFFE2E8F0))),
+                          child: const Icon(Icons.arrow_back, size: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ))
+            : null,
+        body: BlocProvider(
+            create: (context) => LoginBloc(
+                authBloc: context.read<AuthBloc>(),
+                repository: RepositoryProvider.of<AuthRepository>(context))
+              ..add(CreateLoginFlow(aal: aal, refresh: isSessionRefresh)),
+            child: LoginForm(isSessionRefresh: isSessionRefresh)),
+      ),
     );
   }
 }
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
+  final bool isSessionRefresh;
+
+  const LoginForm({super.key, this.isSessionRefresh = false});
 
   @override
   Widget build(BuildContext context) {
@@ -78,31 +127,32 @@ class LoginForm extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    //status bar height + padding
-                    top: MediaQuery.of(context).viewPadding.top + 48),
-                child: Image.asset(
-                  'assets/images/ory_logo.png',
-                  width: 70,
+              if (!isSessionRefresh)
+                Padding(
+                  padding: EdgeInsets.only(
+                      //status bar height + padding
+                      top: MediaQuery.of(context).viewPadding.top + 48),
+                  child: Image.asset(
+                    'assets/images/ory_logo.png',
+                    width: 70,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
               // show header depending on auth state
-              BlocSelector<AuthBloc, AuthState, bool>(
-                bloc: (context).read<AuthBloc>(),
-                selector: (AuthState state) =>
-                    state.status == AuthStatus.aal2Requested,
-                builder: (BuildContext context, bool boolState) {
-                  return Text(
-                      boolState ? 'Two-Factor Authentication' : 'Sign in',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          height: 1.5,
-                          fontSize: 18));
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: BlocSelector<AuthBloc, AuthState, bool>(
+                  bloc: (context).read<AuthBloc>(),
+                  selector: (AuthState state) =>
+                      state.status == AuthStatus.aal2Requested,
+                  builder: (BuildContext context, bool boolState) {
+                    return Text(
+                        boolState ? 'Two-Factor Authentication' : 'Sign in',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            height: 1.5,
+                            fontSize: 18));
+                  },
+                ),
               ),
 
               if (oidcNodes.isNotEmpty)
@@ -138,7 +188,7 @@ class LoginForm extends StatelessWidget {
                   selector: (AuthState state) =>
                       state.status == AuthStatus.aal2Requested,
                   builder: (BuildContext context, bool isAal2Requested) {
-                    if (isAal2Requested) {
+                    if (isAal2Requested || isSessionRefresh) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [

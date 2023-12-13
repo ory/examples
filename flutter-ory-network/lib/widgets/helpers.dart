@@ -8,6 +8,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ory_client/ory_client.dart';
 
+import 'nodes/image.dart';
 import 'nodes/input.dart';
 import 'nodes/input_submit.dart';
 import 'nodes/text.dart';
@@ -48,27 +49,32 @@ buildGroup<T extends Bloc>(
     void Function(BuildContext, UiNodeGroupEnum, String, String)
         onInputSubmit) {
   final formKey = GlobalKey<FormState>();
-  return Form(
-    key: formKey,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: ((BuildContext context, index) {
-              final attributes = nodes[index].attributes.oneOf;
-              if (attributes.isType(UiNodeInputAttributes)) {
-                return buildInputNode<T>(context, formKey, nodes[index],
-                    onInputChange, onInputSubmit);
-              } else if (attributes.isType(UiNodeTextAttributes)) {
-                return TextNode(node: nodes[index]);
-              } else {
-                return Container();
-              }
-            }),
-            itemCount: nodes.length),
-      ],
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 0),
+    child: Form(
+      key: formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: ((BuildContext context, index) {
+                final attributes = nodes[index].attributes.oneOf;
+                if (attributes.isType(UiNodeInputAttributes)) {
+                  return buildInputNode<T>(context, formKey, nodes[index],
+                      onInputChange, onInputSubmit);
+                } else if (attributes.isType(UiNodeTextAttributes)) {
+                  return TextNode(node: nodes[index]);
+                } else if (attributes.isType(UiNodeImageAttributes)) {
+                  return ImageNode(node: nodes[index]);
+                } else {
+                  return Container();
+                }
+              }),
+              itemCount: nodes.length),
+        ],
+      ),
     ),
   );
 }
@@ -121,6 +127,8 @@ List<UiNode> getNodesOfGroup(UiNodeGroupEnum group, BuiltList<UiNode> nodes) {
           } else {
             return true;
           }
+        } else {
+          return true;
         }
       }
     }

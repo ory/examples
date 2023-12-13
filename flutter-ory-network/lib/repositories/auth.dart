@@ -39,8 +39,9 @@ class AuthRepository {
     return session;
   }
 
-  Future<LoginFlow> createLoginFlow({required String aal}) async {
-    final flow = await service.createLoginFlow(aal: aal);
+  Future<LoginFlow> createLoginFlow(
+      {required String aal, required bool refresh}) async {
+    final flow = await service.createLoginFlow(aal: aal, refresh: refresh);
     return flow;
   }
 
@@ -147,9 +148,9 @@ class AuthRepository {
       }
     }
     // submit login
-    final login = await service.updateLoginFlow(
+    final session = await service.updateLoginFlow(
         flowId: flowId, group: group, value: body);
-    return login.session;
+    return session;
   }
 
   Map _getMapFromJWT(String splittedToken) {

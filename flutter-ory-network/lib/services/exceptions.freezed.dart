@@ -21,37 +21,42 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CustomException<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
     required TResult Function(T flow) badRequest,
     required TResult Function() unauthorized,
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
-    required TResult Function(String? message) unknown,
+    required TResult Function(String message) unknown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
     TResult? Function(T flow)? badRequest,
     TResult? Function()? unauthorized,
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
-    TResult? Function(String? message)? unknown,
+    TResult? Function(String message)? unknown,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
     TResult Function(T flow)? badRequest,
     TResult Function()? unauthorized,
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
-    TResult Function(String? message)? unknown,
+    TResult Function(String message)? unknown,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
     required TResult Function(BadRequestException<T> value) badRequest,
     required TResult Function(UnauthorizedException<T> value) unauthorized,
     required TResult Function(FlowExpiredException<T> value) flowExpired,
@@ -64,6 +69,8 @@ mixin _$CustomException<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult? Function(BadRequestException<T> value)? badRequest,
     TResult? Function(UnauthorizedException<T> value)? unauthorized,
     TResult? Function(FlowExpiredException<T> value)? flowExpired,
@@ -76,6 +83,8 @@ mixin _$CustomException<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult Function(BadRequestException<T> value)? badRequest,
     TResult Function(UnauthorizedException<T> value)? unauthorized,
     TResult Function(FlowExpiredException<T> value)? flowExpired,
@@ -105,6 +114,196 @@ class _$CustomExceptionCopyWithImpl<T, $Res, $Val extends CustomException<T>>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$SessionRefreshRequiredExceptionImplCopyWith<T, $Res> {
+  factory _$$SessionRefreshRequiredExceptionImplCopyWith(
+          _$SessionRefreshRequiredExceptionImpl<T> value,
+          $Res Function(_$SessionRefreshRequiredExceptionImpl<T>) then) =
+      __$$SessionRefreshRequiredExceptionImplCopyWithImpl<T, $Res>;
+  @useResult
+  $Res call({String? message});
+}
+
+/// @nodoc
+class __$$SessionRefreshRequiredExceptionImplCopyWithImpl<T, $Res>
+    extends _$CustomExceptionCopyWithImpl<T, $Res,
+        _$SessionRefreshRequiredExceptionImpl<T>>
+    implements _$$SessionRefreshRequiredExceptionImplCopyWith<T, $Res> {
+  __$$SessionRefreshRequiredExceptionImplCopyWithImpl(
+      _$SessionRefreshRequiredExceptionImpl<T> _value,
+      $Res Function(_$SessionRefreshRequiredExceptionImpl<T>) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = freezed,
+  }) {
+    return _then(_$SessionRefreshRequiredExceptionImpl<T>(
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SessionRefreshRequiredExceptionImpl<T>
+    extends SessionRefreshRequiredException<T> with DiagnosticableTreeMixin {
+  const _$SessionRefreshRequiredExceptionImpl({this.message}) : super._();
+
+  @override
+  final String? message;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CustomException<$T>.sessionRefreshRequired(message: $message)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty(
+          'type', 'CustomException<$T>.sessionRefreshRequired'))
+      ..add(DiagnosticsProperty('message', message));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SessionRefreshRequiredExceptionImpl<T> &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SessionRefreshRequiredExceptionImplCopyWith<T,
+          _$SessionRefreshRequiredExceptionImpl<T>>
+      get copyWith => __$$SessionRefreshRequiredExceptionImplCopyWithImpl<T,
+          _$SessionRefreshRequiredExceptionImpl<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
+    required TResult Function(T flow) badRequest,
+    required TResult Function() unauthorized,
+    required TResult Function(String flowId, String? message) flowExpired,
+    required TResult Function(Session? session) twoFactorAuthRequired,
+    required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String message) unknown,
+  }) {
+    return sessionRefreshRequired(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
+    TResult? Function(T flow)? badRequest,
+    TResult? Function()? unauthorized,
+    TResult? Function(String flowId, String? message)? flowExpired,
+    TResult? Function(Session? session)? twoFactorAuthRequired,
+    TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String message)? unknown,
+  }) {
+    return sessionRefreshRequired?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
+    TResult Function(T flow)? badRequest,
+    TResult Function()? unauthorized,
+    TResult Function(String flowId, String? message)? flowExpired,
+    TResult Function(Session? session)? twoFactorAuthRequired,
+    TResult Function(String url)? locationChangeRequired,
+    TResult Function(String message)? unknown,
+    required TResult orElse(),
+  }) {
+    if (sessionRefreshRequired != null) {
+      return sessionRefreshRequired(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
+    required TResult Function(BadRequestException<T> value) badRequest,
+    required TResult Function(UnauthorizedException<T> value) unauthorized,
+    required TResult Function(FlowExpiredException<T> value) flowExpired,
+    required TResult Function(TwoFactorAuthRequiredException<T> value)
+        twoFactorAuthRequired,
+    required TResult Function(LocationChangeRequiredException<T> value)
+        locationChangeRequired,
+    required TResult Function(UnknownException<T> value) unknown,
+  }) {
+    return sessionRefreshRequired(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
+    TResult? Function(BadRequestException<T> value)? badRequest,
+    TResult? Function(UnauthorizedException<T> value)? unauthorized,
+    TResult? Function(FlowExpiredException<T> value)? flowExpired,
+    TResult? Function(TwoFactorAuthRequiredException<T> value)?
+        twoFactorAuthRequired,
+    TResult? Function(LocationChangeRequiredException<T> value)?
+        locationChangeRequired,
+    TResult? Function(UnknownException<T> value)? unknown,
+  }) {
+    return sessionRefreshRequired?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
+    TResult Function(BadRequestException<T> value)? badRequest,
+    TResult Function(UnauthorizedException<T> value)? unauthorized,
+    TResult Function(FlowExpiredException<T> value)? flowExpired,
+    TResult Function(TwoFactorAuthRequiredException<T> value)?
+        twoFactorAuthRequired,
+    TResult Function(LocationChangeRequiredException<T> value)?
+        locationChangeRequired,
+    TResult Function(UnknownException<T> value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (sessionRefreshRequired != null) {
+      return sessionRefreshRequired(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SessionRefreshRequiredException<T> extends CustomException<T> {
+  const factory SessionRefreshRequiredException({final String? message}) =
+      _$SessionRefreshRequiredExceptionImpl<T>;
+  const SessionRefreshRequiredException._() : super._();
+
+  String? get message;
+  @JsonKey(ignore: true)
+  _$$SessionRefreshRequiredExceptionImplCopyWith<T,
+          _$SessionRefreshRequiredExceptionImpl<T>>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -182,12 +381,13 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
     required TResult Function(T flow) badRequest,
     required TResult Function() unauthorized,
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
-    required TResult Function(String? message) unknown,
+    required TResult Function(String message) unknown,
   }) {
     return badRequest(flow);
   }
@@ -195,12 +395,13 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
     TResult? Function(T flow)? badRequest,
     TResult? Function()? unauthorized,
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
-    TResult? Function(String? message)? unknown,
+    TResult? Function(String message)? unknown,
   }) {
     return badRequest?.call(flow);
   }
@@ -208,12 +409,13 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
     TResult Function(T flow)? badRequest,
     TResult Function()? unauthorized,
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
-    TResult Function(String? message)? unknown,
+    TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
     if (badRequest != null) {
@@ -225,6 +427,8 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
     required TResult Function(BadRequestException<T> value) badRequest,
     required TResult Function(UnauthorizedException<T> value) unauthorized,
     required TResult Function(FlowExpiredException<T> value) flowExpired,
@@ -240,6 +444,8 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult? Function(BadRequestException<T> value)? badRequest,
     TResult? Function(UnauthorizedException<T> value)? unauthorized,
     TResult? Function(FlowExpiredException<T> value)? flowExpired,
@@ -255,6 +461,8 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult Function(BadRequestException<T> value)? badRequest,
     TResult Function(UnauthorizedException<T> value)? unauthorized,
     TResult Function(FlowExpiredException<T> value)? flowExpired,
@@ -333,12 +541,13 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
     required TResult Function(T flow) badRequest,
     required TResult Function() unauthorized,
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
-    required TResult Function(String? message) unknown,
+    required TResult Function(String message) unknown,
   }) {
     return unauthorized();
   }
@@ -346,12 +555,13 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
     TResult? Function(T flow)? badRequest,
     TResult? Function()? unauthorized,
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
-    TResult? Function(String? message)? unknown,
+    TResult? Function(String message)? unknown,
   }) {
     return unauthorized?.call();
   }
@@ -359,12 +569,13 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
     TResult Function(T flow)? badRequest,
     TResult Function()? unauthorized,
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
-    TResult Function(String? message)? unknown,
+    TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
     if (unauthorized != null) {
@@ -376,6 +587,8 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
     required TResult Function(BadRequestException<T> value) badRequest,
     required TResult Function(UnauthorizedException<T> value) unauthorized,
     required TResult Function(FlowExpiredException<T> value) flowExpired,
@@ -391,6 +604,8 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult? Function(BadRequestException<T> value)? badRequest,
     TResult? Function(UnauthorizedException<T> value)? unauthorized,
     TResult? Function(FlowExpiredException<T> value)? flowExpired,
@@ -406,6 +621,8 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult Function(BadRequestException<T> value)? badRequest,
     TResult Function(UnauthorizedException<T> value)? unauthorized,
     TResult Function(FlowExpiredException<T> value)? flowExpired,
@@ -514,12 +731,13 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
     required TResult Function(T flow) badRequest,
     required TResult Function() unauthorized,
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
-    required TResult Function(String? message) unknown,
+    required TResult Function(String message) unknown,
   }) {
     return flowExpired(flowId, message);
   }
@@ -527,12 +745,13 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
     TResult? Function(T flow)? badRequest,
     TResult? Function()? unauthorized,
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
-    TResult? Function(String? message)? unknown,
+    TResult? Function(String message)? unknown,
   }) {
     return flowExpired?.call(flowId, message);
   }
@@ -540,12 +759,13 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
     TResult Function(T flow)? badRequest,
     TResult Function()? unauthorized,
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
-    TResult Function(String? message)? unknown,
+    TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
     if (flowExpired != null) {
@@ -557,6 +777,8 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
     required TResult Function(BadRequestException<T> value) badRequest,
     required TResult Function(UnauthorizedException<T> value) unauthorized,
     required TResult Function(FlowExpiredException<T> value) flowExpired,
@@ -572,6 +794,8 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult? Function(BadRequestException<T> value)? badRequest,
     TResult? Function(UnauthorizedException<T> value)? unauthorized,
     TResult? Function(FlowExpiredException<T> value)? flowExpired,
@@ -587,6 +811,8 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult Function(BadRequestException<T> value)? badRequest,
     TResult Function(UnauthorizedException<T> value)? unauthorized,
     TResult Function(FlowExpiredException<T> value)? flowExpired,
@@ -696,12 +922,13 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
     required TResult Function(T flow) badRequest,
     required TResult Function() unauthorized,
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
-    required TResult Function(String? message) unknown,
+    required TResult Function(String message) unknown,
   }) {
     return twoFactorAuthRequired(session);
   }
@@ -709,12 +936,13 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
     TResult? Function(T flow)? badRequest,
     TResult? Function()? unauthorized,
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
-    TResult? Function(String? message)? unknown,
+    TResult? Function(String message)? unknown,
   }) {
     return twoFactorAuthRequired?.call(session);
   }
@@ -722,12 +950,13 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
     TResult Function(T flow)? badRequest,
     TResult Function()? unauthorized,
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
-    TResult Function(String? message)? unknown,
+    TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
     if (twoFactorAuthRequired != null) {
@@ -739,6 +968,8 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
     required TResult Function(BadRequestException<T> value) badRequest,
     required TResult Function(UnauthorizedException<T> value) unauthorized,
     required TResult Function(FlowExpiredException<T> value) flowExpired,
@@ -754,6 +985,8 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult? Function(BadRequestException<T> value)? badRequest,
     TResult? Function(UnauthorizedException<T> value)? unauthorized,
     TResult? Function(FlowExpiredException<T> value)? flowExpired,
@@ -769,6 +1002,8 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult Function(BadRequestException<T> value)? badRequest,
     TResult Function(UnauthorizedException<T> value)? unauthorized,
     TResult Function(FlowExpiredException<T> value)? flowExpired,
@@ -877,12 +1112,13 @@ class _$LocationChangeRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
     required TResult Function(T flow) badRequest,
     required TResult Function() unauthorized,
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
-    required TResult Function(String? message) unknown,
+    required TResult Function(String message) unknown,
   }) {
     return locationChangeRequired(url);
   }
@@ -890,12 +1126,13 @@ class _$LocationChangeRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
     TResult? Function(T flow)? badRequest,
     TResult? Function()? unauthorized,
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
-    TResult? Function(String? message)? unknown,
+    TResult? Function(String message)? unknown,
   }) {
     return locationChangeRequired?.call(url);
   }
@@ -903,12 +1140,13 @@ class _$LocationChangeRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
     TResult Function(T flow)? badRequest,
     TResult Function()? unauthorized,
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
-    TResult Function(String? message)? unknown,
+    TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
     if (locationChangeRequired != null) {
@@ -920,6 +1158,8 @@ class _$LocationChangeRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
     required TResult Function(BadRequestException<T> value) badRequest,
     required TResult Function(UnauthorizedException<T> value) unauthorized,
     required TResult Function(FlowExpiredException<T> value) flowExpired,
@@ -935,6 +1175,8 @@ class _$LocationChangeRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult? Function(BadRequestException<T> value)? badRequest,
     TResult? Function(UnauthorizedException<T> value)? unauthorized,
     TResult? Function(FlowExpiredException<T> value)? flowExpired,
@@ -950,6 +1192,8 @@ class _$LocationChangeRequiredExceptionImpl<T>
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult Function(BadRequestException<T> value)? badRequest,
     TResult Function(UnauthorizedException<T> value)? unauthorized,
     TResult Function(FlowExpiredException<T> value)? flowExpired,
@@ -985,7 +1229,7 @@ abstract class _$$UnknownExceptionImplCopyWith<T, $Res> {
           $Res Function(_$UnknownExceptionImpl<T>) then) =
       __$$UnknownExceptionImplCopyWithImpl<T, $Res>;
   @useResult
-  $Res call({String? message});
+  $Res call({String message});
 }
 
 /// @nodoc
@@ -999,13 +1243,13 @@ class __$$UnknownExceptionImplCopyWithImpl<T, $Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = freezed,
+    Object? message = null,
   }) {
     return _then(_$UnknownExceptionImpl<T>(
-      message: freezed == message
+      message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
     ));
   }
 }
@@ -1020,7 +1264,7 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
 
   @override
   @JsonKey()
-  final String? message;
+  final String message;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -1056,12 +1300,13 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
     required TResult Function(T flow) badRequest,
     required TResult Function() unauthorized,
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
-    required TResult Function(String? message) unknown,
+    required TResult Function(String message) unknown,
   }) {
     return unknown(message);
   }
@@ -1069,12 +1314,13 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
     TResult? Function(T flow)? badRequest,
     TResult? Function()? unauthorized,
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
-    TResult? Function(String? message)? unknown,
+    TResult? Function(String message)? unknown,
   }) {
     return unknown?.call(message);
   }
@@ -1082,12 +1328,13 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
     TResult Function(T flow)? badRequest,
     TResult Function()? unauthorized,
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
-    TResult Function(String? message)? unknown,
+    TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -1099,6 +1346,8 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
     required TResult Function(BadRequestException<T> value) badRequest,
     required TResult Function(UnauthorizedException<T> value) unauthorized,
     required TResult Function(FlowExpiredException<T> value) flowExpired,
@@ -1114,6 +1363,8 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult? Function(BadRequestException<T> value)? badRequest,
     TResult? Function(UnauthorizedException<T> value)? unauthorized,
     TResult? Function(FlowExpiredException<T> value)? flowExpired,
@@ -1129,6 +1380,8 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
     TResult Function(BadRequestException<T> value)? badRequest,
     TResult Function(UnauthorizedException<T> value)? unauthorized,
     TResult Function(FlowExpiredException<T> value)? flowExpired,
@@ -1147,11 +1400,11 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
 }
 
 abstract class UnknownException<T> extends CustomException<T> {
-  const factory UnknownException({final String? message}) =
+  const factory UnknownException({final String message}) =
       _$UnknownExceptionImpl<T>;
   const UnknownException._() : super._();
 
-  String? get message;
+  String get message;
   @JsonKey(ignore: true)
   _$$UnknownExceptionImplCopyWith<T, _$UnknownExceptionImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;

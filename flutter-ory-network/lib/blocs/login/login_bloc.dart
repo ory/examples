@@ -31,9 +31,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       CreateLoginFlow event, Emitter<LoginState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, message: null));
-
-      final loginFlow = await repository.createLoginFlow(aal: event.aal);
-
+      final loginFlow = await repository.createLoginFlow(
+          aal: event.aal, refresh: event.refresh);
       emit(state.copyWith(loginFlow: loginFlow, isLoading: false));
     } on UnknownException catch (e) {
       emit(state.copyWith(isLoading: false, message: e.message));
@@ -102,6 +101,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           value: event.value,
           nodes: state.loginFlow!.ui.nodes.toList());
       authBloc.add(AddSession(session: session));
+      emit(state.copyWith(isLoading: false));
     } on BadRequestException<LoginFlow> catch (e) {
       emit(state.copyWith(loginFlow: e.flow, isLoading: false));
     } on LocationChangeRequiredException catch (e) {

@@ -44,8 +44,9 @@ dependencies:
   dotenv: ^4.1.0
   google_fonts: ^5.1.0
   built_value: ^8.6.2
-  deep_collection: ^1.0.2
   collection: ^1.17.2
+  bloc_concurrency: ^0.2.2
+  deep_collection: ^1.0.2
   built_collection: ^5.1.1
   google_sign_in: ^6.1.5
   sign_in_with_apple: ^5.0.0
@@ -80,7 +81,15 @@ flutter:
   assets:
     - .env
     - assets/images/
+    - assets/images/1.5x/
+    - assets/images/2.0x/
+    - assets/images/3.0x/
+    - assets/images/4.0x/
     - assets/icons/
+    - assets/icons/1.5x/
+    - assets/icons/2.0x/
+    - assets/icons/3.0x/
+    - assets/icons/4.0x/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

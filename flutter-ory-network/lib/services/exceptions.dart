@@ -10,6 +10,8 @@ part 'exceptions.freezed.dart';
 @freezed
 sealed class CustomException<T> with _$CustomException {
   const CustomException._();
+  const factory CustomException.sessionRefreshRequired({String? message}) =
+      SessionRefreshRequiredException;
   const factory CustomException.badRequest({required T flow}) =
       BadRequestException;
   const factory CustomException.unauthorized() = UnauthorizedException;
@@ -21,5 +23,5 @@ sealed class CustomException<T> with _$CustomException {
       LocationChangeRequiredException;
   const factory CustomException.unknown(
       {@Default('An error occured. Please try again later.')
-      String? message}) = UnknownException;
+      String message}) = UnknownException;
 }
