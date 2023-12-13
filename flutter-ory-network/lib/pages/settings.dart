@@ -10,10 +10,12 @@ import '../blocs/auth/auth_bloc.dart';
 import '../blocs/settings/settings_bloc.dart';
 import '../repositories/auth.dart';
 import '../widgets/helpers.dart';
+import 'home.dart';
 import 'login.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+  final String? flowId;
+  const SettingsPage({super.key, this.flowId});
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +31,36 @@ class SettingsPage extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 32, top: 32),
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                            width: 1, color: const Color(0xFFE2E8F0))),
-                    child: const Icon(Icons.arrow_back, size: 16),
-                  ),
-                ),
+                child: !Navigator.of(context).canPop()
+                    ? GestureDetector(
+                        onTap: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const HomePage())),
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                  width: 1, color: const Color(0xFFE2E8F0))),
+                          child: const Icon(Icons.cancel, size: 16),
+                        ),
+                      )
+                    : GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                  width: 1, color: const Color(0xFFE2E8F0))),
+                          child: const Icon(Icons.arrow_back, size: 16),
+                        ),
+                      ),
               ),
             ],
           )),
@@ -49,7 +68,9 @@ class SettingsPage extends StatelessWidget {
           create: (context) => SettingsBloc(
               authBloc: context.read<AuthBloc>(),
               repository: SettingsRepository(service: service))
-            ..add(CreateSettingsFlow()),
+            ..add(flowId != null
+                ? GetSettingsFlow(flowId: flowId!)
+                : CreateSettingsFlow()),
           child: const SettingsForm()),
     );
   }
@@ -65,17 +86,21 @@ class SettingsForm extends StatelessWidget {
         listeners: [
           BlocListener(
             bloc: settingsBloc,
-            listenWhen: (SettingsState previous, SettingsState current) =>
-                previous.isSessionRefreshRequired !=
-                current.isSessionRefreshRequired,
+            listenWhen: (SettingsState previous, SettingsState current) {
+              final wasSessionRefreshRequested =
+                  isSessionRefreshRequired(previous.conditions);
+              final isSessionRefreshRequested =
+                  isSessionRefreshRequired(current.conditions);
+              return wasSessionRefreshRequested != isSessionRefreshRequested;
+            },
             listener: (BuildContext context, SettingsState state) async {
               // if session needs to be refreshed, navigate to login flow screen
-              if (state.isSessionRefreshRequired) {
+              if (isSessionRefreshRequired(state.conditions)) {
                 await Navigator.push(
                     context,
                     MaterialPageRoute<bool?>(
-                        builder: (context) => const LoginPage(
-                              isSessionRefresh: true,
+                        builder: (context) => LoginPage(
+                              conditions: [SessionRefreshRequested()],
                               aal: 'aal1',
                             ))).then((value) {
                   // retry updating settings when session was refreshed
@@ -103,7 +128,7 @@ class SettingsForm extends StatelessWidget {
                   !current.isLoading &&
                   current.settingsFlow?.ui.messages !=
                       previous.settingsFlow?.ui.messages &&
-                  !current.isSessionRefreshRequired,
+                  !isSessionRefreshRequired(current.conditions),
               listener: (BuildContext context, SettingsState state) {
                 if (state.settingsFlow!.ui.messages != null) {
                   // for simplicity, we will only show the first message in snackbar

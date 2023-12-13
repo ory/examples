@@ -55,9 +55,13 @@ class UpdateLoginFlow extends LoginEvent {
   final UiNodeGroupEnum group;
   final String name;
   final String value;
+  final bool recoveryRequested;
 
   UpdateLoginFlow(
-      {required this.group, required this.name, required this.value});
+      {required this.group,
+      required this.name,
+      required this.value,
+      this.recoveryRequested = false});
   @override
-  List<Object> get props => [group, name, value];
+  List<Object> get props => [group, name, value, recoveryRequested];
 }

@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RecoveryState {
   RecoveryFlow? get recoveryFlow => throw _privateConstructorUsedError;
   dynamic get isLoading => throw _privateConstructorUsedError;
+  String? get settingsFlowId => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +32,11 @@ abstract class $RecoveryStateCopyWith<$Res> {
           RecoveryState value, $Res Function(RecoveryState) then) =
       _$RecoveryStateCopyWithImpl<$Res, RecoveryState>;
   @useResult
-  $Res call({RecoveryFlow? recoveryFlow, dynamic isLoading, String? message});
+  $Res call(
+      {RecoveryFlow? recoveryFlow,
+      dynamic isLoading,
+      String? settingsFlowId,
+      String? message});
 }
 
 /// @nodoc
@@ -49,6 +54,7 @@ class _$RecoveryStateCopyWithImpl<$Res, $Val extends RecoveryState>
   $Res call({
     Object? recoveryFlow = freezed,
     Object? isLoading = freezed,
+    Object? settingsFlowId = freezed,
     Object? message = freezed,
   }) {
     return _then(_value.copyWith(
@@ -60,6 +66,10 @@ class _$RecoveryStateCopyWithImpl<$Res, $Val extends RecoveryState>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      settingsFlowId: freezed == settingsFlowId
+          ? _value.settingsFlowId
+          : settingsFlowId // ignore: cast_nullable_to_non_nullable
+              as String?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -76,7 +86,11 @@ abstract class _$$RecoveryStateImplCopyWith<$Res>
       __$$RecoveryStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({RecoveryFlow? recoveryFlow, dynamic isLoading, String? message});
+  $Res call(
+      {RecoveryFlow? recoveryFlow,
+      dynamic isLoading,
+      String? settingsFlowId,
+      String? message});
 }
 
 /// @nodoc
@@ -92,6 +106,7 @@ class __$$RecoveryStateImplCopyWithImpl<$Res>
   $Res call({
     Object? recoveryFlow = freezed,
     Object? isLoading = freezed,
+    Object? settingsFlowId = freezed,
     Object? message = freezed,
   }) {
     return _then(_$RecoveryStateImpl(
@@ -100,6 +115,10 @@ class __$$RecoveryStateImplCopyWithImpl<$Res>
           : recoveryFlow // ignore: cast_nullable_to_non_nullable
               as RecoveryFlow?,
       isLoading: freezed == isLoading ? _value.isLoading! : isLoading,
+      settingsFlowId: freezed == settingsFlowId
+          ? _value.settingsFlowId
+          : settingsFlowId // ignore: cast_nullable_to_non_nullable
+              as String?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -112,7 +131,10 @@ class __$$RecoveryStateImplCopyWithImpl<$Res>
 
 class _$RecoveryStateImpl implements _RecoveryState {
   const _$RecoveryStateImpl(
-      {this.recoveryFlow, this.isLoading = false, this.message});
+      {this.recoveryFlow,
+      this.isLoading = false,
+      this.settingsFlowId,
+      this.message});
 
   @override
   final RecoveryFlow? recoveryFlow;
@@ -120,11 +142,13 @@ class _$RecoveryStateImpl implements _RecoveryState {
   @JsonKey()
   final dynamic isLoading;
   @override
+  final String? settingsFlowId;
+  @override
   final String? message;
 
   @override
   String toString() {
-    return 'RecoveryState(recoveryFlow: $recoveryFlow, isLoading: $isLoading, message: $message)';
+    return 'RecoveryState(recoveryFlow: $recoveryFlow, isLoading: $isLoading, settingsFlowId: $settingsFlowId, message: $message)';
   }
 
   @override
@@ -135,12 +159,14 @@ class _$RecoveryStateImpl implements _RecoveryState {
             (identical(other.recoveryFlow, recoveryFlow) ||
                 other.recoveryFlow == recoveryFlow) &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            (identical(other.settingsFlowId, settingsFlowId) ||
+                other.settingsFlowId == settingsFlowId) &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, recoveryFlow,
-      const DeepCollectionEquality().hash(isLoading), message);
+      const DeepCollectionEquality().hash(isLoading), settingsFlowId, message);
 
   @JsonKey(ignore: true)
   @override
@@ -153,12 +179,15 @@ abstract class _RecoveryState implements RecoveryState {
   const factory _RecoveryState(
       {final RecoveryFlow? recoveryFlow,
       final dynamic isLoading,
+      final String? settingsFlowId,
       final String? message}) = _$RecoveryStateImpl;
 
   @override
   RecoveryFlow? get recoveryFlow;
   @override
   dynamic get isLoading;
+  @override
+  String? get settingsFlowId;
   @override
   String? get message;
   @override

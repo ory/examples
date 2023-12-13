@@ -5,9 +5,11 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ory_client/ory_client.dart';
 
+import '../blocs/auth/auth_bloc.dart';
 import 'nodes/image.dart';
 import 'nodes/input.dart';
 import 'nodes/input_submit.dart';
@@ -156,4 +158,16 @@ UiNodeInputAttributes asInputAttributes(UiNode node) {
     throw ArgumentError(
         'attributes of this node are not of type UiNodeInputAttributes');
   }
+}
+
+bool isSessionRefreshRequired(List<Condition> conditions) {
+  final sessionRefreshCondition = conditions
+      .firstWhereOrNull((element) => element is SessionRefreshRequested);
+  return sessionRefreshCondition != null;
+}
+
+bool isRecoveryRequired(List<Condition> conditions) {
+  final recoveryCondition =
+      conditions.firstWhereOrNull((element) => element is RecoveryRequested);
+  return recoveryCondition != null;
 }

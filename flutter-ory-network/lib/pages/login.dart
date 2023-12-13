@@ -13,14 +13,14 @@ import 'recovery.dart';
 import 'registration.dart';
 
 class LoginPage extends StatelessWidget {
-  final bool isSessionRefresh;
+  final List<Condition> conditions;
   final String aal;
 
-  const LoginPage(
-      {super.key, this.isSessionRefresh = false, required this.aal});
+  const LoginPage({super.key, this.conditions = const [], required this.aal});
 
   @override
   Widget build(BuildContext context) {
+    final sessionRefreshRequested = isSessionRefreshRequired(conditions);
     return BlocListener<AuthBloc, AuthState>(
       // navigate to previous page only if the user refreshed the session
       listenWhen: (previous, current) {
@@ -28,17 +28,18 @@ class LoginPage extends StatelessWidget {
             previous.mapOrNull(authenticated: (value) => value.session);
         final currentSession =
             current.mapOrNull(authenticated: (value) => value.session);
+        final sessionRefreshRequested = isSessionRefreshRequired(conditions);
         return previousSession != currentSession &&
             previousSession != null &&
             currentSession != null &&
-            isSessionRefresh;
+            sessionRefreshRequested;
       },
       listener: (context, state) {
         Navigator.of(context).pop(true);
       },
       child: Scaffold(
-        extendBodyBehindAppBar: !isSessionRefresh,
-        appBar: isSessionRefresh
+        extendBodyBehindAppBar: !sessionRefreshRequested,
+        appBar: sessionRefreshRequested
             ? AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -69,9 +70,10 @@ class LoginPage extends StatelessWidget {
         body: BlocProvider(
             create: (context) => LoginBloc(
                 authBloc: context.read<AuthBloc>(),
-                repository: RepositoryProvider.of<AuthRepository>(context))
-              ..add(CreateLoginFlow(aal: aal, refresh: isSessionRefresh)),
-            child: LoginForm(isSessionRefresh: isSessionRefresh)),
+                repository: RepositoryProvider.of<AuthRepository>(context),
+                conditions: conditions)
+              ..add(CreateLoginFlow(aal: aal)),
+            child: LoginForm(isSessionRefresh: sessionRefreshRequested)),
       ),
     );
   }
@@ -84,15 +86,33 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginState>(
-      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
-      builder: (context, state) {
-        if (state.loginFlow != null) {
-          return _buildUi(context, state);
-        } else {
-          return buildFlowNotCreated(context, state.message);
-        }
+    return BlocListener<AuthBloc, AuthState>(
+      // listenWhen: (previous, current) {
+
+      //   final recoveryRequested = previous.mapOrNull(
+      //           aal2Requested: (state) => state.recoveryRequested) ??
+      //       false;
+      //   return recoveryRequested && current.status == AuthStatus.authenticated;
+      // },
+      listener: (context, state) {
+        // if (state.conditions.contains(Condition.recoveryRequested)) {
+        //   Navigator.of(context).pushAndRemoveUntil(
+        //       MaterialPageRoute<void>(
+        //           builder: (BuildContext context) => const SettingsPage()),
+        //       (Route<dynamic> route) => false);
+        // }
       },
+      child: BlocBuilder<LoginBloc, LoginState>(
+        buildWhen: (previous, current) =>
+            previous.isLoading != current.isLoading,
+        builder: (context, state) {
+          if (state.loginFlow != null) {
+            return _buildUi(context, state);
+          } else {
+            return buildFlowNotCreated(context, state.message);
+          }
+        },
+      ),
     );
   }
 
@@ -179,7 +199,7 @@ class LoginForm extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const RecoveryPage())),
-                            child: Text("Forgot password?"),
+                            child: const Text("Forgot password?"),
                           ),
                         ],
                       ),

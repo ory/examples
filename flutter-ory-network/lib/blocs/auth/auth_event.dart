@@ -11,14 +11,23 @@ sealed class AuthEvent extends Equatable {
 
 final class ChangeAuthStatus extends AuthEvent {
   final AuthStatus status;
+  final List<Condition> conditions;
   final Session? session;
 
-  ChangeAuthStatus({required this.status, this.session});
+  ChangeAuthStatus(
+      {required this.status, this.session, this.conditions = const []});
   @override
-  List<Object?> get props => [status, session];
+  List<Object?> get props => [status, session, conditions];
 }
 
-final class GetCurrentSessionInformation extends AuthEvent {}
+final class GetCurrentSessionInformation extends AuthEvent {
+  final List<Condition> conditions;
+
+  GetCurrentSessionInformation({this.conditions = const []});
+
+  @override
+  List<Object?> get props => [conditions];
+}
 
 final class RequireLocationChange extends AuthEvent {
   final String url;
@@ -30,10 +39,11 @@ final class RequireLocationChange extends AuthEvent {
 
 final class AddSession extends AuthEvent {
   final Session session;
+  final List<Condition> conditions;
 
-  AddSession({required this.session});
+  AddSession({required this.session, this.conditions = const []});
   @override
-  List<Object> get props => [session];
+  List<Object> get props => [session, conditions];
 }
 
 final class LogOut extends AuthEvent {}

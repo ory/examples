@@ -7,6 +7,7 @@ part of 'login_bloc.dart';
 sealed class LoginState with _$LoginState {
   const factory LoginState(
       {LoginFlow? loginFlow,
+      @Default([]) List<Condition> conditions,
       @Default(false) bool isLoading,
       String? message}) = _LoginState;
 }

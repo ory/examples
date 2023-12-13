@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ory_client/ory_client.dart';
+import 'package:ory_network_flutter/widgets/helpers.dart';
 
 import '../../repositories/auth.dart';
 import '../../services/exceptions.dart';
@@ -17,8 +19,13 @@ part 'login_bloc.freezed.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthBloc authBloc;
   final AuthRepository repository;
-  LoginBloc({required this.authBloc, required this.repository})
-      : super(const LoginState()) {
+  final List<Condition> conditions;
+
+  LoginBloc(
+      {required this.authBloc,
+      required this.repository,
+      this.conditions = const []})
+      : super(LoginState(conditions: conditions)) {
     on<CreateLoginFlow>(_onCreateLoginFlow);
     on<GetLoginFlow>(_onGetLoginFlow);
     on<ExchangeCodesForSessionToken>(_onExchangesCodeForSessionToken);
@@ -31,8 +38,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       CreateLoginFlow event, Emitter<LoginState> emit) async {
     try {
       emit(state.copyWith(isLoading: true, message: null));
-      final loginFlow = await repository.createLoginFlow(
-          aal: event.aal, refresh: event.refresh);
+      final refresh = isSessionRefreshRequired(state.conditions);
+      final loginFlow =
+          await repository.createLoginFlow(aal: event.aal, refresh: refresh);
       emit(state.copyWith(loginFlow: loginFlow, isLoading: false));
     } on UnknownException catch (e) {
       emit(state.copyWith(isLoading: false, message: e.message));
@@ -100,7 +108,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           name: event.name,
           value: event.value,
           nodes: state.loginFlow!.ui.nodes.toList());
-      authBloc.add(AddSession(session: session));
+
+      authBloc.add(AddSession(session: session, conditions: state.conditions));
       emit(state.copyWith(isLoading: false));
     } on BadRequestException<LoginFlow> catch (e) {
       emit(state.copyWith(loginFlow: e.flow, isLoading: false));
@@ -112,7 +121,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } on FlowExpiredException catch (e) {
       add(GetLoginFlow(flowId: e.flowId));
     } on TwoFactorAuthRequiredException catch (_) {
-      authBloc.add(ChangeAuthStatus(status: AuthStatus.aal2Requested));
+      authBloc.add(ChangeAuthStatus(
+          status: AuthStatus.aal2Requested, conditions: state.conditions));
     } on UnknownException catch (e) {
       emit(state.copyWith(isLoading: false, message: e.message));
     } catch (_) {

@@ -17,56 +17,78 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AuthState {
   AuthStatus get status => throw _privateConstructorUsedError;
+  List<Condition> get conditions => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        uninitialized,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        unauthenticated,
-    required TResult Function(AuthStatus status, Session session,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
+        uninitialized,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)
+        unauthenticated,
+    required TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
+            String? errorMessage)
         authenticated,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)
         aal2Requested,
-    required TResult Function(
-            AuthStatus status, String url, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            String url, bool isLoading, String? errorMessage)
         locationChangeRequired,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(AuthStatus status, Session session, bool isLoading,
+    TResult? Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult? Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(AuthStatus status, Session session, bool isLoading,
+    TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
     required TResult orElse(),
   }) =>
@@ -111,7 +133,11 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({AuthStatus status, bool isLoading, String? errorMessage});
+  $Res call(
+      {AuthStatus status,
+      List<Condition> conditions,
+      bool isLoading,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -128,6 +154,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   @override
   $Res call({
     Object? status = null,
+    Object? conditions = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -136,6 +163,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as AuthStatus,
+      conditions: null == conditions
+          ? _value.conditions
+          : conditions // ignore: cast_nullable_to_non_nullable
+              as List<Condition>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -156,7 +187,11 @@ abstract class _$$AuthUninitializedImplCopyWith<$Res>
       __$$AuthUninitializedImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AuthStatus status, bool isLoading, String? errorMessage});
+  $Res call(
+      {AuthStatus status,
+      List<Condition> conditions,
+      bool isLoading,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -171,6 +206,7 @@ class __$$AuthUninitializedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
+    Object? conditions = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -179,6 +215,10 @@ class __$$AuthUninitializedImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as AuthStatus,
+      conditions: null == conditions
+          ? _value._conditions
+          : conditions // ignore: cast_nullable_to_non_nullable
+              as List<Condition>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -196,12 +236,23 @@ class __$$AuthUninitializedImplCopyWithImpl<$Res>
 class _$AuthUninitializedImpl implements AuthUninitialized {
   const _$AuthUninitializedImpl(
       {this.status = AuthStatus.uninitialized,
+      final List<Condition> conditions = const [],
       this.isLoading = false,
-      this.errorMessage});
+      this.errorMessage})
+      : _conditions = conditions;
 
   @override
   @JsonKey()
   final AuthStatus status;
+  final List<Condition> _conditions;
+  @override
+  @JsonKey()
+  List<Condition> get conditions {
+    if (_conditions is EqualUnmodifiableListView) return _conditions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_conditions);
+  }
+
   @override
   @JsonKey()
   final bool isLoading;
@@ -210,7 +261,7 @@ class _$AuthUninitializedImpl implements AuthUninitialized {
 
   @override
   String toString() {
-    return 'AuthState.uninitialized(status: $status, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'AuthState.uninitialized(status: $status, conditions: $conditions, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -219,6 +270,8 @@ class _$AuthUninitializedImpl implements AuthUninitialized {
         (other.runtimeType == runtimeType &&
             other is _$AuthUninitializedImpl &&
             (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality()
+                .equals(other._conditions, _conditions) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -226,7 +279,12 @@ class _$AuthUninitializedImpl implements AuthUninitialized {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, isLoading, errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      const DeepCollectionEquality().hash(_conditions),
+      isLoading,
+      errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -238,63 +296,84 @@ class _$AuthUninitializedImpl implements AuthUninitialized {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        uninitialized,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        unauthenticated,
-    required TResult Function(AuthStatus status, Session session,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
+        uninitialized,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)
+        unauthenticated,
+    required TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
+            String? errorMessage)
         authenticated,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)
         aal2Requested,
-    required TResult Function(
-            AuthStatus status, String url, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            String url, bool isLoading, String? errorMessage)
         locationChangeRequired,
   }) {
-    return uninitialized(status, isLoading, errorMessage);
+    return uninitialized(status, conditions, isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(AuthStatus status, Session session, bool isLoading,
+    TResult? Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult? Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
   }) {
-    return uninitialized?.call(status, isLoading, errorMessage);
+    return uninitialized?.call(status, conditions, isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(AuthStatus status, Session session, bool isLoading,
+    TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
     required TResult orElse(),
   }) {
     if (uninitialized != null) {
-      return uninitialized(status, isLoading, errorMessage);
+      return uninitialized(status, conditions, isLoading, errorMessage);
     }
     return orElse();
   }
@@ -344,11 +423,14 @@ class _$AuthUninitializedImpl implements AuthUninitialized {
 abstract class AuthUninitialized implements AuthState {
   const factory AuthUninitialized(
       {final AuthStatus status,
+      final List<Condition> conditions,
       final bool isLoading,
       final String? errorMessage}) = _$AuthUninitializedImpl;
 
   @override
   AuthStatus get status;
+  @override
+  List<Condition> get conditions;
   @override
   bool get isLoading;
   @override
@@ -367,7 +449,11 @@ abstract class _$$AuthUnauthenticatedImplCopyWith<$Res>
       __$$AuthUnauthenticatedImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AuthStatus status, bool isLoading, String? errorMessage});
+  $Res call(
+      {AuthStatus status,
+      List<Condition> conditions,
+      bool isLoading,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -382,6 +468,7 @@ class __$$AuthUnauthenticatedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
+    Object? conditions = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -390,6 +477,10 @@ class __$$AuthUnauthenticatedImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as AuthStatus,
+      conditions: null == conditions
+          ? _value._conditions
+          : conditions // ignore: cast_nullable_to_non_nullable
+              as List<Condition>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -407,12 +498,23 @@ class __$$AuthUnauthenticatedImplCopyWithImpl<$Res>
 class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
   const _$AuthUnauthenticatedImpl(
       {this.status = AuthStatus.unauthenticated,
+      final List<Condition> conditions = const [],
       this.isLoading = false,
-      this.errorMessage});
+      this.errorMessage})
+      : _conditions = conditions;
 
   @override
   @JsonKey()
   final AuthStatus status;
+  final List<Condition> _conditions;
+  @override
+  @JsonKey()
+  List<Condition> get conditions {
+    if (_conditions is EqualUnmodifiableListView) return _conditions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_conditions);
+  }
+
   @override
   @JsonKey()
   final bool isLoading;
@@ -421,7 +523,7 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
 
   @override
   String toString() {
-    return 'AuthState.unauthenticated(status: $status, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'AuthState.unauthenticated(status: $status, conditions: $conditions, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -430,6 +532,8 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
         (other.runtimeType == runtimeType &&
             other is _$AuthUnauthenticatedImpl &&
             (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality()
+                .equals(other._conditions, _conditions) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -437,7 +541,12 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, isLoading, errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      const DeepCollectionEquality().hash(_conditions),
+      isLoading,
+      errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -449,63 +558,84 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        uninitialized,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        unauthenticated,
-    required TResult Function(AuthStatus status, Session session,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
+        uninitialized,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)
+        unauthenticated,
+    required TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
+            String? errorMessage)
         authenticated,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)
         aal2Requested,
-    required TResult Function(
-            AuthStatus status, String url, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            String url, bool isLoading, String? errorMessage)
         locationChangeRequired,
   }) {
-    return unauthenticated(status, isLoading, errorMessage);
+    return unauthenticated(status, conditions, isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(AuthStatus status, Session session, bool isLoading,
+    TResult? Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult? Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
   }) {
-    return unauthenticated?.call(status, isLoading, errorMessage);
+    return unauthenticated?.call(status, conditions, isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(AuthStatus status, Session session, bool isLoading,
+    TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
-      return unauthenticated(status, isLoading, errorMessage);
+      return unauthenticated(status, conditions, isLoading, errorMessage);
     }
     return orElse();
   }
@@ -555,11 +685,14 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
 abstract class AuthUnauthenticated implements AuthState {
   const factory AuthUnauthenticated(
       {final AuthStatus status,
+      final List<Condition> conditions,
       final bool isLoading,
       final String? errorMessage}) = _$AuthUnauthenticatedImpl;
 
   @override
   AuthStatus get status;
+  @override
+  List<Condition> get conditions;
   @override
   bool get isLoading;
   @override
@@ -581,6 +714,8 @@ abstract class _$$AuthAuthenticatedImplCopyWith<$Res>
   $Res call(
       {AuthStatus status,
       Session session,
+      List<Condition> conditions,
+      bool recoveryRequested,
       bool isLoading,
       String? errorMessage});
 }
@@ -598,6 +733,8 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? session = null,
+    Object? conditions = null,
+    Object? recoveryRequested = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -610,6 +747,14 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
           ? _value.session
           : session // ignore: cast_nullable_to_non_nullable
               as Session,
+      conditions: null == conditions
+          ? _value._conditions
+          : conditions // ignore: cast_nullable_to_non_nullable
+              as List<Condition>,
+      recoveryRequested: null == recoveryRequested
+          ? _value.recoveryRequested
+          : recoveryRequested // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -628,14 +773,29 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   const _$AuthAuthenticatedImpl(
       {this.status = AuthStatus.authenticated,
       required this.session,
+      final List<Condition> conditions = const [],
+      this.recoveryRequested = false,
       this.isLoading = false,
-      this.errorMessage});
+      this.errorMessage})
+      : _conditions = conditions;
 
   @override
   @JsonKey()
   final AuthStatus status;
   @override
   final Session session;
+  final List<Condition> _conditions;
+  @override
+  @JsonKey()
+  List<Condition> get conditions {
+    if (_conditions is EqualUnmodifiableListView) return _conditions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_conditions);
+  }
+
+  @override
+  @JsonKey()
+  final bool recoveryRequested;
   @override
   @JsonKey()
   final bool isLoading;
@@ -644,7 +804,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
 
   @override
   String toString() {
-    return 'AuthState.authenticated(status: $status, session: $session, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'AuthState.authenticated(status: $status, session: $session, conditions: $conditions, recoveryRequested: $recoveryRequested, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -654,6 +814,10 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
             other is _$AuthAuthenticatedImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.session, session) || other.session == session) &&
+            const DeepCollectionEquality()
+                .equals(other._conditions, _conditions) &&
+            (identical(other.recoveryRequested, recoveryRequested) ||
+                other.recoveryRequested == recoveryRequested) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -661,8 +825,14 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, status, session, isLoading, errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      session,
+      const DeepCollectionEquality().hash(_conditions),
+      recoveryRequested,
+      isLoading,
+      errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -674,63 +844,87 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        uninitialized,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        unauthenticated,
-    required TResult Function(AuthStatus status, Session session,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
+        uninitialized,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)
+        unauthenticated,
+    required TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
+            String? errorMessage)
         authenticated,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)
         aal2Requested,
-    required TResult Function(
-            AuthStatus status, String url, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            String url, bool isLoading, String? errorMessage)
         locationChangeRequired,
   }) {
-    return authenticated(status, session, isLoading, errorMessage);
+    return authenticated(status, session, conditions, recoveryRequested,
+        isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(AuthStatus status, Session session, bool isLoading,
+    TResult? Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult? Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
   }) {
-    return authenticated?.call(status, session, isLoading, errorMessage);
+    return authenticated?.call(status, session, conditions, recoveryRequested,
+        isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(AuthStatus status, Session session, bool isLoading,
+    TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
-      return authenticated(status, session, isLoading, errorMessage);
+      return authenticated(status, session, conditions, recoveryRequested,
+          isLoading, errorMessage);
     }
     return orElse();
   }
@@ -781,12 +975,17 @@ abstract class AuthAuthenticated implements AuthState {
   const factory AuthAuthenticated(
       {final AuthStatus status,
       required final Session session,
+      final List<Condition> conditions,
+      final bool recoveryRequested,
       final bool isLoading,
       final String? errorMessage}) = _$AuthAuthenticatedImpl;
 
   @override
   AuthStatus get status;
   Session get session;
+  @override
+  List<Condition> get conditions;
+  bool get recoveryRequested;
   @override
   bool get isLoading;
   @override
@@ -805,7 +1004,12 @@ abstract class _$$Aal2RequestedImplCopyWith<$Res>
       __$$Aal2RequestedImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AuthStatus status, bool isLoading, String? errorMessage});
+  $Res call(
+      {AuthStatus status,
+      List<Condition> conditions,
+      bool recoveryRequested,
+      bool isLoading,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -820,6 +1024,8 @@ class __$$Aal2RequestedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
+    Object? conditions = null,
+    Object? recoveryRequested = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -828,6 +1034,14 @@ class __$$Aal2RequestedImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as AuthStatus,
+      conditions: null == conditions
+          ? _value._conditions
+          : conditions // ignore: cast_nullable_to_non_nullable
+              as List<Condition>,
+      recoveryRequested: null == recoveryRequested
+          ? _value.recoveryRequested
+          : recoveryRequested // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -845,12 +1059,27 @@ class __$$Aal2RequestedImplCopyWithImpl<$Res>
 class _$Aal2RequestedImpl implements Aal2Requested {
   const _$Aal2RequestedImpl(
       {this.status = AuthStatus.aal2Requested,
+      final List<Condition> conditions = const [],
+      this.recoveryRequested = false,
       this.isLoading = false,
-      this.errorMessage});
+      this.errorMessage})
+      : _conditions = conditions;
 
   @override
   @JsonKey()
   final AuthStatus status;
+  final List<Condition> _conditions;
+  @override
+  @JsonKey()
+  List<Condition> get conditions {
+    if (_conditions is EqualUnmodifiableListView) return _conditions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_conditions);
+  }
+
+  @override
+  @JsonKey()
+  final bool recoveryRequested;
   @override
   @JsonKey()
   final bool isLoading;
@@ -859,7 +1088,7 @@ class _$Aal2RequestedImpl implements Aal2Requested {
 
   @override
   String toString() {
-    return 'AuthState.aal2Requested(status: $status, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'AuthState.aal2Requested(status: $status, conditions: $conditions, recoveryRequested: $recoveryRequested, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -868,6 +1097,10 @@ class _$Aal2RequestedImpl implements Aal2Requested {
         (other.runtimeType == runtimeType &&
             other is _$Aal2RequestedImpl &&
             (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality()
+                .equals(other._conditions, _conditions) &&
+            (identical(other.recoveryRequested, recoveryRequested) ||
+                other.recoveryRequested == recoveryRequested) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -875,7 +1108,13 @@ class _$Aal2RequestedImpl implements Aal2Requested {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, isLoading, errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      const DeepCollectionEquality().hash(_conditions),
+      recoveryRequested,
+      isLoading,
+      errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -886,63 +1125,87 @@ class _$Aal2RequestedImpl implements Aal2Requested {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        uninitialized,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        unauthenticated,
-    required TResult Function(AuthStatus status, Session session,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
+        uninitialized,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)
+        unauthenticated,
+    required TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
+            String? errorMessage)
         authenticated,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)
         aal2Requested,
-    required TResult Function(
-            AuthStatus status, String url, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            String url, bool isLoading, String? errorMessage)
         locationChangeRequired,
   }) {
-    return aal2Requested(status, isLoading, errorMessage);
+    return aal2Requested(
+        status, conditions, recoveryRequested, isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(AuthStatus status, Session session, bool isLoading,
+    TResult? Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult? Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
   }) {
-    return aal2Requested?.call(status, isLoading, errorMessage);
+    return aal2Requested?.call(
+        status, conditions, recoveryRequested, isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(AuthStatus status, Session session, bool isLoading,
+    TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
     required TResult orElse(),
   }) {
     if (aal2Requested != null) {
-      return aal2Requested(status, isLoading, errorMessage);
+      return aal2Requested(
+          status, conditions, recoveryRequested, isLoading, errorMessage);
     }
     return orElse();
   }
@@ -992,11 +1255,16 @@ class _$Aal2RequestedImpl implements Aal2Requested {
 abstract class Aal2Requested implements AuthState {
   const factory Aal2Requested(
       {final AuthStatus status,
+      final List<Condition> conditions,
+      final bool recoveryRequested,
       final bool isLoading,
       final String? errorMessage}) = _$Aal2RequestedImpl;
 
   @override
   AuthStatus get status;
+  @override
+  List<Condition> get conditions;
+  bool get recoveryRequested;
   @override
   bool get isLoading;
   @override
@@ -1017,7 +1285,11 @@ abstract class _$$LocationChangeRequiredImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {AuthStatus status, String url, bool isLoading, String? errorMessage});
+      {AuthStatus status,
+      List<Condition> conditions,
+      String url,
+      bool isLoading,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -1033,6 +1305,7 @@ class __$$LocationChangeRequiredImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
+    Object? conditions = null,
     Object? url = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
@@ -1042,6 +1315,10 @@ class __$$LocationChangeRequiredImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as AuthStatus,
+      conditions: null == conditions
+          ? _value._conditions
+          : conditions // ignore: cast_nullable_to_non_nullable
+              as List<Condition>,
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -1063,13 +1340,24 @@ class __$$LocationChangeRequiredImplCopyWithImpl<$Res>
 class _$LocationChangeRequiredImpl implements LocationChangeRequired {
   const _$LocationChangeRequiredImpl(
       {this.status = AuthStatus.locationChangeRequired,
+      final List<Condition> conditions = const [],
       required this.url,
       this.isLoading = false,
-      this.errorMessage});
+      this.errorMessage})
+      : _conditions = conditions;
 
   @override
   @JsonKey()
   final AuthStatus status;
+  final List<Condition> _conditions;
+  @override
+  @JsonKey()
+  List<Condition> get conditions {
+    if (_conditions is EqualUnmodifiableListView) return _conditions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_conditions);
+  }
+
   @override
   final String url;
   @override
@@ -1080,7 +1368,7 @@ class _$LocationChangeRequiredImpl implements LocationChangeRequired {
 
   @override
   String toString() {
-    return 'AuthState.locationChangeRequired(status: $status, url: $url, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'AuthState.locationChangeRequired(status: $status, conditions: $conditions, url: $url, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -1089,6 +1377,8 @@ class _$LocationChangeRequiredImpl implements LocationChangeRequired {
         (other.runtimeType == runtimeType &&
             other is _$LocationChangeRequiredImpl &&
             (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality()
+                .equals(other._conditions, _conditions) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
@@ -1097,8 +1387,13 @@ class _$LocationChangeRequiredImpl implements LocationChangeRequired {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, status, url, isLoading, errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      const DeepCollectionEquality().hash(_conditions),
+      url,
+      isLoading,
+      errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -1110,63 +1405,87 @@ class _$LocationChangeRequiredImpl implements LocationChangeRequired {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        uninitialized,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
-        unauthenticated,
-    required TResult Function(AuthStatus status, Session session,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
+        uninitialized,
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)
+        unauthenticated,
+    required TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
+            String? errorMessage)
         authenticated,
-    required TResult Function(
-            AuthStatus status, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)
         aal2Requested,
-    required TResult Function(
-            AuthStatus status, String url, bool isLoading, String? errorMessage)
+    required TResult Function(AuthStatus status, List<Condition> conditions,
+            String url, bool isLoading, String? errorMessage)
         locationChangeRequired,
   }) {
-    return locationChangeRequired(status, url, isLoading, errorMessage);
+    return locationChangeRequired(
+        status, conditions, url, isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(AuthStatus status, Session session, bool isLoading,
+    TResult? Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult? Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult? Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
   }) {
-    return locationChangeRequired?.call(status, url, isLoading, errorMessage);
+    return locationChangeRequired?.call(
+        status, conditions, url, isLoading, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         uninitialized,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(AuthStatus status, Session session, bool isLoading,
+    TResult Function(
+            AuthStatus status,
+            Session session,
+            List<Condition> conditions,
+            bool recoveryRequested,
+            bool isLoading,
             String? errorMessage)?
         authenticated,
-    TResult Function(AuthStatus status, bool isLoading, String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions,
+            bool recoveryRequested, bool isLoading, String? errorMessage)?
         aal2Requested,
-    TResult Function(AuthStatus status, String url, bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, List<Condition> conditions, String url,
+            bool isLoading, String? errorMessage)?
         locationChangeRequired,
     required TResult orElse(),
   }) {
     if (locationChangeRequired != null) {
-      return locationChangeRequired(status, url, isLoading, errorMessage);
+      return locationChangeRequired(
+          status, conditions, url, isLoading, errorMessage);
     }
     return orElse();
   }
@@ -1216,12 +1535,15 @@ class _$LocationChangeRequiredImpl implements LocationChangeRequired {
 abstract class LocationChangeRequired implements AuthState {
   const factory LocationChangeRequired(
       {final AuthStatus status,
+      final List<Condition> conditions,
       required final String url,
       final bool isLoading,
       final String? errorMessage}) = _$LocationChangeRequiredImpl;
 
   @override
   AuthStatus get status;
+  @override
+  List<Condition> get conditions;
   String get url;
   @override
   bool get isLoading;

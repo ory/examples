@@ -5,6 +5,8 @@ import 'package:ory_network_flutter/blocs/bloc/recovery_bloc.dart';
 import 'package:ory_network_flutter/repositories/auth.dart';
 import 'package:ory_network_flutter/widgets/helpers.dart';
 
+import '../blocs/auth/auth_bloc.dart';
+
 class RecoveryPage extends StatelessWidget {
   const RecoveryPage({super.key});
 
@@ -51,16 +53,28 @@ class RecoveryForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecoveryBloc, RecoveryState>(
-        buildWhen: (previous, current) =>
-            previous.isLoading != current.isLoading,
-        builder: (context, state) {
-          if (state.recoveryFlow != null) {
-            return _buildUi(context, state);
-          } else {
-            return buildFlowNotCreated(context, state.message);
+    return BlocListener<RecoveryBloc, RecoveryState>(
+        listener: (context, state) {
+          // recovery flow was successful,
+          // get session information
+          if (state.settingsFlowId != null) {
+            final authBloc = (context).read<AuthBloc>();
+            authBloc.add(GetCurrentSessionInformation(conditions: [
+              RecoveryRequested(settingsFlowId: state.settingsFlowId!)
+            ]));
           }
-        });
+        },
+        child: BlocBuilder<RecoveryBloc, RecoveryState>(
+          buildWhen: (previous, current) =>
+              previous.isLoading != current.isLoading,
+          builder: (context, state) {
+            if (state.recoveryFlow != null) {
+              return _buildUi(context, state);
+            } else {
+              return buildFlowNotCreated(context, state.message);
+            }
+          },
+        ));
   }
 
   _buildUi(BuildContext context, RecoveryState state) {

@@ -30,7 +30,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _onAddSession(AddSession event, Emitter<AuthState> emit) {
-    emit(AuthState.authenticated(session: event.session));
+    emit(AuthState.authenticated(
+        session: event.session, conditions: event.conditions));
   }
 
   _onChangeAuthStatus(ChangeAuthStatus event, Emitter<AuthState> emit) {
@@ -38,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       case AuthStatus.unauthenticated:
         emit(const AuthState.unauthenticated());
       case AuthStatus.aal2Requested:
-        emit(const AuthState.aal2Requested());
+        emit(AuthState.aal2Requested(conditions: event.conditions));
       default:
         emit(state);
     }
@@ -52,11 +53,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final session = await repository.getCurrentSessionInformation();
 
-      emit(AuthState.authenticated(session: session));
+      emit(AuthState.authenticated(
+          session: session, conditions: event.conditions));
     } on UnauthorizedException catch (_) {
       emit(const AuthState.unauthenticated());
     } on TwoFactorAuthRequiredException catch (_) {
-      emit(const AuthState.aal2Requested());
+      emit(AuthState.aal2Requested(conditions: event.conditions));
     } on UnknownException catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.message));
     } catch (_) {

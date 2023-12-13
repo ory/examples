@@ -57,6 +57,8 @@ class RecoveryBloc extends Bloc<RecoveryEvent, RecoveryState> {
       }
     } on BadRequestException<RecoveryFlow> catch (e) {
       emit(state.copyWith(recoveryFlow: e.flow, isLoading: false));
-    } on settingsRedirectRequired catch (e) {}
+    } on settingsRedirectRequired catch (e) {
+      emit(state.copyWith(settingsFlowId: e.settingsFlowId));
+    }
   }
 }
