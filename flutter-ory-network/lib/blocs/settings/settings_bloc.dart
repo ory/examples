@@ -52,17 +52,29 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   _onResetSettings(ResetSettings event, Emitter<SettingsState> emit) async {
-    if (state.settingsFlow != null) {
-      emit(state.copyWith(isLoading: true));
-      final settings =
-          await repository.getSettingsFlow(flowId: state.settingsFlow!.id);
-      List<Condition> updatedConditions = List.from(state.conditions);
-      updatedConditions
-          .removeWhere((element) => element is SessionRefreshRequested);
-      emit(state.copyWith(
-          settingsFlow: settings,
-          conditions: updatedConditions,
-          isLoading: false));
+    try {
+      if (state.settingsFlow != null) {
+        emit(state.copyWith(isLoading: true));
+        final settings =
+            await repository.getSettingsFlow(flowId: state.settingsFlow!.id);
+        List<Condition> updatedConditions = List.from(state.conditions);
+        updatedConditions
+            .removeWhere((element) => element is SessionRefreshRequested);
+        emit(state.copyWith(
+            settingsFlow: settings,
+            conditions: updatedConditions,
+            isLoading: false));
+      }
+    } on UnauthorizedException catch (_) {
+      // change auth status as the user is not authenticated
+      authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+    } on FlowExpiredException catch (e) {
+      // get new settings flow
+      add(GetSettingsFlow(flowId: e.flowId));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 

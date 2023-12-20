@@ -123,11 +123,12 @@ class SettingsForm extends StatelessWidget {
               listenWhen: (SettingsState previous, SettingsState current) =>
                   // listen to changes only when current
                   // state is not loading (e.g. updating settings),
-                  // previous and current messages differ
+                  // previous state was loading,
+                  // there is a new message,
                   // and session refresh is not required
                   !current.isLoading &&
-                  current.settingsFlow?.ui.messages !=
-                      previous.settingsFlow?.ui.messages &&
+                  previous.isLoading &&
+                  current.settingsFlow?.ui.messages != null &&
                   !isSessionRefreshRequired(current.conditions),
               listener: (BuildContext context, SettingsState state) {
                 if (state.settingsFlow!.ui.messages != null) {
@@ -152,6 +153,14 @@ class SettingsForm extends StatelessWidget {
                     backgroundColor: Colors.red,
                     content: Text(state.message!),
                   ));
+                }
+              }),
+          // remove snackbars when loading
+          BlocListener(
+              bloc: settingsBloc,
+              listener: (BuildContext context, SettingsState state) {
+                if (state.isLoading) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
                 }
               })
         ],
