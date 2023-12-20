@@ -31,16 +31,11 @@ mixin _$AuthState {
     required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
         unauthenticated,
-    required TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)
+    required TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)
         authenticated,
     required TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)
+            bool isLoading, String? errorMessage)
         aal2Requested,
     required TResult Function(AuthStatus status, List<Condition> conditions,
             String url, bool isLoading, String? errorMessage)
@@ -55,16 +50,11 @@ mixin _$AuthState {
     TResult? Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult? Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult? Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -79,16 +69,11 @@ mixin _$AuthState {
     TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -305,16 +290,11 @@ class _$AuthUninitializedImpl implements AuthUninitialized {
     required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
         unauthenticated,
-    required TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)
+    required TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)
         authenticated,
     required TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)
+            bool isLoading, String? errorMessage)
         aal2Requested,
     required TResult Function(AuthStatus status, List<Condition> conditions,
             String url, bool isLoading, String? errorMessage)
@@ -332,16 +312,11 @@ class _$AuthUninitializedImpl implements AuthUninitialized {
     TResult? Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult? Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult? Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -359,16 +334,11 @@ class _$AuthUninitializedImpl implements AuthUninitialized {
     TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -567,16 +537,11 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
     required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
         unauthenticated,
-    required TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)
+    required TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)
         authenticated,
     required TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)
+            bool isLoading, String? errorMessage)
         aal2Requested,
     required TResult Function(AuthStatus status, List<Condition> conditions,
             String url, bool isLoading, String? errorMessage)
@@ -594,16 +559,11 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
     TResult? Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult? Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult? Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -621,16 +581,11 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
     TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -718,7 +673,6 @@ abstract class _$$AuthAuthenticatedImplCopyWith<$Res>
       {AuthStatus status,
       Session session,
       List<Condition> conditions,
-      bool recoveryRequested,
       bool isLoading,
       String? errorMessage});
 }
@@ -737,7 +691,6 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
     Object? status = null,
     Object? session = null,
     Object? conditions = null,
-    Object? recoveryRequested = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -754,10 +707,6 @@ class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
           ? _value._conditions
           : conditions // ignore: cast_nullable_to_non_nullable
               as List<Condition>,
-      recoveryRequested: null == recoveryRequested
-          ? _value.recoveryRequested
-          : recoveryRequested // ignore: cast_nullable_to_non_nullable
-              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -777,7 +726,6 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
       {this.status = AuthStatus.authenticated,
       required this.session,
       final List<Condition> conditions = const [],
-      this.recoveryRequested = false,
       this.isLoading = false,
       this.errorMessage})
       : _conditions = conditions;
@@ -798,16 +746,13 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
 
   @override
   @JsonKey()
-  final bool recoveryRequested;
-  @override
-  @JsonKey()
   final bool isLoading;
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'AuthState.authenticated(status: $status, session: $session, conditions: $conditions, recoveryRequested: $recoveryRequested, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'AuthState.authenticated(status: $status, session: $session, conditions: $conditions, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -819,8 +764,6 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
             (identical(other.session, session) || other.session == session) &&
             const DeepCollectionEquality()
                 .equals(other._conditions, _conditions) &&
-            (identical(other.recoveryRequested, recoveryRequested) ||
-                other.recoveryRequested == recoveryRequested) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -833,7 +776,6 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
       status,
       session,
       const DeepCollectionEquality().hash(_conditions),
-      recoveryRequested,
       isLoading,
       errorMessage);
 
@@ -853,23 +795,17 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
     required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
         unauthenticated,
-    required TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)
+    required TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)
         authenticated,
     required TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)
+            bool isLoading, String? errorMessage)
         aal2Requested,
     required TResult Function(AuthStatus status, List<Condition> conditions,
             String url, bool isLoading, String? errorMessage)
         locationChangeRequired,
   }) {
-    return authenticated(status, session, conditions, recoveryRequested,
-        isLoading, errorMessage);
+    return authenticated(status, session, conditions, isLoading, errorMessage);
   }
 
   @override
@@ -881,23 +817,18 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
     TResult? Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult? Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult? Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
         locationChangeRequired,
   }) {
-    return authenticated?.call(status, session, conditions, recoveryRequested,
-        isLoading, errorMessage);
+    return authenticated?.call(
+        status, session, conditions, isLoading, errorMessage);
   }
 
   @override
@@ -909,16 +840,11 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
     TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -926,8 +852,8 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
     required TResult orElse(),
   }) {
     if (authenticated != null) {
-      return authenticated(status, session, conditions, recoveryRequested,
-          isLoading, errorMessage);
+      return authenticated(
+          status, session, conditions, isLoading, errorMessage);
     }
     return orElse();
   }
@@ -979,7 +905,6 @@ abstract class AuthAuthenticated implements AuthState {
       {final AuthStatus status,
       required final Session session,
       final List<Condition> conditions,
-      final bool recoveryRequested,
       final bool isLoading,
       final String? errorMessage}) = _$AuthAuthenticatedImpl;
 
@@ -988,7 +913,6 @@ abstract class AuthAuthenticated implements AuthState {
   Session get session;
   @override
   List<Condition> get conditions;
-  bool get recoveryRequested;
   @override
   bool get isLoading;
   @override
@@ -1010,7 +934,6 @@ abstract class _$$Aal2RequestedImplCopyWith<$Res>
   $Res call(
       {AuthStatus status,
       List<Condition> conditions,
-      bool recoveryRequested,
       bool isLoading,
       String? errorMessage});
 }
@@ -1028,7 +951,6 @@ class __$$Aal2RequestedImplCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? conditions = null,
-    Object? recoveryRequested = null,
     Object? isLoading = null,
     Object? errorMessage = freezed,
   }) {
@@ -1041,10 +963,6 @@ class __$$Aal2RequestedImplCopyWithImpl<$Res>
           ? _value._conditions
           : conditions // ignore: cast_nullable_to_non_nullable
               as List<Condition>,
-      recoveryRequested: null == recoveryRequested
-          ? _value.recoveryRequested
-          : recoveryRequested // ignore: cast_nullable_to_non_nullable
-              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -1063,7 +981,6 @@ class _$Aal2RequestedImpl implements Aal2Requested {
   const _$Aal2RequestedImpl(
       {this.status = AuthStatus.aal2Requested,
       final List<Condition> conditions = const [],
-      this.recoveryRequested = false,
       this.isLoading = false,
       this.errorMessage})
       : _conditions = conditions;
@@ -1082,16 +999,13 @@ class _$Aal2RequestedImpl implements Aal2Requested {
 
   @override
   @JsonKey()
-  final bool recoveryRequested;
-  @override
-  @JsonKey()
   final bool isLoading;
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'AuthState.aal2Requested(status: $status, conditions: $conditions, recoveryRequested: $recoveryRequested, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'AuthState.aal2Requested(status: $status, conditions: $conditions, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -1102,8 +1016,6 @@ class _$Aal2RequestedImpl implements Aal2Requested {
             (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality()
                 .equals(other._conditions, _conditions) &&
-            (identical(other.recoveryRequested, recoveryRequested) ||
-                other.recoveryRequested == recoveryRequested) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -1115,7 +1027,6 @@ class _$Aal2RequestedImpl implements Aal2Requested {
       runtimeType,
       status,
       const DeepCollectionEquality().hash(_conditions),
-      recoveryRequested,
       isLoading,
       errorMessage);
 
@@ -1134,23 +1045,17 @@ class _$Aal2RequestedImpl implements Aal2Requested {
     required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
         unauthenticated,
-    required TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)
+    required TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)
         authenticated,
     required TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)
+            bool isLoading, String? errorMessage)
         aal2Requested,
     required TResult Function(AuthStatus status, List<Condition> conditions,
             String url, bool isLoading, String? errorMessage)
         locationChangeRequired,
   }) {
-    return aal2Requested(
-        status, conditions, recoveryRequested, isLoading, errorMessage);
+    return aal2Requested(status, conditions, isLoading, errorMessage);
   }
 
   @override
@@ -1162,23 +1067,17 @@ class _$Aal2RequestedImpl implements Aal2Requested {
     TResult? Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult? Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult? Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
         locationChangeRequired,
   }) {
-    return aal2Requested?.call(
-        status, conditions, recoveryRequested, isLoading, errorMessage);
+    return aal2Requested?.call(status, conditions, isLoading, errorMessage);
   }
 
   @override
@@ -1190,16 +1089,11 @@ class _$Aal2RequestedImpl implements Aal2Requested {
     TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -1207,8 +1101,7 @@ class _$Aal2RequestedImpl implements Aal2Requested {
     required TResult orElse(),
   }) {
     if (aal2Requested != null) {
-      return aal2Requested(
-          status, conditions, recoveryRequested, isLoading, errorMessage);
+      return aal2Requested(status, conditions, isLoading, errorMessage);
     }
     return orElse();
   }
@@ -1259,7 +1152,6 @@ abstract class Aal2Requested implements AuthState {
   const factory Aal2Requested(
       {final AuthStatus status,
       final List<Condition> conditions,
-      final bool recoveryRequested,
       final bool isLoading,
       final String? errorMessage}) = _$Aal2RequestedImpl;
 
@@ -1267,7 +1159,6 @@ abstract class Aal2Requested implements AuthState {
   AuthStatus get status;
   @override
   List<Condition> get conditions;
-  bool get recoveryRequested;
   @override
   bool get isLoading;
   @override
@@ -1414,16 +1305,11 @@ class _$LocationChangeRequiredImpl implements LocationChangeRequired {
     required TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)
         unauthenticated,
-    required TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)
+    required TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)
         authenticated,
     required TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)
+            bool isLoading, String? errorMessage)
         aal2Requested,
     required TResult Function(AuthStatus status, List<Condition> conditions,
             String url, bool isLoading, String? errorMessage)
@@ -1442,16 +1328,11 @@ class _$LocationChangeRequiredImpl implements LocationChangeRequired {
     TResult? Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult? Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult? Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult? Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult? Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?
@@ -1470,16 +1351,11 @@ class _$LocationChangeRequiredImpl implements LocationChangeRequired {
     TResult Function(AuthStatus status, List<Condition> conditions,
             bool isLoading, String? errorMessage)?
         unauthenticated,
-    TResult Function(
-            AuthStatus status,
-            Session session,
-            List<Condition> conditions,
-            bool recoveryRequested,
-            bool isLoading,
-            String? errorMessage)?
+    TResult Function(AuthStatus status, Session session,
+            List<Condition> conditions, bool isLoading, String? errorMessage)?
         authenticated,
     TResult Function(AuthStatus status, List<Condition> conditions,
-            bool recoveryRequested, bool isLoading, String? errorMessage)?
+            bool isLoading, String? errorMessage)?
         aal2Requested,
     TResult Function(AuthStatus status, List<Condition> conditions, String url,
             bool isLoading, String? errorMessage)?

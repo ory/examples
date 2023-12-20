@@ -19,13 +19,11 @@ sealed class AuthState with _$AuthState {
       {@Default(AuthStatus.authenticated) final AuthStatus status,
       required Session session,
       @Default([]) List<Condition> conditions,
-      @Default(false) bool recoveryRequested,
       @Default(false) bool isLoading,
       String? errorMessage}) = AuthAuthenticated;
   const factory AuthState.aal2Requested(
       {@Default(AuthStatus.aal2Requested) final AuthStatus status,
       @Default([]) List<Condition> conditions,
-      @Default(false) bool recoveryRequested,
       @Default(false) bool isLoading,
       String? errorMessage}) = Aal2Requested;
 
