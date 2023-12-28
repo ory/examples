@@ -8,6 +8,6 @@ sealed class SettingsState with _$SettingsState {
   const factory SettingsState(
       {SettingsFlow? settingsFlow,
       @Default(false) bool isLoading,
-      @Default(false) bool isSessionRefreshRequired,
+      @Default([]) List<Condition> conditions,
       String? message}) = _SettingsState;
 }

@@ -9,17 +9,18 @@ import '../blocs/auth/auth_bloc.dart';
 import '../blocs/login/login_bloc.dart';
 import '../repositories/auth.dart';
 import '../widgets/helpers.dart';
+import 'recovery.dart';
 import 'registration.dart';
 
 class LoginPage extends StatelessWidget {
-  final bool isSessionRefresh;
+  final List<Condition> conditions;
   final String aal;
 
-  const LoginPage(
-      {super.key, this.isSessionRefresh = false, required this.aal});
+  const LoginPage({super.key, this.conditions = const [], required this.aal});
 
   @override
   Widget build(BuildContext context) {
+    final sessionRefreshRequested = isSessionRefreshRequired(conditions);
     return BlocListener<AuthBloc, AuthState>(
       // navigate to previous page only if the user refreshed the session
       listenWhen: (previous, current) {
@@ -27,17 +28,18 @@ class LoginPage extends StatelessWidget {
             previous.mapOrNull(authenticated: (value) => value.session);
         final currentSession =
             current.mapOrNull(authenticated: (value) => value.session);
+        final sessionRefreshRequested = isSessionRefreshRequired(conditions);
         return previousSession != currentSession &&
             previousSession != null &&
             currentSession != null &&
-            isSessionRefresh;
+            sessionRefreshRequested;
       },
       listener: (context, state) {
         Navigator.of(context).pop(true);
       },
       child: Scaffold(
-        extendBodyBehindAppBar: !isSessionRefresh,
-        appBar: isSessionRefresh
+        extendBodyBehindAppBar: !sessionRefreshRequested,
+        appBar: sessionRefreshRequested
             ? AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
@@ -68,9 +70,10 @@ class LoginPage extends StatelessWidget {
         body: BlocProvider(
             create: (context) => LoginBloc(
                 authBloc: context.read<AuthBloc>(),
-                repository: RepositoryProvider.of<AuthRepository>(context))
-              ..add(CreateLoginFlow(aal: aal, refresh: isSessionRefresh)),
-            child: LoginForm(isSessionRefresh: isSessionRefresh)),
+                repository: RepositoryProvider.of<AuthRepository>(context),
+                conditions: conditions)
+              ..add(CreateLoginFlow(aal: aal)),
+            child: LoginForm(isSessionRefresh: sessionRefreshRequested)),
       ),
     );
   }
@@ -165,8 +168,26 @@ class LoginForm extends StatelessWidget {
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.code, codeNodes,
                     _onInputChange, _onInputSubmit),
               if (passwordNodes.isNotEmpty)
-                buildGroup<LoginBloc>(context, UiNodeGroupEnum.password,
-                    passwordNodes, _onInputChange, _onInputSubmit),
+                Column(
+                  children: [
+                    buildGroup<LoginBloc>(context, UiNodeGroupEnum.password,
+                        passwordNodes, _onInputChange, _onInputSubmit),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RecoveryPage())),
+                            child: const Text("Forgot password?"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               if (lookupSecretNodes.isNotEmpty)
                 buildGroup<LoginBloc>(context, UiNodeGroupEnum.lookupSecret,
                     lookupSecretNodes, _onInputChange, _onInputSubmit),

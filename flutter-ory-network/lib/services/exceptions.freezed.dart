@@ -27,6 +27,7 @@ mixin _$CustomException<T> {
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
     required TResult Function(String message) unknown,
   }) =>
       throw _privateConstructorUsedError;
@@ -38,6 +39,7 @@ mixin _$CustomException<T> {
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult? Function(String message)? unknown,
   }) =>
       throw _privateConstructorUsedError;
@@ -49,6 +51,7 @@ mixin _$CustomException<T> {
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult Function(String message)? unknown,
     required TResult orElse(),
   }) =>
@@ -64,6 +67,8 @@ mixin _$CustomException<T> {
         twoFactorAuthRequired,
     required TResult Function(LocationChangeRequiredException<T> value)
         locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
     required TResult Function(UnknownException<T> value) unknown,
   }) =>
       throw _privateConstructorUsedError;
@@ -78,6 +83,8 @@ mixin _$CustomException<T> {
         twoFactorAuthRequired,
     TResult? Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult? Function(UnknownException<T> value)? unknown,
   }) =>
       throw _privateConstructorUsedError;
@@ -92,6 +99,8 @@ mixin _$CustomException<T> {
         twoFactorAuthRequired,
     TResult Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult Function(UnknownException<T> value)? unknown,
     required TResult orElse(),
   }) =>
@@ -201,6 +210,7 @@ class _$SessionRefreshRequiredExceptionImpl<T>
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
     required TResult Function(String message) unknown,
   }) {
     return sessionRefreshRequired(message);
@@ -215,6 +225,7 @@ class _$SessionRefreshRequiredExceptionImpl<T>
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult? Function(String message)? unknown,
   }) {
     return sessionRefreshRequired?.call(message);
@@ -229,6 +240,7 @@ class _$SessionRefreshRequiredExceptionImpl<T>
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
@@ -250,6 +262,8 @@ class _$SessionRefreshRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     required TResult Function(LocationChangeRequiredException<T> value)
         locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
     required TResult Function(UnknownException<T> value) unknown,
   }) {
     return sessionRefreshRequired(this);
@@ -267,6 +281,8 @@ class _$SessionRefreshRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     TResult? Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult? Function(UnknownException<T> value)? unknown,
   }) {
     return sessionRefreshRequired?.call(this);
@@ -284,6 +300,8 @@ class _$SessionRefreshRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     TResult Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult Function(UnknownException<T> value)? unknown,
     required TResult orElse(),
   }) {
@@ -387,6 +405,7 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
     required TResult Function(String message) unknown,
   }) {
     return badRequest(flow);
@@ -401,6 +420,7 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult? Function(String message)? unknown,
   }) {
     return badRequest?.call(flow);
@@ -415,6 +435,7 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
@@ -436,6 +457,8 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
         twoFactorAuthRequired,
     required TResult Function(LocationChangeRequiredException<T> value)
         locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
     required TResult Function(UnknownException<T> value) unknown,
   }) {
     return badRequest(this);
@@ -453,6 +476,8 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
         twoFactorAuthRequired,
     TResult? Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult? Function(UnknownException<T> value)? unknown,
   }) {
     return badRequest?.call(this);
@@ -470,6 +495,8 @@ class _$BadRequestExceptionImpl<T> extends BadRequestException<T>
         twoFactorAuthRequired,
     TResult Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult Function(UnknownException<T> value)? unknown,
     required TResult orElse(),
   }) {
@@ -547,6 +574,7 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
     required TResult Function(String message) unknown,
   }) {
     return unauthorized();
@@ -561,6 +589,7 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult? Function(String message)? unknown,
   }) {
     return unauthorized?.call();
@@ -575,6 +604,7 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
@@ -596,6 +626,8 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
         twoFactorAuthRequired,
     required TResult Function(LocationChangeRequiredException<T> value)
         locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
     required TResult Function(UnknownException<T> value) unknown,
   }) {
     return unauthorized(this);
@@ -613,6 +645,8 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
         twoFactorAuthRequired,
     TResult? Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult? Function(UnknownException<T> value)? unknown,
   }) {
     return unauthorized?.call(this);
@@ -630,6 +664,8 @@ class _$UnauthorizedExceptionImpl<T> extends UnauthorizedException<T>
         twoFactorAuthRequired,
     TResult Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult Function(UnknownException<T> value)? unknown,
     required TResult orElse(),
   }) {
@@ -737,6 +773,7 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
     required TResult Function(String message) unknown,
   }) {
     return flowExpired(flowId, message);
@@ -751,6 +788,7 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult? Function(String message)? unknown,
   }) {
     return flowExpired?.call(flowId, message);
@@ -765,6 +803,7 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
@@ -786,6 +825,8 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
         twoFactorAuthRequired,
     required TResult Function(LocationChangeRequiredException<T> value)
         locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
     required TResult Function(UnknownException<T> value) unknown,
   }) {
     return flowExpired(this);
@@ -803,6 +844,8 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
         twoFactorAuthRequired,
     TResult? Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult? Function(UnknownException<T> value)? unknown,
   }) {
     return flowExpired?.call(this);
@@ -820,6 +863,8 @@ class _$FlowExpiredExceptionImpl<T> extends FlowExpiredException<T>
         twoFactorAuthRequired,
     TResult Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult Function(UnknownException<T> value)? unknown,
     required TResult orElse(),
   }) {
@@ -928,6 +973,7 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
     required TResult Function(String message) unknown,
   }) {
     return twoFactorAuthRequired(session);
@@ -942,6 +988,7 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult? Function(String message)? unknown,
   }) {
     return twoFactorAuthRequired?.call(session);
@@ -956,6 +1003,7 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
@@ -977,6 +1025,8 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     required TResult Function(LocationChangeRequiredException<T> value)
         locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
     required TResult Function(UnknownException<T> value) unknown,
   }) {
     return twoFactorAuthRequired(this);
@@ -994,6 +1044,8 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     TResult? Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult? Function(UnknownException<T> value)? unknown,
   }) {
     return twoFactorAuthRequired?.call(this);
@@ -1011,6 +1063,8 @@ class _$TwoFactorAuthRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     TResult Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult Function(UnknownException<T> value)? unknown,
     required TResult orElse(),
   }) {
@@ -1118,6 +1172,7 @@ class _$LocationChangeRequiredExceptionImpl<T>
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
     required TResult Function(String message) unknown,
   }) {
     return locationChangeRequired(url);
@@ -1132,6 +1187,7 @@ class _$LocationChangeRequiredExceptionImpl<T>
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult? Function(String message)? unknown,
   }) {
     return locationChangeRequired?.call(url);
@@ -1146,6 +1202,7 @@ class _$LocationChangeRequiredExceptionImpl<T>
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
@@ -1167,6 +1224,8 @@ class _$LocationChangeRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     required TResult Function(LocationChangeRequiredException<T> value)
         locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
     required TResult Function(UnknownException<T> value) unknown,
   }) {
     return locationChangeRequired(this);
@@ -1184,6 +1243,8 @@ class _$LocationChangeRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     TResult? Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult? Function(UnknownException<T> value)? unknown,
   }) {
     return locationChangeRequired?.call(this);
@@ -1201,6 +1262,8 @@ class _$LocationChangeRequiredExceptionImpl<T>
         twoFactorAuthRequired,
     TResult Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult Function(UnknownException<T> value)? unknown,
     required TResult orElse(),
   }) {
@@ -1220,6 +1283,204 @@ abstract class LocationChangeRequiredException<T> extends CustomException<T> {
   @JsonKey(ignore: true)
   _$$LocationChangeRequiredExceptionImplCopyWith<T,
           _$LocationChangeRequiredExceptionImpl<T>>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$settingsRedirectRequiredImplCopyWith<T, $Res> {
+  factory _$$settingsRedirectRequiredImplCopyWith(
+          _$settingsRedirectRequiredImpl<T> value,
+          $Res Function(_$settingsRedirectRequiredImpl<T>) then) =
+      __$$settingsRedirectRequiredImplCopyWithImpl<T, $Res>;
+  @useResult
+  $Res call({String? settingsFlowId});
+}
+
+/// @nodoc
+class __$$settingsRedirectRequiredImplCopyWithImpl<T, $Res>
+    extends _$CustomExceptionCopyWithImpl<T, $Res,
+        _$settingsRedirectRequiredImpl<T>>
+    implements _$$settingsRedirectRequiredImplCopyWith<T, $Res> {
+  __$$settingsRedirectRequiredImplCopyWithImpl(
+      _$settingsRedirectRequiredImpl<T> _value,
+      $Res Function(_$settingsRedirectRequiredImpl<T>) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? settingsFlowId = freezed,
+  }) {
+    return _then(_$settingsRedirectRequiredImpl<T>(
+      settingsFlowId: freezed == settingsFlowId
+          ? _value.settingsFlowId
+          : settingsFlowId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$settingsRedirectRequiredImpl<T> extends settingsRedirectRequired<T>
+    with DiagnosticableTreeMixin {
+  const _$settingsRedirectRequiredImpl({this.settingsFlowId}) : super._();
+
+  @override
+  final String? settingsFlowId;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CustomException<$T>.settingsRedirectRequired(settingsFlowId: $settingsFlowId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty(
+          'type', 'CustomException<$T>.settingsRedirectRequired'))
+      ..add(DiagnosticsProperty('settingsFlowId', settingsFlowId));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$settingsRedirectRequiredImpl<T> &&
+            (identical(other.settingsFlowId, settingsFlowId) ||
+                other.settingsFlowId == settingsFlowId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, settingsFlowId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$settingsRedirectRequiredImplCopyWith<T, _$settingsRedirectRequiredImpl<T>>
+      get copyWith => __$$settingsRedirectRequiredImplCopyWithImpl<T,
+          _$settingsRedirectRequiredImpl<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? message) sessionRefreshRequired,
+    required TResult Function(T flow) badRequest,
+    required TResult Function() unauthorized,
+    required TResult Function(String flowId, String? message) flowExpired,
+    required TResult Function(Session? session) twoFactorAuthRequired,
+    required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
+    required TResult Function(String message) unknown,
+  }) {
+    return settingsRedirectRequired(settingsFlowId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? message)? sessionRefreshRequired,
+    TResult? Function(T flow)? badRequest,
+    TResult? Function()? unauthorized,
+    TResult? Function(String flowId, String? message)? flowExpired,
+    TResult? Function(Session? session)? twoFactorAuthRequired,
+    TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
+    TResult? Function(String message)? unknown,
+  }) {
+    return settingsRedirectRequired?.call(settingsFlowId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? message)? sessionRefreshRequired,
+    TResult Function(T flow)? badRequest,
+    TResult Function()? unauthorized,
+    TResult Function(String flowId, String? message)? flowExpired,
+    TResult Function(Session? session)? twoFactorAuthRequired,
+    TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
+    TResult Function(String message)? unknown,
+    required TResult orElse(),
+  }) {
+    if (settingsRedirectRequired != null) {
+      return settingsRedirectRequired(settingsFlowId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SessionRefreshRequiredException<T> value)
+        sessionRefreshRequired,
+    required TResult Function(BadRequestException<T> value) badRequest,
+    required TResult Function(UnauthorizedException<T> value) unauthorized,
+    required TResult Function(FlowExpiredException<T> value) flowExpired,
+    required TResult Function(TwoFactorAuthRequiredException<T> value)
+        twoFactorAuthRequired,
+    required TResult Function(LocationChangeRequiredException<T> value)
+        locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
+    required TResult Function(UnknownException<T> value) unknown,
+  }) {
+    return settingsRedirectRequired(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
+    TResult? Function(BadRequestException<T> value)? badRequest,
+    TResult? Function(UnauthorizedException<T> value)? unauthorized,
+    TResult? Function(FlowExpiredException<T> value)? flowExpired,
+    TResult? Function(TwoFactorAuthRequiredException<T> value)?
+        twoFactorAuthRequired,
+    TResult? Function(LocationChangeRequiredException<T> value)?
+        locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
+    TResult? Function(UnknownException<T> value)? unknown,
+  }) {
+    return settingsRedirectRequired?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SessionRefreshRequiredException<T> value)?
+        sessionRefreshRequired,
+    TResult Function(BadRequestException<T> value)? badRequest,
+    TResult Function(UnauthorizedException<T> value)? unauthorized,
+    TResult Function(FlowExpiredException<T> value)? flowExpired,
+    TResult Function(TwoFactorAuthRequiredException<T> value)?
+        twoFactorAuthRequired,
+    TResult Function(LocationChangeRequiredException<T> value)?
+        locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
+    TResult Function(UnknownException<T> value)? unknown,
+    required TResult orElse(),
+  }) {
+    if (settingsRedirectRequired != null) {
+      return settingsRedirectRequired(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class settingsRedirectRequired<T> extends CustomException<T> {
+  const factory settingsRedirectRequired({final String? settingsFlowId}) =
+      _$settingsRedirectRequiredImpl<T>;
+  const settingsRedirectRequired._() : super._();
+
+  String? get settingsFlowId;
+  @JsonKey(ignore: true)
+  _$$settingsRedirectRequiredImplCopyWith<T, _$settingsRedirectRequiredImpl<T>>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1306,6 +1567,7 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
     required TResult Function(String flowId, String? message) flowExpired,
     required TResult Function(Session? session) twoFactorAuthRequired,
     required TResult Function(String url) locationChangeRequired,
+    required TResult Function(String? settingsFlowId) settingsRedirectRequired,
     required TResult Function(String message) unknown,
   }) {
     return unknown(message);
@@ -1320,6 +1582,7 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
     TResult? Function(String flowId, String? message)? flowExpired,
     TResult? Function(Session? session)? twoFactorAuthRequired,
     TResult? Function(String url)? locationChangeRequired,
+    TResult? Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult? Function(String message)? unknown,
   }) {
     return unknown?.call(message);
@@ -1334,6 +1597,7 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
     TResult Function(String flowId, String? message)? flowExpired,
     TResult Function(Session? session)? twoFactorAuthRequired,
     TResult Function(String url)? locationChangeRequired,
+    TResult Function(String? settingsFlowId)? settingsRedirectRequired,
     TResult Function(String message)? unknown,
     required TResult orElse(),
   }) {
@@ -1355,6 +1619,8 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
         twoFactorAuthRequired,
     required TResult Function(LocationChangeRequiredException<T> value)
         locationChangeRequired,
+    required TResult Function(settingsRedirectRequired<T> value)
+        settingsRedirectRequired,
     required TResult Function(UnknownException<T> value) unknown,
   }) {
     return unknown(this);
@@ -1372,6 +1638,8 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
         twoFactorAuthRequired,
     TResult? Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult? Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult? Function(UnknownException<T> value)? unknown,
   }) {
     return unknown?.call(this);
@@ -1389,6 +1657,8 @@ class _$UnknownExceptionImpl<T> extends UnknownException<T>
         twoFactorAuthRequired,
     TResult Function(LocationChangeRequiredException<T> value)?
         locationChangeRequired,
+    TResult Function(settingsRedirectRequired<T> value)?
+        settingsRedirectRequired,
     TResult Function(UnknownException<T> value)? unknown,
     required TResult orElse(),
   }) {

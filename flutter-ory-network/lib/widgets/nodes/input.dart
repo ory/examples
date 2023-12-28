@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ory_client/ory_client.dart';
+import 'package:ory_network_flutter/blocs/bloc/recovery_bloc.dart';
 import 'package:ory_network_flutter/blocs/login/login_bloc.dart';
 import 'package:ory_network_flutter/blocs/registration/registration_bloc.dart';
 
@@ -90,6 +91,16 @@ class _InputNodeState<T extends Bloc> extends State<InputNode> {
           });
         } else if (state is SettingsState) {
           node = state.settingsFlow?.ui.nodes.firstWhereOrNull((element) {
+            if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
+              return (element.attributes.oneOf.value as UiNodeInputAttributes)
+                      .name ==
+                  attributes.name;
+            } else {
+              return false;
+            }
+          });
+        } else if (state is RecoveryState) {
+          node = state.recoveryFlow?.ui.nodes.firstWhereOrNull((element) {
             if (element.attributes.oneOf.isType(UiNodeInputAttributes)) {
               return (element.attributes.oneOf.value as UiNodeInputAttributes)
                       .name ==

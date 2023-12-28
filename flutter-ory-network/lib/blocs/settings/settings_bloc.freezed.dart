@@ -21,7 +21,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SettingsState {
   SettingsFlow? get settingsFlow => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  bool get isSessionRefreshRequired => throw _privateConstructorUsedError;
+  List<Condition> get conditions => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,7 +38,7 @@ abstract class $SettingsStateCopyWith<$Res> {
   $Res call(
       {SettingsFlow? settingsFlow,
       bool isLoading,
-      bool isSessionRefreshRequired,
+      List<Condition> conditions,
       String? message});
 }
 
@@ -57,7 +57,7 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
   $Res call({
     Object? settingsFlow = freezed,
     Object? isLoading = null,
-    Object? isSessionRefreshRequired = null,
+    Object? conditions = null,
     Object? message = freezed,
   }) {
     return _then(_value.copyWith(
@@ -69,10 +69,10 @@ class _$SettingsStateCopyWithImpl<$Res, $Val extends SettingsState>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      isSessionRefreshRequired: null == isSessionRefreshRequired
-          ? _value.isSessionRefreshRequired
-          : isSessionRefreshRequired // ignore: cast_nullable_to_non_nullable
-              as bool,
+      conditions: null == conditions
+          ? _value.conditions
+          : conditions // ignore: cast_nullable_to_non_nullable
+              as List<Condition>,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -92,7 +92,7 @@ abstract class _$$SettingsStateImplCopyWith<$Res>
   $Res call(
       {SettingsFlow? settingsFlow,
       bool isLoading,
-      bool isSessionRefreshRequired,
+      List<Condition> conditions,
       String? message});
 }
 
@@ -109,7 +109,7 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
   $Res call({
     Object? settingsFlow = freezed,
     Object? isLoading = null,
-    Object? isSessionRefreshRequired = null,
+    Object? conditions = null,
     Object? message = freezed,
   }) {
     return _then(_$SettingsStateImpl(
@@ -121,10 +121,10 @@ class __$$SettingsStateImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      isSessionRefreshRequired: null == isSessionRefreshRequired
-          ? _value.isSessionRefreshRequired
-          : isSessionRefreshRequired // ignore: cast_nullable_to_non_nullable
-              as bool,
+      conditions: null == conditions
+          ? _value._conditions
+          : conditions // ignore: cast_nullable_to_non_nullable
+              as List<Condition>,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -139,23 +139,30 @@ class _$SettingsStateImpl implements _SettingsState {
   const _$SettingsStateImpl(
       {this.settingsFlow,
       this.isLoading = false,
-      this.isSessionRefreshRequired = false,
-      this.message});
+      final List<Condition> conditions = const [],
+      this.message})
+      : _conditions = conditions;
 
   @override
   final SettingsFlow? settingsFlow;
   @override
   @JsonKey()
   final bool isLoading;
+  final List<Condition> _conditions;
   @override
   @JsonKey()
-  final bool isSessionRefreshRequired;
+  List<Condition> get conditions {
+    if (_conditions is EqualUnmodifiableListView) return _conditions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_conditions);
+  }
+
   @override
   final String? message;
 
   @override
   String toString() {
-    return 'SettingsState(settingsFlow: $settingsFlow, isLoading: $isLoading, isSessionRefreshRequired: $isSessionRefreshRequired, message: $message)';
+    return 'SettingsState(settingsFlow: $settingsFlow, isLoading: $isLoading, conditions: $conditions, message: $message)';
   }
 
   @override
@@ -167,15 +174,14 @@ class _$SettingsStateImpl implements _SettingsState {
                 other.settingsFlow == settingsFlow) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(
-                    other.isSessionRefreshRequired, isSessionRefreshRequired) ||
-                other.isSessionRefreshRequired == isSessionRefreshRequired) &&
+            const DeepCollectionEquality()
+                .equals(other._conditions, _conditions) &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, settingsFlow, isLoading, isSessionRefreshRequired, message);
+  int get hashCode => Object.hash(runtimeType, settingsFlow, isLoading,
+      const DeepCollectionEquality().hash(_conditions), message);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +194,7 @@ abstract class _SettingsState implements SettingsState {
   const factory _SettingsState(
       {final SettingsFlow? settingsFlow,
       final bool isLoading,
-      final bool isSessionRefreshRequired,
+      final List<Condition> conditions,
       final String? message}) = _$SettingsStateImpl;
 
   @override
@@ -196,7 +202,7 @@ abstract class _SettingsState implements SettingsState {
   @override
   bool get isLoading;
   @override
-  bool get isSessionRefreshRequired;
+  List<Condition> get conditions;
   @override
   String? get message;
   @override

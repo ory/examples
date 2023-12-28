@@ -53,7 +53,7 @@ class AuthService {
           returnSessionTokenExchangeCode: true,
           returnTo: 'ory://flutter-ory-network');
       if (response.data != null) {
-        // return flow id
+        // return flow
         return response.data!;
       } else {
         throw const CustomException.unknown();
@@ -70,7 +70,22 @@ class AuthService {
           returnSessionTokenExchangeCode: true,
           returnTo: 'ory://flutter-ory-network');
       if (response.data != null) {
-        // return flow id
+        // return flow
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      throw _handleUnknownException(e.response?.data);
+    }
+  }
+
+  /// Create recovery flow
+  Future<RecoveryFlow> createRecoveryFlow() async {
+    try {
+      final response = await _ory.createNativeRecoveryFlow();
+      if (response.data != null) {
+        // return flow
         return response.data!;
       } else {
         throw const CustomException.unknown();
@@ -327,7 +342,68 @@ class AuthService {
     }
   }
 
-  /// Log out
+  /// Update recovery flow with [flowId] and [value] as body
+  Future<RecoveryFlow> updateRecoveryFlow(
+      {required String flowId, required Map value}) async {
+    try {
+      final oneOf = OneOf.fromValue1(
+          value: UpdateRecoveryFlowWithCodeMethod((b) => b
+            ..method = UpdateRecoveryFlowWithCodeMethodMethodEnum.code
+            ..email = value['email']
+            ..code = value['code']));
+
+      final response = await _ory.updateRecoveryFlow(
+          flow: flowId,
+          updateRecoveryFlowBody:
+              UpdateRecoveryFlowBody((b) => b..oneOf = oneOf));
+      if (response.data != null) {
+        if (response.data!.continueWith != null) {
+          // get session token from actions
+          final sessionTokenAction = response.data!.continueWith!.firstWhere(
+              (element) =>
+                  element.oneOf.isType(ContinueWithSetOrySessionToken));
+          final token =
+              (sessionTokenAction.oneOf.value as ContinueWithSetOrySessionToken)
+                  .orySessionToken;
+          // save session token
+          await _storage.persistToken(token);
+          // get flow id to redirect to settings and let the user change the password
+          final settingsFlowAction = response.data!.continueWith!.firstWhere(
+              (element) => element.oneOf.isType(ContinueWithSettingsUi));
+          final settingsFlowId =
+              (settingsFlowAction.oneOf.value as ContinueWithSettingsUi)
+                  .flow
+                  .id;
+          throw CustomException.settingsRedirectRequired(
+              settingsFlowId: settingsFlowId);
+        }
+        return response.data!;
+      } else {
+        throw const CustomException.unknown();
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 400) {
+        final recoveryFlow = standardSerializers.deserializeWith(
+            RecoveryFlow.serializer, e.response?.data);
+        if (recoveryFlow != null) {
+          throw CustomException<RecoveryFlow>.badRequest(flow: recoveryFlow);
+        } else {
+          throw const CustomException.unknown();
+        }
+      } else if (e.response?.statusCode == 410) {
+        // recovery flow expired, use new flow id and add error message
+        throw CustomException.flowExpired(
+            flowId: e.response?.data['use_flow_id']);
+      } else {
+        throw _handleUnknownException(e.response?.data);
+      }
+    } on CustomException catch (_) {
+      rethrow;
+    } catch (e) {
+      throw const CustomException.unknown();
+    }
+  }
+
   Future<void> logout() async {
     try {
       final token = await _storage.getToken();

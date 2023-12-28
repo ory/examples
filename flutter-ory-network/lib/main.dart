@@ -1,12 +1,15 @@
 // Copyright © 2023 Ory Corp
 // SPDX-License-Identifier: Apache-2.0
 
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ory_network_flutter/pages/settings.dart';
+import 'package:ory_network_flutter/widgets/helpers.dart';
 import 'package:ory_network_flutter/widgets/ory_theme.dart';
 import 'dart:io' show Platform;
 
@@ -103,16 +106,33 @@ class _MyAppViewState extends State<MyAppView> {
                       builder: (BuildContext context) =>
                           const LoginPage(aal: 'aal1')),
                   (Route<dynamic> route) => false);
-            }, authenticated: (_) {
+            }, authenticated: (authState) {
+              // if user is authenticated and didn't request a recovery,
+              // navigate to home page
+              if (!isRecoveryRequired(authState.conditions)) {
+                _navigator.pushAndRemoveUntil<void>(
+                    MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const HomePage()),
+                    (Route<dynamic> route) => false);
+              } else {
+                // otherwise, navigate to settings page
+                // with provided settings flow id
+                final recovery = authState.conditions.firstWhereOrNull(
+                        (element) => element is RecoveryRequested)!
+                    as RecoveryRequested;
+
+                _navigator.pushAndRemoveUntil<void>(
+                    MaterialPageRoute<void>(
+                        builder: (BuildContext context) => SettingsPage(
+                              flowId: recovery.settingsFlowId,
+                            )),
+                    (route) => false);
+              }
+            }, aal2Requested: (authState) {
               _navigator.pushAndRemoveUntil<void>(
                   MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const HomePage()),
-                  (Route<dynamic> route) => false);
-            }, aal2Requested: (_) {
-              _navigator.pushAndRemoveUntil<void>(
-                  MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          const LoginPage(aal: 'aal2')),
+                      builder: (BuildContext context) => LoginPage(
+                          conditions: authState.conditions, aal: 'aal2')),
                   (Route<dynamic> route) => false);
             });
           },

@@ -52,14 +52,29 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   _onResetSettings(ResetSettings event, Emitter<SettingsState> emit) async {
-    if (state.settingsFlow != null) {
-      emit(state.copyWith(isLoading: true));
-      final settings =
-          await repository.getSettingsFlow(flowId: state.settingsFlow!.id);
-      emit(state.copyWith(
-          settingsFlow: settings,
-          isSessionRefreshRequired: false,
-          isLoading: false));
+    try {
+      if (state.settingsFlow != null) {
+        emit(state.copyWith(isLoading: true));
+        final settings =
+            await repository.getSettingsFlow(flowId: state.settingsFlow!.id);
+        List<Condition> updatedConditions = List.from(state.conditions);
+        updatedConditions
+            .removeWhere((element) => element is SessionRefreshRequested);
+        emit(state.copyWith(
+            settingsFlow: settings,
+            conditions: updatedConditions,
+            isLoading: false));
+      }
+    } on UnauthorizedException catch (_) {
+      // change auth status as the user is not authenticated
+      authBloc.add(ChangeAuthStatus(status: AuthStatus.unauthenticated));
+    } on FlowExpiredException catch (e) {
+      // get new settings flow
+      add(GetSettingsFlow(flowId: e.flowId));
+    } on UnknownException catch (e) {
+      emit(state.copyWith(isLoading: false, message: e.message));
+    } catch (_) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -67,8 +82,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       UpdateSettingsFlow event, Emitter<SettingsState> emit) async {
     try {
       if (state.settingsFlow != null) {
+        List<Condition> updatedConditions = List.from(state.conditions);
+        updatedConditions
+            .removeWhere((element) => element is SessionRefreshRequested);
         emit(state.copyWith(
-            isLoading: true, isSessionRefreshRequired: false, message: null));
+            isLoading: true, conditions: updatedConditions, message: null));
         final settings = await repository.updateSettingsFlow(
             flowId: state.settingsFlow!.id,
             group: event.group,
@@ -83,7 +101,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       add(GetSettingsFlow(flowId: e.flowId));
     } on SessionRefreshRequiredException catch (_) {
       // set session refresh required flag to navigate to login page
-      emit(state.copyWith(isSessionRefreshRequired: true, isLoading: false));
+      List<Condition> currentConditions =
+          List.from(state.conditions, growable: true);
+      currentConditions.add(SessionRefreshRequested());
+      emit(state.copyWith(conditions: currentConditions, isLoading: false));
     } on UnknownException catch (e) {
       emit(state.copyWith(isLoading: false, message: e.message));
     } catch (_) {

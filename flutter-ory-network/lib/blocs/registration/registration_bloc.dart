@@ -56,9 +56,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   _onChangeNodeValue(ChangeNodeValue event, Emitter<RegistrationState> emit) {
     if (state.registrationFlow != null) {
       final newRegistrationState = repository.changeRegistrationNodeValue(
-          settings: state.registrationFlow!,
-          name: event.name,
-          value: event.value);
+          flow: state.registrationFlow!, name: event.name, value: event.value);
       emit(state.copyWith(
           registrationFlow: newRegistrationState, message: null));
     }
