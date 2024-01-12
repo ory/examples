@@ -1,0 +1,7 @@
+.env
+
+**/ca.key
+**/ca.crt
+**/ca.srl
+
+nginx/cert

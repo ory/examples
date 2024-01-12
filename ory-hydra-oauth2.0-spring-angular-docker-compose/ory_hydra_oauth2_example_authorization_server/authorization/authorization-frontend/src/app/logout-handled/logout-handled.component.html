@@ -1,0 +1,11 @@
+<!-- logo -->
+<img src="assets/logo.png" alt="logo" style="width: 10em; margin: 1em;">
+
+<ng-container *ngIf="(isConfirmed$ | async); then thenBlock else elseBlock"></ng-container>
+<ng-template #thenBlock><h1>You have successfully exited all applications </h1></ng-template>
+<ng-template #elseBlock><h1>You have canceled logging out of all applications</h1></ng-template>
+
+<h2>To continue working, close the browser and open the required application again</h2>
+
+<!-- прикольный котэ -->
+<img src="assets/cat_logout.jpg" alt="logo" style="max-width: 40vw; margin:1rem;" />

@@ -1,0 +1,11 @@
+<div *ngIf="getResponseFromServerFlag" style="display: flex; justify-content: center;">
+    <mat-spinner></mat-spinner>
+</div>
+
+<ng-container *ngIf="!getResponseFromServerFlag">
+    <button id="addButton" mat-raised-button color="warn" matTooltip="(Enter)" matTooltipPosition="above"
+        style="margin: 1em;" (click)="addValue()">
+        <i class="fa-solid fa-check"></i>
+        ADD VALUE
+    </button>
+</ng-container>

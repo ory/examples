@@ -1,0 +1,48 @@
+<div *ngIf="getResponseFromServerFlag" style="display: flex; justify-content: center;">
+    <mat-spinner></mat-spinner>
+</div>
+
+<ng-container *ngIf="!getResponseFromServerFlag">
+    <ng-container *ngIf="requestedScopes$ | async as scopes">
+        <ng-container *ngIf="subject$ | async as subject">
+            <ng-container *ngIf="clientName$ | async as clientName">
+                <div>
+                    Hi {{ subject }}, application <strong>{{ clientName }}</strong> wants access resources on your
+                    behalf
+                    and to:
+                </div>
+
+                <mat-list style="margin-bottom: 1em;">
+                    @for (scope of scopes; track scope; let idx = $index) {
+                    <mat-list-item>{{ scope }}</mat-list-item>
+                    @if(idx !== (scopes.length - 1)){
+                    <mat-divider></mat-divider>
+                    }
+                    }
+                </mat-list>
+
+                <div>
+                    Do you want to be asked next time when this application wants to access your data? The application
+                    will
+                    not be able to ask for more permissions without your consent.
+                </div>
+                <mat-checkbox name="isRemember" style="margin-bottom: 1em;" [formControl]="isRemember">Do not ask me
+                    again</mat-checkbox>
+
+                <div>
+                    <button id="allowButton" style="margin-right: 1em;" mat-raised-button color="primary"
+                        matTooltip="Allow access (Enter)" matTooltipPosition="above" (click)="allowAccess(!!isRemember.value)">
+                        <i class="fa-solid fa-check"></i>
+                        ALLOW ACCESS
+                    </button>
+
+                    <button id="denyButton" mat-raised-button color="warn" matTooltip="Deny access (Esc)"
+                        matTooltipPosition="above" (click)="denyAccess()">
+                        <i class="fa-solid fa-xmark"></i>
+                        DENY ACCESS
+                    </button>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</ng-container>

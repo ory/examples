@@ -1,0 +1,10 @@
+spring:
+  
+  datasource:
+    hikari:
+      maximum-pool-size: 6
+
+
+logging:
+  level:
+    root: info

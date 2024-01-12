@@ -15,6 +15,7 @@ If you have any questions or suggestions
 - [Example with Supabase using Ory Kratos and Ory Oathkeeper](https://github.com/ory/examples/tree/master/kratos-keto-oathkeeper-supabase)
 - [Example with Supabase using Ory Cloud](https://github.com/ory/examples/tree/master/supabase-ory-cloud)
 - [Example API Gateway with Kong using Ory Kratos & Ory Oathkeeper](https://github.com/ory/examples/tree/master/kratos-oathkeeper-kong)
+- [Example implementation of OAuth 2.0 Authorization Code Flow with PKCE using Ory Hydra(Spring, Angular and Docker Compose)](https://github.com/ory/examples/tree/master/ory-hydra-oauth2.0-spring-angular-docker-compose)
 
 ### Configuration Examples
 

@@ -1,0 +1,68 @@
+<!-- правая часть -->
+<div class="left-part">
+    <img src="assets/logo.png" alt="logo" style="width: 10em; margin: 1em;">
+
+    <h1>Login</h1>
+
+    <div *ngIf="getResponseFromServerFlag" style="display: flex; justify-content: center;">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <form id="login-form" [formGroup]="loginFormGroup" (ngSubmit)="submit()"
+      style="display: flex; flex-direction: column;" *ngIf="!getResponseFromServerFlag">
+    
+      <mat-form-field>
+        <mat-label>Enter the login</mat-label>
+        <input id="login" type="text" matInput placeholder="Enter the login" required formControlName="login">
+        <mat-hint align="start">(Ctrl+L) Login to log in to the system</mat-hint>
+        <mat-hint align="end">{{login.value.length || 0}}</mat-hint>
+        <mat-error *ngIf="login.invalid && (login.dirty || login.touched)">
+          <ng-container *ngIf="login.errors?.['required']">
+            The login cannot be empty
+          </ng-container>
+          <ng-container *ngIf="login.errors?.['minlength']">
+            The minimum login consists of 4 characters
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+    
+    
+      <mat-form-field>
+        <mat-label>Enter the password</mat-label>
+        <input id="password" [type]="passwordShowFlag ? 'text' : 'password'" matInput placeholder="Enter the password"
+          required formControlName="password">
+        <button type="button" mat-icon-button matSuffix #tooltipPassword="matTooltip" matTooltip="Show Password"
+          matTooltipPosition="above" (click)="passwordDisplay(tooltipPassword);$event.stopPropagation();"
+          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordShowFlag">
+          <i class="far" [ngClass]='passwordShowFlag ? "fa-eye" : "fa-eye-slash"'></i>
+        </button>
+    
+        <mat-hint align="start">(Ctrl+P) Password to log in to the system</mat-hint>
+        <mat-hint align="end">{{password.value.length || 0}}</mat-hint>
+        <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">
+          <ng-container *ngIf="password.errors?.['required']">
+            The password cannot be empty
+          </ng-container>
+          <ng-container *ngIf="password.errors?.['pattern']">
+            The password is invalid
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-checkbox name="isRemember" formControlName="isRemember">Remember me</mat-checkbox>
+
+      <button
+      type="submit"
+      id="submitButton"
+      *ngIf="!getResponseFromServerFlag" 
+      mat-raised-button color="primary" matTooltip="Enter data"
+        matTooltipPosition="above" [disabled]="loginFormGroup.invalid">
+        <i class="fas door"></i>
+        LOGIN
+      </button>
+
+    </form>
+</div>
+
+<!-- левая часть -->
+<div *ngIf="isShowRightPart"  class="right-part"></div>

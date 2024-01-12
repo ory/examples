@@ -1,0 +1,177 @@
+version: "2.4"
+
+services:
+
+  ory-hydra-oauth2-ex-auth-server-userdata-postgresql:
+    image: postgres:15.3-bookworm
+    environment:
+      - POSTGRES_USER=user_data
+      - POSTGRES_PASSWORD=${USER_DATA_POSTGRESQL_PASSWORD}
+      - POSTGRES_DB=user_data
+    volumes:
+      - type: bind
+        source: ./user_data/postgresql.conf
+        target: /etc/postgresql/postgresql.conf
+        read_only: true
+      
+      - type: bind
+        source: ./user_data/postgresql-init.sql
+        target: /docker-entrypoint-initdb.d/postgresql-init.sql
+        read_only: true
+
+      - type: volume
+        source: user-data-postgresql-volume
+        target: /var/lib/postgresql/data
+      
+      - type: bind
+        source: /etc/timezone
+        target: /etc/timezone
+        read_only: true
+      
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "1"
+    mem_limit: 512M
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    healthcheck:
+      test: "pg_isready -U user_data"
+      interval: 10s
+      timeout: 1m
+      retries: 5
+    networks:
+      app-network:
+        aliases:
+          - user-data-postgresql
+
+  ory-hydra-oauth2-ex-auth-server-hydradata-postgresql:
+    image: postgres:15.3-bookworm
+    environment:
+      - POSTGRES_USER=hydra
+      - POSTGRES_PASSWORD=${HYDRA_POSTGRESQL_PASSWORD}
+      - POSTGRES_DB=hydra
+    volumes:
+      - type: bind
+        source: ./hydra/postgresql.conf
+        target: /etc/postgresql/postgresql.conf
+        read_only: true
+      
+      - type: volume
+        source: hydra-data-postgresql-volume
+        target: /var/lib/postgresql/data
+      
+      - type: bind
+        source: /etc/timezone
+        target: /etc/timezone
+        read_only: true
+      
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "1"
+    mem_limit: 1G
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    healthcheck:
+      test: "pg_isready -U hydra"
+      interval: 10s
+      timeout: 1m
+      retries: 5
+    networks:
+      app-network:
+        aliases:
+          - hydra-data-postgresql
+
+  ory-hydra-oauth2-example-authorization-server-hydra-migrate:
+    image: oryd/hydra:v2.2.0
+    command: migrate sql -e --yes
+    restart: on-failure
+    environment:
+      # secret for cookie
+      - SECRETS_COOKIE=${HYDRA_SECRETS_COOKIE}
+      # main secret
+      - SECRETS_SYSTEM=${HYDRA_SECRETS_SYSTEM}
+      - DSN=postgres://hydra:${HYDRA_POSTGRESQL_PASSWORD}@hydra-data-postgresql:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+    depends_on:
+      ory-hydra-oauth2-ex-auth-server-hydradata-postgresql:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: /etc/timezone
+        target: /etc/timezone
+        read_only: true
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    networks:
+      - app-network
+    
+  ory-hydra-oauth2-example-authorization-server-hydra:
+    image: oryd/hydra:v2.2.0
+    command: serve all
+    environment:
+      - URLS_SELF_PUBLIC=https://authorization-server.com/
+      - URLS_SELF_ADMIN=http://ory-hydra-oauth2-example-authorization-server-hydra:4445/
+      - SERVE_COOKIES_SAME_SITE_MODE=Lax
+      - URLS_LOGIN=https://authorization-server.com/api/login
+      - URLS_CONSENT=https://authorization-server.com/api/consent
+      - URLS_LOGOUT=https://authorization-server.com/api/logout
+      - URLS_ERROR=https://authorization-server.com/error
+      # когда успешно вышел из системы
+      - URLS_POST_LOGOUT_REDIRECT=https://authorization-server.com/logout/success
+      # время жизни access_token
+      - TTL_ACCESS_TOKEN=1h
+      # время жизни refresh_token
+      - TTL_REFRESH_TOKEN=24h
+      # как долго проходит вход в систему
+      - TTL_LOGIN_CONSENT_REQUEST=15m
+      # PKCE
+      - OAUTH2_PKCE_ENFORCED_FOR_PUBLIC_CLIENTS=true
+      - OAUTH2_PKCE_ENFORCED=true
+      # secret for cookie
+      - SECRETS_COOKIE=${HYDRA_SECRETS_COOKIE}
+      # main secret
+      - SECRETS_SYSTEM=${HYDRA_SECRETS_SYSTEM}
+      # прокси сервер
+      - SERVE_TLS_ALLOW_TERMINATION_FROM=0.0.0.0/0
+      - DSN=postgres://hydra:${HYDRA_POSTGRESQL_PASSWORD}@hydra-data-postgresql:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      - LOG_LEVEL=trace
+      - SERVE_COOKIES_NAMES_LOGIN_CSRF=ory_hydra_login_csrf
+
+    restart: unless-stopped
+    depends_on:
+      ory-hydra-oauth2-example-authorization-server-hydra-migrate:
+        condition: ${HYDRA_DEPENDS_ON_MIGRATE}
+    labels:
+      - docker-volume-backup.archive-pre=/bin/sh -c 'hydra janitor -e --tokens --requests --grants'
+      - docker-volume-backup.stop-during-backup=ory-hydra-oauth2-example-authorization-server-hydra-backup-stop-label
+    volumes:
+      - type: bind
+        source: /etc/timezone
+        target: /etc/timezone
+        read_only: true
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+    networks:
+      app-network:
+        aliases:
+          - ory-hydra-oauth2-example-authorization-server-hydra
+
+networks:
+  app-network:
+
+volumes:
+  user-data-postgresql-volume:
+  hydra-data-postgresql-volume:

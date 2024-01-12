@@ -1,0 +1,95 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.14'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'jacoco'
+}
+
+ext {
+	httpproxy = "$System.env.HTTP_PROXY" ?: ""
+	httpsproxy = "$System.env.HTTPS_PROXY" ?: ""
+	noproxy = "$System.env.NO_PROXY" ?: ""
+	
+	repoImage = "$System.env.REPO_IMAGE" ?: ""
+	projectName = "$System.env.PROJECT_NAME" ?: ""
+	versionProj = "$System.env.VERSION" ?: ""
+	
+	set('testcontainersVersion', "1.18.3")
+}
+
+group = 'com.github.chistousov'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '11'
+	withSourcesJar()
+}
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+jacocoTestReport {
+    dependsOn test 
+    reports {
+        xml.required = true
+    }
+}
+
+repositories {
+	mavenCentral()
+}
+
+bootBuildImage {
+	imageName = "${repoImage}/${projectName}:${versionProj}"
+	environment = [
+		// "HTTP_PROXY" : httpproxy.toString(),
+		// "HTTPS_PROXY" : httpsproxy.toString(),
+		// "NO_PROXY" : noproxy.toString(),
+		// add health check for docker
+		"BP_HEALTH_CHECKER_ENABLED": "true"
+	]
+	buildpacks = ["urn:cnb:builder:paketo-buildpacks/java", "gcr.io/paketo-buildpacks/health-checker:latest"]
+}
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	implementation 'org.springframework.session:spring-session-core'
+
+	compileOnly 'org.projectlombok:lombok'
+
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.testcontainers:junit-jupiter'
+
+	testImplementation "org.testcontainers:mockserver:1.18.3"
+	testImplementation "org.mock-server:mockserver-client-java:5.15.0"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}

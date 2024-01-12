@@ -1,0 +1,24 @@
+<!-- logo -->
+<img src="assets/logo.png" alt="logo" style="width: 10em; margin: 1em;">
+
+<!-- display that loading is in progress -->
+<div *ngIf="getResponseFromServerFlag" style="display: flex; justify-content: center;">
+    <mat-spinner></mat-spinner>
+</div>
+
+<ng-container *ngIf="!getResponseFromServerFlag">
+  <h1>
+    Are you sure you want to quit all applications?
+  </h1>
+
+  <div>
+    <button id="yesButton" mat-stroked-button color="primary" (click)="isConfirmedOrNot(true)" matTooltip="(Enter)" matTooltipPosition="above">
+      <i class="fa-solid fa-check"></i>
+      YES
+    </button>
+    <button id="noButton" mat-raised-button color="warn" (click)="isConfirmedOrNot(false)" matTooltip="(Esc)" matTooltipPosition="above">
+      <i class="fa-solid fa-xmark"></i>
+      NO
+    </button>
+  </div>
+</ng-container>

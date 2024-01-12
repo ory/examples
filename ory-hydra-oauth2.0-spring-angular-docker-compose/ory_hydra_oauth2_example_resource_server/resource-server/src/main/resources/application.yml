@@ -1,0 +1,22 @@
+application:
+  title: Resource Server OAuth 2.0 Example Ory Hydra
+
+spring:
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    root: debug
+
+server:
+  forward-headers-strategy: framework
+  error:
+    include-stacktrace: never
+
+springdoc:
+  swagger-ui:
+    display-operation-id:  true
+    csrf:
+      enabled: true

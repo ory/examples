@@ -1,0 +1,77 @@
+:host {
+    min-width: inherit;
+    width: inherit;
+    min-height: inherit;
+    height: inherit;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+form#login-form > mat-form-field {
+    margin-bottom: 1em;
+}
+
+form#login-form > mat-checkbox {
+    margin-bottom: 1em;
+}
+
+
+#submitButton:hover i.fas.door::before {
+    content: "\f52b";
+}
+
+#submitButton i.fas.door::before {
+    content: "\f52a";
+}
+
+#submitButton[disabled] i.fas.door::before,
+#submitButton[disabled]:hover i.fas.door::before {
+    content: "\f52a";
+}
+
+form#login-form{
+    width: 30em;
+}
+
+.left-part {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 2em;
+}
+
+.right-part {
+    width: 80vw;
+    background-size: cover;
+    background-position: center;
+    background-image: url(/assets/stav.jpg);
+}
+
+@media (max-width: 960px) {
+    .right-part {
+        display: none;
+    }
+
+    .left-part {
+        width: 100%;
+        padding: 0;
+    }
+}
+
+@media (max-width: 960px) {
+    .right-part {
+        display: none;
+    }
+
+    .left-part {
+        width: 100%;
+        padding: 0;
+    }
+
+    form#login-form{
+        width: 22em;
+    }
+}
