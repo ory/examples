@@ -1,0 +1,7 @@
+${AnsiColor.BRIGHT_CYAN}
+,---.|    o     |                              
+|    |---..,---.|--- ,---..   .,---.,---..    ,
+|    |   ||`---.|    |   ||   |`---.|   | \  / 
+`---'`   '``---'`---'`---'`---'`---'`---'  `'  
+${AnsiBackground.WHITE}${AnsiColor.BRIGHT_BLACK}${application.title}
+Powered by Spring Boot ${spring-boot.version}${AnsiColor.DEFAULT}${AnsiBackground.DEFAULT}

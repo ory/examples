@@ -1,0 +1,37 @@
+application:
+  title: Registration Example Ory Hydra
+
+spring:
+  
+  output:
+    ansi:
+      enabled: always
+  
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+  
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+        proc:
+          param_null_passing: true
+
+logging:
+  level:
+    root: TRACE
+
+server:
+  port: 8090
+  reactive:
+    session:
+      cookie:
+        name: SESSION-LOGIN-WRAPPER
+  forward-headers-strategy: framework
+  error:
+    include-stacktrace: never

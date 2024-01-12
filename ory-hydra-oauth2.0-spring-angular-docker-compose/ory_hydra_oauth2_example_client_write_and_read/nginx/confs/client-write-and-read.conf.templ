@@ -1,0 +1,70 @@
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name ${DNS_CLIENT_WRITE_AND_READ};
+
+    ssl_certificate /cert/${DNS_CLIENT_WRITE_AND_READ}/${DNS_CLIENT_WRITE_AND_READ}.crt;
+    ssl_certificate_key /cert/${DNS_CLIENT_WRITE_AND_READ}/${DNS_CLIENT_WRITE_AND_READ}.key;
+
+    add_header Strict-Transport-Security "max-age=31536000; preload" always;
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-Frame-Options "DENY";
+    add_header X-XSS-Protection "1; mode=block";
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # Docker DNS
+    resolver 127.0.0.11;
+   
+    location ~ ^/(oauth2)/? {
+        set $ory_hydra_oauth2_example_client_write_and_read_backend2 http://ory-hydra-oauth2-example-client-write-and-read-backend:8080;
+        rewrite /(.*) /$1 break;
+        proxy_pass $ory_hydra_oauth2_example_client_write_and_read_backend2;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto-Version $http2;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /;
+    }
+
+
+    location /api/ {
+        set $ory_hydra_oauth2_example_client_write_and_read_backend http://ory-hydra-oauth2-example-client-write-and-read-backend:8080;
+        rewrite /api/(.*) /$1 break;
+        proxy_pass $ory_hydra_oauth2_example_client_write_and_read_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto-Version $http2;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /api;
+
+    }
+
+    location / {
+        set $ory_hydra_oauth2_example_client_readonly_frontend http://ory-hydra-oauth2-example-client-write-and-read-frontend:4000;
+        rewrite /(.*) /$1 break;
+        proxy_pass $ory_hydra_oauth2_example_client_readonly_frontend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto-Version $http2;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /;
+
+    }
+
+}

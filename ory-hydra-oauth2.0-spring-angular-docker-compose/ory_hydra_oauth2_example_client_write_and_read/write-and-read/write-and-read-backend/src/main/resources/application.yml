@@ -1,0 +1,32 @@
+application:
+  title: OAuth 2.0 Client Write And Read Example Ory Hydra
+
+spring:
+  
+  output:
+    ansi:
+      enabled: always
+  
+  security:
+    oauth2:
+      client:
+        registration:
+          client-write-and-read:
+            provider: spring
+            client-authentication-method: client_secret_basic
+            authorization-grant-type: authorization_code
+
+logging:
+  level:
+    root: debug
+
+
+server:
+  forward-headers-strategy: framework
+  reactive:
+    session:
+      cookie:
+        name: SESSION-CLIENT-WRITE-AND-READ
+  error:
+    include-stacktrace: never
+    
