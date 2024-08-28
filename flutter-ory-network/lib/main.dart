@@ -42,18 +42,23 @@ Future<void> main() async {
 
   final authService = AuthService(dio);
 
+  final String? clientId;
+  if (Platform.isAndroid) {
+    clientId = dotenv.get('ANDROID_CLIENT_ID');
+  } else if (Platform.isIOS) {
+    clientId = dotenv.get('IOS_CLIENT_ID');
+  } else {
+    clientId = null;
+  }
+
 // We use Web Client ID for Android devices as omitting Client ID
 // leads to id Token being null. For more information,
 // see https://github.com/flutter/flutter/issues/33393#issuecomment-964728679
-  final googleSignIn = GoogleSignIn(
-      clientId: Platform.isAndroid
-          ? dotenv.get('WEB_CLIENT_ID')
-          : dotenv.get('IOS_CLIENT_ID'),
-      scopes: [
-        'email',
-        'profile',
-        'openid',
-      ]);
+  final googleSignIn = GoogleSignIn(clientId: clientId, scopes: [
+    'email',
+    'profile',
+    'openid',
+  ]);
   final authRepository =
       AuthRepository(googleSignIn: googleSignIn, service: authService);
   runApp(RepositoryProvider.value(
