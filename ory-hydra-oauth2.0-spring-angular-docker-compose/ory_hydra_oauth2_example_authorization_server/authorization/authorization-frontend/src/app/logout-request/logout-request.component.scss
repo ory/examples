@@ -1,0 +1,13 @@
+:host {
+    min-width: inherit;
+    width: inherit;
+    min-height: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    margin: 1em;
+}

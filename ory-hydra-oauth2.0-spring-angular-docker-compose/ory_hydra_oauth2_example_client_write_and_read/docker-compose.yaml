@@ -1,0 +1,158 @@
+version: "2.4"
+
+services:
+
+  ory-hydra-oauth2-example-client-write-and-read-backend:
+    image: chistousov/ory-hydra-oauth2-example-client-write-and-read-backend:1.0.0
+    container_name: ory-hydra-oauth2-example-client-write-and-read-backend
+    environment:
+      - LANG=en_US.UTF-8
+      - LANGUAGE=en_US:en
+
+      - BPL_JAVA_NMT_LEVEL=detail
+
+      # ca add
+      - SERVICE_BINDING_ROOT=/bindings
+
+      # health check
+      - THC_PATH=/actuator/health
+      - THC_PORT=8080
+
+      - JAVA_TOOL_OPTIONS=
+        -Dspring.profiles.active=prod
+
+        -Dspring.security.oauth2.client.registration.client-write-and-read.client-id=${CLIENT_WRITE_AND_READ_CLIENT_ID}
+        -Dspring.security.oauth2.client.registration.client-write-and-read.client-secret=${CLIENT_WRITE_AND_READ_CLIENT_SECRET}
+        -Dspring.security.oauth2.client.registration.client-write-and-read.redirect-uri=https://${DNS_CLIENT_WRITE_AND_READ}/api/login/oauth2/code/client-write-and-read
+        -Dspring.security.oauth2.client.registration.client-write-and-read.scope="read,write"
+        
+        -Dspring.security.oauth2.client.provider.spring.authorization-uri=https://${DNS_AUTHORIZATION_SERVER}/oauth2/auth
+        -Dspring.security.oauth2.client.provider.spring.token-uri=https://${DNS_AUTHORIZATION_SERVER}/oauth2/token
+        -Dspring.security.oauth2.client.provider.spring.user-info-uri=https://${DNS_AUTHORIZATION_SERVER}/userinfo
+        -Dspring.security.oauth2.client.provider.spring.user-name-attribute=sub
+        
+        -Dapplication.frontend.error-oauth2-page="/error"
+        -Dapplication.resource-server="https://${DNS_RESOURCE_SERVER}/"
+
+    user: "1005"
+    mem_limit: 1G
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "1"
+    volumes:
+      - type: bind
+        source: /etc/timezone
+        target: /etc/timezone
+        read_only: true
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+      - type: bind
+        source: ca-certificates
+        target: /bindings/ca-certificates
+        read_only: true
+    healthcheck:
+      test: "/cnb/process/health-check"
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    networks:
+      - app-network
+    extra_hosts:
+      - "${DNS_AUTHORIZATION_SERVER}:${IP_AUTHORIZATION_SERVER}"
+      - "${DNS_RESOURCE_SERVER}:${IP_RESOURCE_SERVER}"
+
+  ory-hydra-oauth2-example-client-write-and-read-frontend:
+    image: chistousov/ory-hydra-oauth2-example-client-write-and-read-frontend:1.0.0
+    container_name: ory-hydra-oauth2-example-client-write-and-read-frontend
+    environment:
+      # health check
+      - THC_PATH=/health
+      - THC_PORT=4000
+      
+    user: "1005"
+    mem_limit: 512M
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "1"
+    volumes:
+       
+       - type: bind
+         source: /etc/timezone
+         target: /etc/timezone
+         read_only: true
+       
+       - type: bind
+         source: /etc/localtime
+         target: /etc/localtime
+         read_only: true
+    healthcheck:
+      test: "/cnb/process/health-check"
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    depends_on:
+      ory-hydra-oauth2-example-client-write-and-read-backend:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  ory-hydra-oauth2-example-client-write-and-read-gateway-nginx:
+    image: nginx:1.25.3-bookworm
+    container_name: ory-hydra-oauth2-example-client-write-and-read-gateway-nginx
+    healthcheck:
+      test: '[ -e /var/run/nginx.pid ] || exit 1'
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    ports:
+      - 443:443
+    volumes:
+      - type: bind
+        source: nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+
+      - type: bind
+        source: nginx/confs
+        target: /etc/nginx/conf.d
+        read_only: true
+
+      - type: bind
+        source: nginx/cert
+        target: /cert
+        read_only: true
+
+      - type: bind
+        source: /etc/timezone
+        target: /etc/timezone
+        read_only: true
+
+      - type: bind
+        source: /etc/localtime
+        target: /etc/localtime
+        read_only: true
+
+    restart: unless-stopped
+    depends_on:
+      ory-hydra-oauth2-example-client-write-and-read-backend:
+        condition: service_healthy
+      ory-hydra-oauth2-example-client-write-and-read-frontend:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "1"
+    mem_limit: 1G
+    networks:
+      - app-network
+  
+
+networks:
+  app-network:

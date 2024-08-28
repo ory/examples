@@ -1,0 +1,83 @@
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name ${DNS_AUTHORIZATION_SERVER};
+
+    ssl_certificate /cert/${DNS_AUTHORIZATION_SERVER}/${DNS_AUTHORIZATION_SERVER}.crt;
+    ssl_certificate_key /cert/${DNS_AUTHORIZATION_SERVER}/${DNS_AUTHORIZATION_SERVER}.key;
+
+    add_header Strict-Transport-Security "max-age=31536000; preload" always;
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-Frame-Options "DENY";
+    add_header X-XSS-Protection "1; mode=block";
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # Docker DNS
+    resolver 127.0.0.11;
+    
+    location ~ ^/(.well-known|oauth2/auth|oauth2/token|oauth2/revoke|oauth2/fallbacks/consent|oauth2/fallbacks/error|userinfo|oauth2/sessions/logout)/? {
+        set $ory_hydra_public_hydra http://ory-hydra-oauth2-example-authorization-server-hydra:4444;
+        proxy_pass $ory_hydra_public_hydra;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto-Version $http2;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /;
+    }
+    location ~ ^/(admin/clients|admin/oauth2/introspect)/? {
+        set $ory_hydra_admin_hydra http://ory-hydra-oauth2-example-authorization-server-hydra:4445;
+        proxy_pass $ory_hydra_admin_hydra;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto-Version $http2;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /;
+
+        # Auth Basic
+        auth_basic "Ory Hydra Introspect Area";
+        auth_basic_user_file /etc/nginx/conf.d/htpasswd_introspect;
+    }
+
+    location /api/ {
+        set $ory_hydra_oauth2_example_authorization_server_backend http://ory-hydra-oauth2-example-authorization-server-backend:8090;
+        rewrite /api/(.*) /$1 break;
+        proxy_pass $ory_hydra_oauth2_example_authorization_server_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto-Version $http2;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /api;
+    }
+    location / {
+        set $ory_hydra_oauth2_example_authorization_server_frontend http://ory-hydra-oauth2-example-authorization-server-frontend:4000;
+        rewrite /(.*) /$1 break;
+        proxy_pass $ory_hydra_oauth2_example_authorization_server_frontend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto-Version $http2;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /;
+    }
+
+
+}

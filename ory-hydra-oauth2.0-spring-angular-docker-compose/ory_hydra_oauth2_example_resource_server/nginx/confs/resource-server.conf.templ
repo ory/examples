@@ -1,0 +1,36 @@
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name ${DNS_RESOURCE_SERVER};
+
+    ssl_certificate /cert/${DNS_RESOURCE_SERVER}/${DNS_RESOURCE_SERVER}.crt;
+    ssl_certificate_key /cert/${DNS_RESOURCE_SERVER}/${DNS_RESOURCE_SERVER}.key;
+
+    add_header Strict-Transport-Security "max-age=31536000; preload" always;
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-Frame-Options "DENY";
+    add_header X-XSS-Protection "1; mode=block";
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # Docker DNS
+    resolver 127.0.0.11;
+   
+    location /api/ {
+        set $ory_hydra_oauth2_example_resource_server_backend http://ory-hydra-oauth2-example-resource-server-backend:8080;
+        rewrite /api/(.*) /$1 break;
+        proxy_pass $ory_hydra_oauth2_example_resource_server_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto-Version $http2;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Prefix /api;
+    }
+}
