@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  nuxt-app:
+    build:
+      context: .
+      dockerfile: dev.dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/app
+    command: npm run dev
+    depends_on:
+      - kratos
+    networks:
+      - app-network
+
+  kratos:
+    image: oryd/kratos:v1
+    ports:
+      - "4433:4433"
+      - "4434:4434"
+    environment:
+      - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
+      - LOG_LEAK_SENSITIVE_VALUES=true
+    volumes:
+      - ./.kratos:/etc/config/kratos
+      - kratos_data:/var/lib/sqlite
+    command: serve -c /etc/config/kratos/kratos.yml --dev
+    networks:
+      - app-network
+
+  kratos-migrate:
+    image: oryd/kratos:v1
+    environment:
+      - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
+    volumes:
+      - ./.kratos:/etc/config/kratos
+      - kratos_data:/var/lib/sqlite
+    command: migrate sql -e --yes
+    depends_on:
+      - kratos
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  kratos_data:
