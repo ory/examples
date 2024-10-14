@@ -1,6 +1,11 @@
 import { ref, readonly, onMounted } from "vue";
-import type { Session, LoginFlow, RegistrationFlow } from "@ory/kratos-client";
-import { FrontendApi, Configuration } from "@ory/kratos-client";
+import type {
+  Session,
+  LoginFlow,
+  RegistrationFlow,
+  UpdateLoginFlowBody,
+  UpdateRegistrationFlowBody,
+} from "@ory/kratos-client";
 
 interface AuthError {
   message: string;
@@ -13,15 +18,7 @@ interface User {
 }
 
 export const useAuth = () => {
-  const config = useRuntimeConfig();
-  const ory = new FrontendApi(
-    new Configuration({
-      basePath: config.public.ORY_SDK_URL,
-      baseOptions: {
-        withCredentials: true,
-      },
-    })
-  );
+  const { $kratos } = useNuxtApp();
 
   const user = ref<User | null>(null);
   const isAuthenticated = ref(false);
@@ -64,7 +61,7 @@ export const useAuth = () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const { data: session } = await ory.toSession();
+      const { data: session } = await $kratos.toSession();
       setUser(session);
     } catch (err) {
       error.value = handleError(err);
@@ -79,7 +76,7 @@ export const useAuth = () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const { data } = await ory.createBrowserLoginFlow();
+      const { data } = await $kratos.createBrowserLoginFlow();
       loginFlow.value = data;
     } catch (err) {
       error.value = handleError(err);
@@ -88,16 +85,16 @@ export const useAuth = () => {
     }
   };
 
-  const login = async (formData: Record<string, string>) => {
+  const login = async (updateLoginFlowBody: UpdateLoginFlowBody) => {
     isLoading.value = true;
     error.value = null;
     try {
       if (!loginFlow.value) {
         throw new Error("Login flow not initialized");
       }
-      const { data: successfulNativeLogin } = await ory.updateLoginFlow({
+      const { data: successfulNativeLogin } = await $kratos.updateLoginFlow({
         flow: loginFlow.value.id,
-        updateLoginFlowBody: formData,
+        updateLoginFlowBody,
       });
       setUser(successfulNativeLogin.session);
       return true;
@@ -113,9 +110,10 @@ export const useAuth = () => {
     isLoading.value = true;
     error.value = null;
     try {
-      await ory.createBrowserLogoutFlow();
+      await $kratos.createBrowserLogoutFlow();
       isAuthenticated.value = false;
       user.value = null;
+      return navigateTo("/login");
     } catch (err) {
       error.value = handleError(err);
     } finally {
@@ -127,7 +125,7 @@ export const useAuth = () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const { data } = await ory.createBrowserRegistrationFlow();
+      const { data } = await $kratos.createBrowserRegistrationFlow();
       registrationFlow.value = data;
     } catch (err) {
       error.value = handleError(err);
@@ -136,7 +134,9 @@ export const useAuth = () => {
     }
   };
 
-  const register = async (formData: Record<string, string>) => {
+  const register = async (
+    updateRegistrationFlowBody: UpdateRegistrationFlowBody
+  ) => {
     isLoading.value = true;
     error.value = null;
     try {
@@ -144,9 +144,9 @@ export const useAuth = () => {
         throw new Error("Registration flow not initialized");
       }
       const { data: successfulNativeRegistration } =
-        await ory.updateRegistrationFlow({
+        await $kratos.updateRegistrationFlow({
           flow: registrationFlow.value.id,
-          updateRegistrationFlowBody: formData,
+          updateRegistrationFlowBody,
         });
 
       if (!successfulNativeRegistration.session) {
@@ -168,11 +168,6 @@ export const useAuth = () => {
   const clearError = () => {
     error.value = null;
   };
-
-  // Check auth state on component mount
-  onMounted(() => {
-    checkAuth();
-  });
 
   return {
     user: readonly(user),
