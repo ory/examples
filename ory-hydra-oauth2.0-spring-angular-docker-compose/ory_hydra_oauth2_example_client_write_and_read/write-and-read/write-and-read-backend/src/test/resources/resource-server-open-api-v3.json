@@ -1,0 +1,115 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "description": "Example resource server"
+    },
+    "servers": [
+        {
+            "url": "https://resource-server.com/api",
+            "description": "Generated server url"
+        }
+    ],
+    "security": [
+        {
+            "Introspect OAuth 2.0": []
+        }
+    ],
+    "paths": {
+        "/calculate": {
+            "put": {
+                "tags": [
+                    "calculate-controller"
+                ],
+                "summary": "Some calculate",
+                "operationId": "calculate",
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/statistics": {
+            "get": {
+                "tags": [
+                    "statistics-controller"
+                ],
+                "summary": "Get statistics",
+                "operationId": "getStatistics",
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Point"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Point": {
+                "type": "object",
+                "properties": {
+                    "x": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "y": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "description": "Graph point"
+            }
+        },
+        "securitySchemes": {
+            "Introspect OAuth 2.0": {
+                "type": "http",
+                "in": "header",
+                "scheme": "bearer",
+                "bearerFormat": "opaque token"
+            }
+        }
+    }
+}
