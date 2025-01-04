@@ -1,0 +1,9 @@
+<ng-container *ngIf="lineChartData$ | async as lineChartData">
+    <canvas *ngIf="isBrowser"
+              baseChart
+              style="height: 40vh; width: 40vw;"
+              [data]="lineChartData"
+              [options]="lineChartOptions"
+              [type]="lineChartType"
+    ></canvas>
+  </ng-container>

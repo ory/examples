@@ -1,0 +1,16 @@
+<ng-container *ngIf="errorOnPageModel$ | async as errorOnPageModel">
+    <!-- logo -->
+    <img src="assets/logo.png" alt="logo" style="max-width: 8rem; margin:1rem 0 1rem 0;" />
+    <h1>Пришла ошибка от сервера аутентификации и авторизации</h1>
+    <!-- ошибка -->
+    <h2>{{ errorOnPageModel.error }}</h2>
+    <!-- описание ошибки -->
+    <h3>{{ errorOnPageModel.errorDescription }}</h3>
+    <!-- кнопка переаутентификация -->
+    <button mat-raised-button color="primary" (click)="goToAuth(errorOnPageModel.reauthenticationLocation)">
+        <i class="fa-solid fa-circle-user"></i>
+        ПЕРЕАУТЕНТИФИКАЦИЯ
+    </button>
+    <!-- прикольный котэ -->
+    <img src="assets/cat_401.png" alt="cat_401" style="max-width: 40vw; margin: 1rem;" />
+</ng-container>
