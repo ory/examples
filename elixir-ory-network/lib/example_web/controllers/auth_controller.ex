@@ -35,7 +35,7 @@ defmodule ExampleWeb.AuthController do
   end
 
   def login(conn, _params) do
-    case result = Frontend.create_browser_login_flow(Ory.Connection.new(), Cookie: cookies(conn)) do
+    case result = Frontend.create_browser_login_flow(Ory.Connection.new(), Cookie: cookies(conn), aal: "aal1") do
       {:ok, %{url: url}} ->
         IO.puts("redirecting to #{url}")
         redirect(conn, external: url)

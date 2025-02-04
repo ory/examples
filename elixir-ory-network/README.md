@@ -5,6 +5,9 @@ A basic Example of integrating [Ory](https://ory.sh) with [Phoenix](https://www.
 
 A simple server-side rendered web application serving Custom UI for Ory Flows. 
 
+## TODO:
+Test Setting Authenticator in swettings without providing required password.
+
 ## Develop
 
 ### Prerequisites

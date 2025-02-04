@@ -10,7 +10,7 @@ defmodule ExampleWeb.Flow do
   attr :flow, :map, required: true
 
   @spec flow(map()) :: Phoenix.LiveView.Rendered.t()
-  def flow(assigns) when not is_nil(assigns.flow) do
+  def flow(%{flow: flow} = assigns) when not is_nil(assigns.flow) do
     IO.inspect(assigns)
 
     ~H"""
@@ -18,15 +18,31 @@ defmodule ExampleWeb.Flow do
 
     <%= if @flow.ui do %>
       <form action={@flow.ui.action} method={@flow.ui.method}>
-        <%= for node <- @flow.ui.nodes do %>
-          <.ui_node node={node} />
-        <% end %>
+        <.ui_form_groups flow={@flow} />
       </form>
     <% end %>
     """
   end
 
-  attr :flow, :map
+  attr :flow, :map, required: true
+
+  def ui_form_groups(%{flow: %{ui: %{nodes: nodes}}} = assigns) do
+    grouped_nodes =
+      nodes
+      |> Enum.filter(&Map.has_key?(&1, :group))
+      |> Enum.group_by(& &1.group)
+
+    ~H"""
+    <%= for {group, nodes} <- grouped_nodes do %>
+      <div id={"settings-group-#{group}"}>
+        <h3 class="text-lg font-medium mb-4"><%= group %></h3>
+        <%= for node <- nodes do %>
+          <.ui_node node={node} />
+        <% end %>
+      </div>
+    <% end %>
+    """
+  end
 
   def ui_message_group(%{flow: %{ui: %{messages: messages}}} = assigns) do
     ~H"""
@@ -114,7 +130,7 @@ defmodule ExampleWeb.Flow do
         dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
       />
       <.ui_label
-        class="l-2 block text-gray-800 text-sm font-bold"
+        class="l-2 block text-gray-800 text-sm f  t-bold"
         for={@node.attributes.name}
         text={@node.meta.label.text}
       />
