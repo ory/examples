@@ -2,4 +2,4 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* This file is for your main application CSS */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

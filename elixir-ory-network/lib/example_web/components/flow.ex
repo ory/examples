@@ -9,17 +9,20 @@ defmodule ExampleWeb.Flow do
   # TODO(@tobbbles): Figure out if this can be dynamically set up as a type union from Ory LoginFlow and RegistrationFlow
   attr :flow, :map, required: true
 
+  @spec flow(map()) :: Phoenix.LiveView.Rendered.t()
   def flow(assigns) when not is_nil(assigns.flow) do
     IO.inspect(assigns)
 
     ~H"""
     <.ui_message_group flow={@flow} />
 
-    <form action={@flow.ui.action} method={@flow.ui.method}>
-      <%= for node <- @flow.ui.nodes do %>
-        <.ui_node node={node} />
-      <% end %>
-    </form>
+    <%= if @flow.ui do %>
+      <form action={@flow.ui.action} method={@flow.ui.method}>
+        <%= for node <- @flow.ui.nodes do %>
+          <.ui_node node={node} />
+        <% end %>
+      </form>
+    <% end %>
     """
   end
 
@@ -93,7 +96,10 @@ defmodule ExampleWeb.Flow do
         name={@node.attributes.name}
         type="hidden"
         value="false"
-        class="mr-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        class="mr-4 text-blue-600
+        bg-neutral-300 border-gray-300 rounded
+        focus:ring-blue-500 focus:ring-2
+        dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
       />
       <input
         name={@node.attributes.name}
@@ -103,7 +109,9 @@ defmodule ExampleWeb.Flow do
         placeholder="getNodeLabel"
         checked={@node.attributes.value}
         disabled={@node.attributes.disabled}
-        class="mr-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        class="mr-4 text-blue-600 border-gray-300 border-gray-300 rounded
+        focus:ring-blue-500 focus:ring-2
+        dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
       />
       <.ui_label
         class="l-2 block text-gray-800 text-sm font-bold"
@@ -137,15 +145,13 @@ defmodule ExampleWeb.Flow do
   def ui_node(%{node: %{type: "a"} = node} = assigns) do
     ~H"""
     <.button>
-      <:inner_block>
-        <.link
-          id={@node.attributes.id}
-          href={@node.attributes.href}
-          class="text-sm font-semibold leading-6 ext-gray-100"
-        >
-          <span><%= @node.meta.label.text %></span>
-        </.link>
-      </:inner_block>
+      <.link
+        id={@node.attributes.id}
+        href={@node.attributes.href}
+        class="text-sm font-semibold leading-6 ext-gray-100"
+      >
+        <span><%= @node.meta.label.text %></span>
+      </.link>
     </.button>
     """
   end
@@ -204,8 +210,9 @@ defmodule ExampleWeb.Flow do
     <input
       class={[
         "block w-full p-2.5",
-        "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500",
-        "dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        "bg-white border border-gray-300 text-gray-900 text-sm rounded-lg",
+        "focus:ring-blue-500 focus:border-blue-500",
+        "dark:border-gray-600 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
       ]}
       name={@attributes.name}
       id={@attributes.name}

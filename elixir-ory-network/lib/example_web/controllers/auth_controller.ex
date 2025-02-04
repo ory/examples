@@ -12,9 +12,11 @@ defmodule ExampleWeb.AuthController do
   def login(conn, %{"flow" => id}) do
     case Frontend.get_login_flow(Ory.Connection.new(), id, Cookie: cookies(conn)) do
       {:ok, flow} ->
+        IO.inspect(flow)
         render(conn, :login, flow: flow)
 
       {:ok, %Ory.Model.ErrorGeneric{error: error}} = wrapper ->
+        IO.puts("errorno flow flow")
         render(conn, :login, flow: nil, error: error.message)
 
       {:error, reason} ->
@@ -33,15 +35,26 @@ defmodule ExampleWeb.AuthController do
   end
 
   def login(conn, _params) do
-    case Frontend.create_browser_login_flow(Ory.Connection.new(), Cookie: cookies(conn)) do
+    case result = Frontend.create_browser_login_flow(Ory.Connection.new(), Cookie: cookies(conn)) do
       {:ok, %{url: url}} ->
+        IO.puts("redirecting to #{url}")
         redirect(conn, external: url)
 
       {:ok, %Ory.Model.GenericError{} = error} ->
         IO.inspect(error)
+        conn
+        |> put_flash(:error, "An error occurred during login")
+        |> render(:login, flow: nil)
+
+      {:err, reason} ->
+          IO.inspect(reason)
+          conn
+          |> put_flash(:error, "An error occurred during login")
+          |> render(:login, flow: nil)
 
       _ ->
-        conn |> render(:login, flow: nil)
+        IO.puts("oops")
+        conn |> render(:login, flow: %{})
     end
   end
 
