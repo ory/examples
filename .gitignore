@@ -1,4 +1,4 @@
-.bin/
-node_modules
+.bin
 .idea
-.vscode
+node_modules
+.DS_store

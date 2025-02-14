@@ -1,7 +1,0 @@
-.bin
-*.pyc
-*/db.sqlite3
-node_modules
-/test-results/
-/playwright-report/
-/playwright/.cache/
