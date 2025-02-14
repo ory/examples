@@ -1,6 +1,0 @@
-*.hbs
-.github/ISSUE_TEMPLATE/BUG-REPORT.yml
-.github/pull_request_template.md
-CONTRIBUTING.md
-django-ory-cloud/mysite/templates/base.html
-kratos-keto-flask/Pipfile.lock
