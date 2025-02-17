@@ -1,5 +1,9 @@
 # Awesome Ory
 
+<p align="center">
+  <img src="./assets/logo512.png" alt="Logo" />
+</p>
+
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
 [![Docs](https://img.shields.io/badge/docs-ory.sh-%233B4B6C "Ory Documentation")](https://ory.sh/docs)
 [![Docs](https://img.shields.io/badge/chat-slack.ory.sh-%234B1B6C "Ory Community Slack")](https://slack.ory.sh/)
