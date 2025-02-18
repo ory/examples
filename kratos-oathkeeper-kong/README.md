@@ -21,7 +21,7 @@ Request Flow:
 
 User -> Kong -> Ory Oathkeeper -> Ory Kratos -> Go API
 
-![Architecture using Oathkeeper, Kratos, and Kong](../_assets/img/kong.png)
+![Architecture using Oathkeeper, Kratos, and Kong](./kong.png)
 
 Ory Oathkeeper checks the incoming request for presence of `ory_kratos_session`
 and does the following steps:
