@@ -1,0 +1,14 @@
+{
+  "name": "awesome-ory",
+  "version": "1.0.0",
+  "description": "An awesome list of the Ory ecosystem.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ory",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "prettier": "^3.5.1"
+  }
+}
