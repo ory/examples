@@ -1,14 +1,15 @@
-# Awesome Ory
+# Awesome Ory [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
 
-[![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
+[<img src="./assets/logo512.png" align="right" width="350">](https://ory.sh/)
+
+An awesome list of the [Ory ecosystem](https://github.com/ory/). Ory provides scalable, flexible, and secure identity and access management (IAM) solutions that empower developers to build innovative applications. Whether you handle billions of users or launch a startup, Ory makes security and compliance simple with open-source transparency and cutting-edge tools.
+
 [![Docs](https://img.shields.io/badge/docs-ory.sh-%233B4B6C "Ory Documentation")](https://ory.sh/docs)
 [![Docs](https://img.shields.io/badge/chat-slack.ory.sh-%234B1B6C "Ory Community Slack")](https://slack.ory.sh/)
 
-An awesome list of the [Ory ecosystem](https://github.com/ory/).
-
 If you have any questions or suggestions [open a discussion](https://github.com/ory/examples/discussions), or join the [Ory Chat](https://slack.ory.sh/)!
 
-See CONTRIBUTING.md for pointers on how to contribute.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for pointers on how to contribute.
 
 ## Contents
 
@@ -63,7 +64,7 @@ Developer resources and forums for discussing Ory and meeting other users
 - [StackOverflow](https://stackoverflow.com/questions/tagged/ory) - StackOverflow questions tagged with `ory`
 - [Twitter](https://twitter.com/orycorp) - Official Ory Twitter account
 
-- Ory Support: [Get enterprise-grade support](https://ory.sh/contact) - directly from the Ory maintainer team
+- Ory Support 👉 [Enterprise-grade support directly from the Ory maintainers](https://ory.sh/contact) ✨
 
 ## Blog posts
 

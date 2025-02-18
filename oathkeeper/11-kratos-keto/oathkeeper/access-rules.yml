@@ -1,0 +1,48 @@
+- id: "api:protected"
+  upstream:
+    preserve_host: true
+    url: "http://hello:8090"
+  match:
+    url: "http://127.0.0.1:8080/hello"
+    methods:
+      - GET
+  authenticators:
+    - handler: cookie_session
+  mutators:
+    - handler: header
+  authorizer:
+    handler: remote_json
+    config:
+      remote: http://keto:4466/check
+      payload: |
+        {
+          "subject_id": "{{ print .Subject }}",
+          "relation": "access",
+          "namespace": "services",
+          "object": "hello-world-service"
+        }
+
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/login
+
+- id: "api:signed-in-only"
+  upstream:
+    preserve_host: true
+    url: "http://hello:8090"
+  match:
+    url: "http://127.0.0.1:8080/grant-access"
+    methods:
+      - GET
+  authenticators:
+    - handler: cookie_session
+  mutators:
+    - handler: header
+  authorizer:
+    handler: allow
+
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/login
