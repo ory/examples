@@ -1,4 +1,4 @@
-# Awesome Ory [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
+# Awesome Ory
 
 [<img src="./assets/logo512.png" align="right" width="350">](https://ory.sh/)
 
@@ -101,7 +101,6 @@ Developer resources and forums for discussing Ory and meeting other users
   [Part 3](https://medium.com/12plus1/oauth2-implementation-with-ory-hydra-vapor-3-and-ios-12-356793a0edcb),
   [Part 4](https://medium.com/12plus1/oauth2-implementation-with-ory-hydra-vapor-3-and-ios-12-4b34fa67d6).
 - [Creating an OAuth 2.0 custom lambda authorizer for use with Amazons (AWS) API Gateway using Hydra](https://blogs.edwardwilde.com/2017/01/12/creating-an-oauth2-custom-lamda-authorizer-for-use-with-amazons-aws-api-gateway-using-hydra/)
-- [Discussion on Access & Refresh Tokens](https://github.com/ory/hydra/issues/1529)
 
 ### Ory Keto
 
@@ -126,44 +125,53 @@ Developer resources and forums for discussing Ory and meeting other users
 - [Ory selfhosted introduction course](https://youtu.be/Cptnv7ZaFY8)
 - [Ory Kratos & Ory Hydra integration guide](https://youtu.be/F6ZKrxf8LuQ)
 
-## Projects
+## Examples
 
-Members of the Ory community have built technology, written blog posts, and published open source software that extends or modifies the core technology. This isn't an exhaustive list, if something is missing or you want to contribute your own content , please create an issue or PR here!
-
-> Please note that this content isn't actively maintained by the Ory team, is written by the community and might be out of date, unmaintained, or otherwise faulty.
+Code examples that show how to integrate Ory with a framework, software stack, or how to solve a specific use case.
 
 ### Ory Ecosystem
-
-Community projects using more than one Ory tool or service
 
 - [Microservices app example using Ory, NestJS, Kubernetes](https://github.com/getlarge/ticketing)
 - [Selfhosted admin frontend written in ASP.net](https://github.com/josxha/OryUI)
 - [Next.js based starter for Ory Kratos and Ory Hydra](https://github.com/markusthielker/next-ory)
 - [APISIX as gateway with Ory, linkerd, and kustomize](https://github.com/iverly/kube-apisix-linkerd-ory-kustomize)
 - [Ory Kratos/Oathkeeper with Kong, docker-compose](https://github.com/Pterygoidien/Kong-Ory-Microservices)
-- [Ory Plugin for HashiCorp Vault](https://github.com/comnoco/vault-plugin-auth-ory)
-- [Libraries to integrate NestJS with Ory](https://github.com/getlarge/nestjs-ory-integration)
 
 ### Ory Kratos
 
 - [Ory Kratos Sveltekit with MeltUI and TailwindCSS](https://github.com/karlis-vagalis/kratos-selfservice)
 - [Ory Kratos Authentication for Plug applications](https://github.com/ScoreVision/kratos_plug)
-- [Ory Kratos Symfony Authenticator](https://github.com/stethome/ory-auth-bundle)
 - [Ory Kratos Admin Interface in React](https://github.com/dfoxg/kratos-admin-ui)
 - [Ory Kratos Svelte Node self service](https://github.com/emrahcom/kratos-selfservice-svelte-node)
 - [Ory Kratos SvelteKit Demo](https://github.com/bessey/ory-kratos-sveltekit-demo)
-- [Ory Kratos Loopback4 integration](https://github.com/giuseppegrieco/loopback4-kratos)
 
 ### Ory Hydra
 
 - [Ory Hydra Web3 Authentication including Metamask, Coinbase, Walletconnect ](https://github.com/MetaWarrior-Army/mwa-auth)
 - [Ory Hydra Golang HTTP middleware](https://github.com/ngyewch/hydra-login-consent)
-- [Ory Hydra Testcontainer](https://github.com/ardetrick/testcontainers-ory-hydra)
-- [Ory Hydra OAuth2 Token Exchange RFC 8693](https://github.com/Exact-Realty/ts-hydra-rfc8693)
-- [Ory Hydra Terraform Provider](https://github.com/svrakitin/terraform-provider-hydra)
 - [Ory Hydra Java login/consent provider example](https://github.com/ardetrick/ory-hydra-refrence-java)
 - [Ory Hydra Golang login/consent/logout identity provider example](https://github.com/M3ikShizuka/service-account)
 - [Ory Hydra client integrations with OAuth2.0 & OIDC identity](https://github.com/shauryadhadwal/oauth2-oidc-client-integrations)
+
+## Projects
+
+Community projects, configuration tools, or development helpers extending Ory services.
+
+### Ory Ecosystem
+
+- [Ory Plugin for HashiCorp Vault](https://github.com/comnoco/vault-plugin-auth-ory)
+- [Libraries to integrate NestJS with Ory](https://github.com/getlarge/nestjs-ory-integration)
+
+### Ory Kratos
+
+- [Ory Kratos Symfony Authenticator](https://github.com/stethome/ory-auth-bundle)
+- [Ory Kratos Loopback4 integration](https://github.com/giuseppegrieco/loopback4-kratos)
+
+### Ory Hydra
+
+- [Ory Hydra Testcontainer](https://github.com/ardetrick/testcontainers-ory-hydra)
+- [Ory Hydra OAuth2 Token Exchange RFC 8693](https://github.com/Exact-Realty/ts-hydra-rfc8693)
+- [Ory Hydra Terraform Provider](https://github.com/svrakitin/terraform-provider-hydra)
 
 ### Ory Keto
 
@@ -171,7 +179,7 @@ Community projects using more than one Ory tool or service
 
 ### Ory Oathkeeper
 
-- [Ory Oathkeeper rules from OpenAPI](https://github.com/cerberauth/openapi-oathkeeper)
+- [CLI to create Ory Oathkeeper rules from OpenAPI spec](https://github.com/cerberauth/openapi-oathkeeper)
 
 ### Ory Fosite
 
