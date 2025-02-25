@@ -1,6 +1,6 @@
 # Awesome Ory
 
-[<img src="./assets/logo512.png" align="right" width="350">](https://ory.sh/)
+[<img src="./assets/logo512.png" align="right" width="256">](https://ory.sh/)
 
 An awesome list of the [Ory ecosystem](https://github.com/ory/). Ory provides scalable, flexible, and secure identity and access management (IAM) solutions that empower developers to build innovative applications. Whether you handle billions of users or launch a startup, Ory makes security and compliance simple with open-source transparency and cutting-edge tools.
 
@@ -40,7 +40,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for pointers on how to contribute.
   - [Ory Fosite](#ory-fosite)
 - [Services](#services)
 - [Postman collections](#postman-collections)
-- [Archived, Outdated, and WIP](#archived-outdated-and-wip)
+- [Archive](#archive)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
