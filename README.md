@@ -213,3 +213,7 @@ to configure query parameters or the JSON method body, depending on the API call
 > Note that while the collections should be up to date, please open an issue here if that's not the case.
 
 > Don't store tokens in Postman as environment variables! If you are signed in to the Postman application, it will automatically try to synchronize Collections and Environments with the Postman servers. This means that a token, which could allow someone else access to your APIs, is being uploaded to Postman's servers. Postman has taken measures to ensure that tokens are encrypted and encourages users to store them in Environment Variables. Read more [here](https://www.postman.com/security).
+
+## Archive
+
+You can find old, archived, outdated, or incomplete projects in [ARCHIVE.md](./ARCHIVE.md)
