@@ -2,6 +2,7 @@
 
 Old, archived, outdated, or incomplete projects - feel free to use as a reference or even revive them!
 
+- [Ory Stack Example App](https://github.com/lucascoelhosilva/user-management)
 - [Ory Kratos Frontend Go Example](https://github.com/sawadashota/kratos-frontend-go)
 - [Reference Ory Docker Compose Setup ](https://github.com/radekg/ory-reference-compose) +
   [Article](https://gruchalski.com/posts/2021-04-10-ory-reference-docker-compose-and-thoughts-on-the-platform/)
