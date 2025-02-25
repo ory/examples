@@ -2,7 +2,7 @@
 
 Old, archived, outdated, or incomplete projects - feel free to use as a reference or even revive them!
 
-- [Starter for Svelte Kit and Ory](https://github.com/MicLeey/sveltekit-ory-starter)
+- [Ory Kratos Frontend Go Example](https://github.com/sawadashota/kratos-frontend-go)
 - [Reference Ory Docker Compose Setup ](https://github.com/radekg/ory-reference-compose) +
   [Article](https://gruchalski.com/posts/2021-04-10-ory-reference-docker-compose-and-thoughts-on-the-platform/)
 - [Predefined dockertest libraries for Hydra, Kratos & Keto integration tests](https://github.com/radekg/app-kit-orytest)

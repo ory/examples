@@ -113,7 +113,6 @@ Developer resources and forums for discussing Ory and meeting other users
 
 ### Ory Oathkeepeer
 
-- [User Management using Ory Oathkeeper](https://blog.commit.dev/articles/open-source-sundays-building-a-user-management-solution-using-ory-oathkeeper-and-auth0)
 - [API Access Control with Ambassador and Ory Oathkeeper](https://blog.getambassador.io/part-2-api-access-control-and-authentication-with-kubernetes-ambassador-and-ory-oathkeeper-q-a-127fa57f6332?utm_content=76739953&utm_medium=social&utm_source=twitter)
 - [Ory Oathkeeper Istio best practices/reference configuration](https://github.com/ory/oathkeeper/issues/624)
 
@@ -137,7 +136,7 @@ Code examples that show how to integrate Ory with a framework, software stack, o
 ### Ory Ecosystem
 
 - [Microservices app using Ory, NestJS, Kubernetes](https://github.com/getlarge/ticketing)
-- [Selfhosted admin frontend written in ASP.net](https://github.com/josxha/OryUI)
+- [Selfhosted admin frontend in ASP.net](https://github.com/josxha/OryUI)
 - [Next.js based starter for Ory Kratos and Ory Hydra](https://github.com/markusthielker/next-ory)
 - [APISIX as gateway with Ory, linkerd, and kustomize](https://github.com/iverly/kube-apisix-linkerd-ory-kustomize)
 - [Ory Kratos & Oathkeeper with Kong, docker-compose](https://github.com/Pterygoidien/Kong-Ory-Microservices)
