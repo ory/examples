@@ -87,6 +87,7 @@ Developer resources and forums for discussing Ory and meeting other users
 
 ### Ory ecosystem
 
+- [Authentication Infrastructure – Using Ory Stack (Ory Kratos, Ory Hydra)](https://neutronxinnovation.com/blog/2025/01/23/authentication-infrastructure-using-ory-stack/)
 - [Open Source Authentication with Hydra and Kratos](https://blog.px.dev/open-source-auth/)
 
 ### Ory Kratos
@@ -135,27 +136,29 @@ Code examples that show how to integrate Ory with a framework, software stack, o
 
 ### Ory Ecosystem
 
-- [Microservices app example using Ory, NestJS, Kubernetes](https://github.com/getlarge/ticketing)
+- [Microservices app using Ory, NestJS, Kubernetes](https://github.com/getlarge/ticketing)
 - [Selfhosted admin frontend written in ASP.net](https://github.com/josxha/OryUI)
 - [Next.js based starter for Ory Kratos and Ory Hydra](https://github.com/markusthielker/next-ory)
 - [APISIX as gateway with Ory, linkerd, and kustomize](https://github.com/iverly/kube-apisix-linkerd-ory-kustomize)
-- [Ory Kratos/Oathkeeper with Kong, docker-compose](https://github.com/Pterygoidien/Kong-Ory-Microservices)
+- [Ory Kratos & Oathkeeper with Kong, docker-compose](https://github.com/Pterygoidien/Kong-Ory-Microservices)
+- [Ory Kratos, Keto, Oathkeeper Kubernetes example](https://github.com/pngouin/k8s-ory-example)
 
 ### Ory Kratos
 
-- [Ory Kratos Sveltekit with MeltUI and TailwindCSS](https://github.com/karlis-vagalis/kratos-selfservice)
-- [Ory Kratos Authentication for Plug applications](https://github.com/ScoreVision/kratos_plug)
-- [Ory Kratos Admin Interface in React](https://github.com/dfoxg/kratos-admin-ui)
-- [Ory Kratos Svelte Node self service](https://github.com/emrahcom/kratos-selfservice-svelte-node)
-- [Ory Kratos SvelteKit Demo](https://github.com/bessey/ory-kratos-sveltekit-demo)
+- [Ory Kratos Nuxt example](https://github.com/khusseini/nuxt-kratos-selfservice)
+- [Ory Kratos Sveltekit with MeltUI and TailwindCSS example](https://github.com/karlis-vagalis/kratos-selfservice)
+- [Ory Kratos for Plug apps example](https://github.com/ScoreVision/kratos_plug)
+- [Ory Kratos Svelte Node example](https://github.com/emrahcom/kratos-selfservice-svelte-node)
+- [Ory Kratos SvelteKit example](https://github.com/bessey/ory-kratos-sveltekit-demo)
+- [Ory Kratos Admin Interface in React example](https://github.com/dfoxg/kratos-admin-ui)
 
 ### Ory Hydra
 
-- [Ory Hydra Web3 Authentication including Metamask, Coinbase, Walletconnect ](https://github.com/MetaWarrior-Army/mwa-auth)
-- [Ory Hydra Golang HTTP middleware](https://github.com/ngyewch/hydra-login-consent)
-- [Ory Hydra Java login/consent provider example](https://github.com/ardetrick/ory-hydra-refrence-java)
-- [Ory Hydra Golang login/consent/logout identity provider example](https://github.com/M3ikShizuka/service-account)
-- [Ory Hydra client integrations with OAuth2.0 & OIDC identity](https://github.com/shauryadhadwal/oauth2-oidc-client-integrations)
+- [Ory Hydra Web3 Authentication incl. Metamask, Coinbase, Walletconnect example](https://github.com/MetaWarrior-Army/mwa-auth)
+- [Ory Hydra Java identity provider example](https://github.com/ardetrick/ory-hydra-refrence-java)
+- [Ory Hydra Golang identity provider example](https://github.com/M3ikShizuka/service-account)
+- [Ory Hydra client integrations with OAuth2.0 & OIDC example](https://github.com/shauryadhadwal/oauth2-oidc-client-integrations)
+- [Ory Hydra PKCE & Spring Boot 2 example](https://github.com/Chistousov/ORY-Hydra-OAuth2.0-Example)
 
 ## Projects
 
@@ -174,6 +177,7 @@ Community projects, configuration tools, or development helpers extending Ory se
 ### Ory Hydra
 
 - [Ory Hydra Testcontainer](https://github.com/ardetrick/testcontainers-ory-hydra)
+- [Ory Hydra Golang HTTP middleware](https://github.com/ngyewch/hydra-login-consent)
 - [Ory Hydra OAuth2 Token Exchange RFC 8693](https://github.com/Exact-Realty/ts-hydra-rfc8693)
 - [Ory Hydra Terraform Provider](https://github.com/svrakitin/terraform-provider-hydra)
 
@@ -209,28 +213,3 @@ to configure query parameters or the JSON method body, depending on the API call
 > Note that while the collections should be up to date, please open an issue here if that's not the case.
 
 > Don't store tokens in Postman as environment variables! If you are signed in to the Postman application, it will automatically try to synchronize Collections and Environments with the Postman servers. This means that a token, which could allow someone else access to your APIs, is being uploaded to Postman's servers. Postman has taken measures to ensure that tokens are encrypted and encourages users to store them in Environment Variables. Read more [here](https://www.postman.com/security).
-
-## Archived, Outdated, and WIP
-
-Old, outdated, or incomplete projects - feel free to play around or revive them!
-
-- [Starter for Svelte Kit and Ory](https://github.com/MicLeey/sveltekit-ory-starter)
-- [Reference Ory Docker Compose Setup ](https://github.com/radekg/ory-reference-compose) +
-  [Article](https://gruchalski.com/posts/2021-04-10-ory-reference-docker-compose-and-thoughts-on-the-platform/)
-- [Predefined dockertest libraries for Hydra, Kratos & Keto integration tests](https://github.com/radekg/app-kit-orytest)
-- [Ory Kratos Sveltekit example](https://github.com/drejohnson/sveltekit-kratos)
-- [Ory Kratos/Hydra Erlang frontend UI](https://github.com/hrefhref/styx)
-- [Ory Kratos Rescript React UI SPA](https://github.com/allancalix/kratos-ui) +
-  [Bindings](https://github.com/allancalix/kratos-ui/blob/main/src/Bindings/Kratos.res)
-- [Ory Kratos Next.js self service UI](https://github.com/spa5k/kratos-next)
-- [Ory Kratos Quarkus, Kotlin, and Qute example](https://github.com/hbrammer/quarkus_kratos_example)
-- [Ory Kratos single node example](https://github.com/tinco/kratos-service)
-- [Ory Kratos Vue 3/Vite with Typescript example](https://github.com/timalanfarrow/kratos-selfservice-ui-vue3-typescript)
-- [Ory Hydra SDK for Laravel (unofficial)](https://github.com/ALTELMA/laravel-hydra)
-- [Ory Hydra Identity Provider for over LDAP](https://github.com/i-core/werther)
-- [Ory Hydra Middleware for Gin (Go)](https://github.com/janekolszak/gin-hydra)
-- [Ory Hydra Two-factor authentication login provider](https://github.com/epandurski/hydra_login2f)
-- [Ory Hydra Identity Provider](https://github.com/janekolszak/idp)
-- [Ory Hydra Python login/consent provider example](https://github.com/westphahl/hydra-login-consent-python)
-- [KetoToDot Ory Keto relation tuples to dot notation converter](https://github.com/psauvage0/ketodot)
-- [Testing OAuth 2.0 JWT token implementation with Ory Fosite](https://github.com/breathbath/oauth-test)
